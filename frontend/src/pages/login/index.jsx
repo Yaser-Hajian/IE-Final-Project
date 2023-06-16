@@ -55,23 +55,29 @@ const LoginPage = () => {
       isLoading: true,
     });
     SetIsLoadApiData(true);
-    console.log(formData);
     const data = await login(formData.username.value, formData.password.value);
-    toast.dismiss(loadingToast);
     if (data.error === true) {
-      toast.error(
-        data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        { autoClose: true, position: "top-left" }
-      );
-      SetIsLoadApiData(false);
-    } else {
-      toast.success(data.message ?? "ورود موفقیت آمیز ", {
+      toast.update(loadingToast, {
+        render:
+          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
         autoClose: true,
         position: "top-left",
+        isLoading: false,
+        type: "error",
       });
+      SetIsLoadApiData(false);
+    } else {
+      toast.update(loadingToast, {
+        render: data.message ?? "ورود موفقیت آمیز ",
+        type: "success",
+        autoClose: true,
+        position: "top-left",
+        isLoading: false,
+      });
+
       localStorage.setItem("token", JSON.stringify(data.data));
       setTimeout(() => {
-        toast.dismiss();
+        toast.dismiss(loadingToast);
         navigation("/dashboard", { replace: true });
       }, 1500);
     }
