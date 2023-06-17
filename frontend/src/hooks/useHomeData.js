@@ -24,8 +24,14 @@ const useHomeData = () => {
         if (courseData.error) {
           setIsError(true);
         }
-        const apiCallData = { ...termsData.data, ...courseData.data };
-        dispatch(updateHomeData({ ...apiCallData, isDataLoadedBefore: true }));
+
+        dispatch(
+          updateHomeData({
+            lastObservedTerms: termsData.data.terms,
+            lastObservedCourses: courseData.data.courses,
+            isDataLoadedBefore: true,
+          })
+        );
         setIsLoading(false);
       } catch (error) {
         setIsError(true);

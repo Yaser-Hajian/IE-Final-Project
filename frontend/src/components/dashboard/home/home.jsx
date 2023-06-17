@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import Loader from "../header/loader";
 import Empty from "../empty/empty";
 
-const Home = () => {
+const Home = ({ userType }) => {
   const homeData = useSelector((s) => s.home);
   const { isLoading, isError } = useHomeData();
   return (
@@ -34,7 +34,13 @@ const Home = () => {
                 <Empty />
               ) : (
                 homeData.lastObservedTerms.map((term, i) => {
-                  return <TermCard key={i} {...term} />;
+                  return (
+                    <TermCard
+                      url={`/dashboard/${userType}/terms/${term.id}`}
+                      key={i}
+                      {...term}
+                    />
+                  );
                 })
               )}
             </div>

@@ -10,6 +10,7 @@ import "./App.css";
 import LoginPage from "./pages/login";
 import StudentDashboard from "./pages/dashboard/studentDashboard";
 import Home from "./components/dashboard/home/home";
+import Terms from "./components/dashboard/terms/terms";
 
 function App() {
   return (
@@ -34,8 +35,8 @@ function App() {
               </CheckAuthentication>
             }
           >
-            <Route path="" element={<Home />} />
-            <Route path="terms" element={<h1>terms</h1>} />
+            <Route path="" element={<Home userType={"student"} />} />
+            <Route path="terms" element={<Terms userType={"student"} />} />
           </Route>
           <Route path="*" element={<h4>NOT FOUND 404</h4>} />
         </Routes>

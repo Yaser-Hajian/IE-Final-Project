@@ -3,10 +3,17 @@ import { Typography } from "@mui/material";
 import styles from "./termCard.module.css";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
+import { useNavigate } from "react-router-dom";
 
-const TermCard = ({ name, startDate, endDate, courseNum, studentNum }) => {
+const TermCard = ({ name, startDate, endDate, courseNum, studentNum, url }) => {
+  const navigate = useNavigate();
   return (
-    <div className={styles.con}>
+    <div
+      onClick={() => {
+        navigate(url, { replace: true });
+      }}
+      className={styles.con}
+    >
       <div className={styles.top}>
         <Typography variant="body1">{name}</Typography>
         <Typography variant="caption" sx={{ lineHeight: "5px" }}>
