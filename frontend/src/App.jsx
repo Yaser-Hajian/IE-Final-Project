@@ -1,4 +1,4 @@
-import { ThemeProvider, Typography } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 import { store } from "./redux";
@@ -8,6 +8,8 @@ import { CheckAuthentication } from "./components/checkAuthentication";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import LoginPage from "./pages/login";
+import StudentDashboard from "./pages/dashboard/studentDashboard";
+import Home from "./components/dashboard/home/home";
 
 function App() {
   return (
@@ -25,13 +27,17 @@ function App() {
             }
           />
           <Route
-            path="/dashboard"
+            path="/dashboard/student"
             element={
               <CheckAuthentication>
-                <Typography>dash</Typography>
+                <StudentDashboard />
               </CheckAuthentication>
             }
-          />
+          >
+            <Route path="" element={<Home />} />
+            <Route path="terms" element={<h1>terms</h1>} />
+          </Route>
+          <Route path="*" element={<h4>NOT FOUND 404</h4>} />
         </Routes>
       </ThemeProvider>
     </Provider>

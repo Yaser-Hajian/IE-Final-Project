@@ -1,4 +1,6 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, createSlice } from "@reduxjs/toolkit";
+import { loggedUserSlice } from "./loggedUser";
+import { homeSlice } from "./home";
 
 const globalSlice = createSlice({
   name: "global",
@@ -7,8 +9,14 @@ const globalSlice = createSlice({
   },
 });
 
+const rootReducer = combineReducers({
+  loggedUser: loggedUserSlice.reducer,
+  global: globalSlice.reducer,
+  home: homeSlice.reducer,
+});
+
 const store = configureStore({
-  reducer: globalSlice.reducer,
+  reducer: rootReducer,
 });
 
 export { store };

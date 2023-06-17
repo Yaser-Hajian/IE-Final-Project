@@ -1,0 +1,9 @@
+.con {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.32);
+  width: 100%;
+}

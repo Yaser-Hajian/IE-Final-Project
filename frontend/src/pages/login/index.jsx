@@ -78,7 +78,7 @@ const LoginPage = () => {
       localStorage.setItem("token", JSON.stringify(data.data));
       setTimeout(() => {
         toast.dismiss(loadingToast);
-        navigation("/dashboard", { replace: true });
+        navigation("/", { replace: true });
       }, 1500);
     }
   };

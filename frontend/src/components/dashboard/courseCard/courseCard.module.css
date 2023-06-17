@@ -1,0 +1,26 @@
+.con {
+  display: flex;
+  flex-direction: column;
+  /* width: fit-content; */
+  border: 1px solid black;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 15px;
+  justify-content: space-between;
+}
+
+.con p {
+  display: flex;
+  align-items: center;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+}
