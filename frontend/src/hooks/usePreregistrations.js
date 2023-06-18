@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getPreregistrationCourses from "../utils/dashboard/getPreregistrationCourses";
-import { updatePreregistrationCoursesData } from "../redux/preregistrationCourses";
+import getPreregistrations from "../utils/dashboard/getPreregistrations";
+import { updatePreregistrationsData } from "../redux/preregistrations";
 
-const usePreregistrationCoursesData = (termId, searchQuery) => {
+const usePreregistrationsData = (termId, searchQuery) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isDataLoadedBefore } = useSelector((s) => s.preregistrationCourses);
+  const { isDataLoadedBefore } = useSelector((s) => s.preregistrations);
   useEffect(() => {
     async function fetchData() {
       if (isDataLoadedBefore) {
@@ -17,17 +17,15 @@ const usePreregistrationCoursesData = (termId, searchQuery) => {
       }
       setIsLoading(true);
       try {
-        const preregisterCoursesData = await getPreregistrationCourses(
-          termId,
-          searchQuery
-        );
-        if (preregisterCoursesData.error) {
+        const preregisterData = await getPreregistrations(termId, searchQuery);
+        console.log("data loaded? ", preregisterData);
+        if (preregisterData.error) {
           setIsError(true);
         }
 
-        const apiCallData = { ...preregisterCoursesData.data };
+        const apiCallData = { ...preregisterData.data };
         dispatch(
-          updatePreregistrationCoursesData({
+          updatePreregistrationsData({
             ...apiCallData,
             isDataLoadedBefore: true,
           })
@@ -43,4 +41,4 @@ const usePreregistrationCoursesData = (termId, searchQuery) => {
   return { isLoading, isError };
 };
 
-export default usePreregistrationCoursesData;
+export default usePreregistrationsData;

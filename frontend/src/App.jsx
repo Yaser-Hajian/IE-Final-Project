@@ -13,6 +13,7 @@ import Home from "./components/dashboard/home/home";
 import Terms from "./components/dashboard/terms/terms";
 import TermId from "./pages/dashboard/studentDashboard/terms[Id]";
 import PreregistrationCourses from "./pages/dashboard/studentDashboard/preregistration_courses";
+import Preregistrations from "./pages/dashboard/studentDashboard/preregistrations";
 
 function App() {
   return (
@@ -47,6 +48,10 @@ function App() {
             <Route
               path="terms/:termId/preregistration_courses"
               element={<PreregistrationCourses />}
+            />
+            <Route
+              path="terms/:termId/preregistrations"
+              element={<Preregistrations />}
             />
           </Route>
           <Route path="*" element={<h4>NOT FOUND 404</h4>} />
