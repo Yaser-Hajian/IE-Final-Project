@@ -17,6 +17,11 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { updatePreregistrationCoursesData } from "../../../redux/preregistrationCourses";
 import { updateTermIdData } from "../../../redux/termId";
+import cancelRegisterCourse from "../../../utils/dashboard/cancelRegisterCourse";
+import registerCourse from "../../../utils/dashboard/registerCourse";
+import { updateRegistrationCoursesData } from "../../../redux/registrationCourses";
+import { updateRegistrationsData } from "../../../redux/registrations";
+import { updatePreregistrationsData } from "../../../redux/preregistrations";
 
 const CourseCard = ({
   name,
@@ -30,7 +35,7 @@ const CourseCard = ({
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch();
-  const preregister = async (type) => {
+  const registrationProcess = async (type, isCancel) => {
     const loadingToast = toast("لطفا صبر کنید ...", {
       autoClose: true,
       position: "top-left",
@@ -38,9 +43,13 @@ const CourseCard = ({
       isLoading: true,
     });
     const data =
-      type == "delete"
-        ? await cancelPreregisterCourse(id)
-        : await preregisterCourse(id);
+      type == "preregister"
+        ? isCancel
+          ? await cancelPreregisterCourse(id)
+          : await preregisterCourse(id)
+        : isCancel
+        ? await cancelRegisterCourse(id)
+        : await registerCourse(id);
     if (data.error === true) {
       toast.update(loadingToast, {
         render:
@@ -62,10 +71,11 @@ const CourseCard = ({
       setTimeout(() => {
         toast.dismiss(loadingToast);
         dispatch(
-          updatePreregistrationCoursesData({
-            isDataLoadedBefore: false,
-          })
+          updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
+        dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
+        dispatch(updatePreregistrationsData({ isDataLoadedBefore: false }));
+        dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
       }, 1500);
     }
@@ -91,7 +101,7 @@ const CourseCard = ({
                 variant="outlined"
                 color={ispre.preregistered ? "error" : "primary"}
                 onClick={() => {
-                  preregister(ispre.preregistered ? "delete" : "preregister");
+                  registrationProcess("preRegister", ispre.preregistered);
                 }}
               >
                 {ispre.preregistered ? "لغو پیش ثبت نام" : "پیش ثبت نام"}
@@ -101,7 +111,20 @@ const CourseCard = ({
               </Button>
             </>
           ) : (
-            <Button>nex</Button>
+            <>
+              <Button
+                variant="outlined"
+                color={isreg.registered ? "error" : "primary"}
+                onClick={() => {
+                  registrationProcess("register", isreg.registered);
+                }}
+              >
+                {isreg.registered ? "لغو ثبت نام" : "ثبت نام"}
+              </Button>
+              <Button onClick={() => setIsDialogOpen(true)}>
+                اطلاعات کامل
+              </Button>
+            </>
           )
         ) : (
           <>

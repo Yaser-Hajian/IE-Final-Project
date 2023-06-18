@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const preregistrationCoursesSlice = createSlice({
-  name: "preregistrations",
+  name: "registrations",
   initialState: {
     isDataLoadedBefore: false,
     preregistrationCourses: [],

@@ -16,23 +16,24 @@ import {
 import CourseCard from "../../../../components/dashboard/courseCard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
-import usePreregistrationsData from "../../../../hooks/usePreregistrations";
-import { updatePreregistrationsData } from "../../../../redux/preregistrations";
+import useRegistrationsData from "../../../../hooks/useRegistrations";
+import { updateRegistrationsData } from "../../../../redux/registrations";
 
-const Preregistrations = () => {
-  const preregistrationsData = useSelector((s) => s.preregistrations);
+const Registrations = () => {
+  const registrationsData = useSelector((s) => s.registrations);
   const dispatch = useDispatch();
   const { termId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const termIdData = useSelector((s) => s.termId);
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { isLoading, isError } = usePreregistrationsData(termId, searchQuery);
+  const { isLoading, isError } = useRegistrationsData(termId, searchQuery);
+
+  console.log(registrationsData);
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
-    console.log(searchQuery);
     dispatch(
-      updatePreregistrationsData({
+      updateRegistrationsData({
         isDataLoadedBefore: false,
       })
     );
@@ -64,21 +65,21 @@ const Preregistrations = () => {
               startSearch={startSearch}
               value={searchQuery}
             />
-            <Typography>لیست دروس پیش ثبت نامی</Typography>
+            <Typography>لیست دروس ثبت نامی</Typography>
           </div>
           <div className={styles.items}>
-            {preregistrationsData.preregistrations.length == 0 ? (
+            {registrationsData.registrations.length == 0 ? (
               <Empty />
             ) : (
-              preregistrationsData.preregistrations.map((term, i) => {
+              registrationsData.registrations.map((term, i) => {
                 return (
                   <CourseCard
                     key={i}
                     {...term}
                     term={termIdData.name}
-                    ispre={{
+                    isreg={{
                       is: true,
-                      preregistered: true,
+                      registered: true,
                     }}
                   />
                 );
@@ -128,4 +129,4 @@ const Preregistrations = () => {
   );
 };
 
-export default Preregistrations;
+export default Registrations;

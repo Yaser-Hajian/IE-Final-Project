@@ -5,6 +5,8 @@ import { termsSlice } from "./terms";
 import { termIdSlice } from "./termId";
 import { preregistrationCoursesSlice } from "./preregistrationCourses";
 import { preregistrationsSlice } from "./preregistrations";
+import { registrationsSlice } from "./registrations";
+import { registrationCoursesSlice } from "./registrationCourses";
 
 const globalSlice = createSlice({
   name: "global",
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
   termId: termIdSlice.reducer,
   preregistrationCourses: preregistrationCoursesSlice.reducer,
   preregistrations: preregistrationsSlice.reducer,
+  registrations: registrationsSlice.reducer,
+  registrationCourses: registrationCoursesSlice.reducer,
 });
 
 const store = configureStore({
