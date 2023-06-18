@@ -4,7 +4,7 @@ import { Divider, Typography } from "@mui/material";
 import styles from "./terms.module.css";
 import Empty from "../empty/empty";
 import useTermsData from "../../../hooks/useTermsData";
-import Loader from "../header/loader";
+import Loader from "../loader/loader";
 import { useSelector } from "react-redux";
 import TermCard from "../termCard/termCard";
 

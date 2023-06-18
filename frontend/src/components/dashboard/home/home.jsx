@@ -7,7 +7,7 @@ import TermCard from "../termCard/termCard";
 import CourseCard from "../courseCard/courseCard";
 import useHomeData from "../../../hooks/useHomeData";
 import { useSelector } from "react-redux";
-import Loader from "../header/loader";
+import Loader from "../loader/loader";
 import Empty from "../empty/empty";
 
 const Home = ({ userType }) => {

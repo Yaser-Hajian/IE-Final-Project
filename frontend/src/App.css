@@ -6,3 +6,8 @@
 .toasts {
   font-family: Vazirmatn;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

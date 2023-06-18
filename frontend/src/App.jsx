@@ -11,6 +11,8 @@ import LoginPage from "./pages/login";
 import StudentDashboard from "./pages/dashboard/studentDashboard";
 import Home from "./components/dashboard/home/home";
 import Terms from "./components/dashboard/terms/terms";
+import TermId from "./pages/dashboard/studentDashboard/terms[Id]";
+import PreregistrationCourses from "./pages/dashboard/studentDashboard/preregistration_courses";
 
 function App() {
   return (
@@ -37,6 +39,15 @@ function App() {
           >
             <Route path="" element={<Home userType={"student"} />} />
             <Route path="terms" element={<Terms userType={"student"} />} />
+            <Route
+              path="terms/:termId"
+              element={<TermId userType={"student"} />}
+            />
+
+            <Route
+              path="terms/:termId/preregistration_courses"
+              element={<PreregistrationCourses />}
+            />
           </Route>
           <Route path="*" element={<h4>NOT FOUND 404</h4>} />
         </Routes>

@@ -2,6 +2,8 @@ import { combineReducers, configureStore, createSlice } from "@reduxjs/toolkit";
 import { loggedUserSlice } from "./loggedUser";
 import { homeSlice } from "./home";
 import { termsSlice } from "./terms";
+import { termIdSlice } from "./termId";
+import { preregistrationCoursesSlice } from "./preregistrationCourses";
 
 const globalSlice = createSlice({
   name: "global",
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   global: globalSlice.reducer,
   home: homeSlice.reducer,
   terms: termsSlice.reducer,
+  termId: termIdSlice.reducer,
+  preregistrationCourses: preregistrationCoursesSlice.reducer,
 });
 
 const store = configureStore({

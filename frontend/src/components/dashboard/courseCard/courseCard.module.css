@@ -24,3 +24,20 @@
   display: flex;
   justify-content: space-between;
 }
+
+.dialogItems {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.dialogItems p:first-child {
+  padding-right: 1rem;
+}
+.dialogItems p:last-child {
+  padding-left: 1rem;
+}
+
+.dialogTitle {
+  display: flex;
+  justify-content: flex-end;
+}

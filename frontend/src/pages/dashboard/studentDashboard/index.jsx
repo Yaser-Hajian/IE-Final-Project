@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import DashboardHeader from "../../../components/dashboard/header/header";
 import Footer from "../../../components/dashboard/footer/footer";
 import useLoggedUserInfo from "../../../hooks/useLoggedUserData";
-import Loader from "../../../components/dashboard/header/loader";
+import Loader from "../../../components/dashboard/loader/loader";
 
 const StudentDashboard = () => {
   const { isLoading, error } = useLoggedUserInfo();
