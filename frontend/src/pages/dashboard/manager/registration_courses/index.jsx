@@ -24,6 +24,7 @@ import CourseCard from "../../../../components/dashboard/manager/courseCard";
 import { toast } from "react-toastify";
 import { updateRegistrationCoursesData } from "../../../../redux/registrationCourses";
 import useRegistrationCoursesData from "../../../../hooks/useRegistrationCourses";
+import AddCourse from "../../../../components/dashboard/manager/addCourse";
 
 const ManagerRegistrationCourses = () => {
   const registrationCoursesData = useSelector((s) => s.registrationCourses);
@@ -36,6 +37,7 @@ const ManagerRegistrationCourses = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const [isAddCourseVisible, setIsAddCourseVisible] = useState(false);
   const { isLoading, isError } = useRegistrationCoursesData(
     termId,
     searchQuery,
@@ -127,6 +129,10 @@ const ManagerRegistrationCourses = () => {
     return buf;
   }
 
+  const closeHandle = () => {
+    setIsAddCourseVisible(false);
+  };
+
   return (
     <>
       {termIdState.isLoading || isLoading ? (
@@ -193,6 +199,12 @@ const ManagerRegistrationCourses = () => {
               })
             )}
           </div>
+          <AddCourse
+            type={"preregistration"}
+            termId={termId}
+            open={isAddCourseVisible}
+            closeHandle={closeHandle}
+          />
           <Dialog
             dir="ltr"
             open={isDialogOpen}

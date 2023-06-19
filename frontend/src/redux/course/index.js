@@ -4,6 +4,12 @@ const courseSlice = createSlice({
   name: "course",
   initialState: {
     isDataLoadedBefore: false,
+    name: "",
+    professor: null,
+    course: null,
+    examDate: null,
+    classTimes: [],
+    capacity: null,
   },
   reducers: {
     updateCourseData(preState, action) {

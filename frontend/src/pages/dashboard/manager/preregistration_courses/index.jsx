@@ -24,6 +24,7 @@ import SearchBox from "../../../../components/dashboard/searchBox";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
 import CourseCard from "../../../../components/dashboard/manager/courseCard";
 import { toast } from "react-toastify";
+import AddCourse from "../../../../components/dashboard/manager/addCourse";
 
 const ManagerPreregistrationCourses = () => {
   const preregistrationCoursesData = useSelector(
@@ -37,7 +38,7 @@ const ManagerPreregistrationCourses = () => {
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const navigate = useNavigate();
+  const [isAddCourseVisible, setIsAddCourseVisible] = useState(false);
   const { isLoading, isError } = usePreregistrationCoursesData(
     termId,
     searchQuery,
@@ -129,6 +130,10 @@ const ManagerPreregistrationCourses = () => {
     return buf;
   }
 
+  const closeHandle = () => {
+    setIsAddCourseVisible(false);
+  };
+
   return (
     <>
       {termIdState.isLoading || isLoading ? (
@@ -163,7 +168,8 @@ const ManagerPreregistrationCourses = () => {
                 <Typography>لیست دروس ارایه شده پیش ثبت نامی</Typography>
                 <Button
                   onClick={() => {
-                    navigate("addCourse");
+                    setIsAddCourseVisible(true);
+                    // navigate("addCourse");
                   }}
                 >
                   افزودن درس
@@ -197,6 +203,12 @@ const ManagerPreregistrationCourses = () => {
               )
             )}
           </div>
+          <AddCourse
+            type={"preregistration"}
+            termId={termId}
+            open={isAddCourseVisible}
+            closeHandle={closeHandle}
+          />
           <Dialog
             dir="ltr"
             open={isDialogOpen}
