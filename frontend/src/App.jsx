@@ -16,6 +16,11 @@ import PreregistrationCourses from "./pages/dashboard/studentDashboard/preregist
 import Preregistrations from "./pages/dashboard/studentDashboard/preregistrations";
 import Registrations from "./pages/dashboard/studentDashboard/registrations";
 import RegistrationCourses from "./pages/dashboard/studentDashboard/reregistration_courses";
+import ProfessorDashboard from "./pages/dashboard/professorDashboard";
+import ProfessorDashboardTermId from "./pages/dashboard/professorDashboard/terms[Id]";
+import ProfessorDashboardCourseId from "./pages/dashboard/professorDashboard/course[id]";
+import ManagerDashboard from "./pages/dashboard/manager";
+import EditOrAddTerm from "./pages/dashboard/manager/editOrAddTerm";
 
 function App() {
   return (
@@ -32,6 +37,45 @@ function App() {
               </CheckAuthentication>
             }
           />
+
+          <Route
+            path="/dashboard/professor"
+            element={
+              <CheckAuthentication>
+                <ProfessorDashboard />
+              </CheckAuthentication>
+            }
+          >
+            <Route path="" element={<Home userType={"professor"} />} />
+            <Route path="terms" element={<Terms userType={"professor"} />} />
+
+            <Route
+              path="terms/:termId"
+              element={<ProfessorDashboardTermId userType={"professor"} />}
+            />
+            <Route
+              path="course/:courseId/registrations"
+              element={<ProfessorDashboardCourseId />}
+            />
+          </Route>
+
+          <Route
+            path="/dashboard/manager"
+            element={
+              <CheckAuthentication>
+                <ManagerDashboard />
+              </CheckAuthentication>
+            }
+          >
+            <Route path="" element={<Home userType={"manager"} />} />
+            <Route path="terms" element={<Terms userType={"manager"} />} />
+            <Route
+              path="terms/edit/:termId"
+              element={<EditOrAddTerm type={"edit"} />}
+            />
+            <Route path="terms/add" element={<EditOrAddTerm type={"add"} />} />
+          </Route>
+
           <Route
             path="/dashboard/student"
             element={

@@ -16,11 +16,33 @@
 
 .top {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+.topText {
+  display: flex;
+  flex-direction: column;
 }
 
 .bottom {
   display: flex;
   justify-content: space-between;
+}
+.menuPaper {
+  overflow: visible;
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
+  margin-top: 1.5px;
+}
+.menuPaper::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 22px;
+  width: 10px;
+  height: 10px;
+  transform: translateY(-50%) rotate(45deg);
+  z-index: 0;
+  background-color: inherit;
 }

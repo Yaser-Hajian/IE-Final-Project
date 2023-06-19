@@ -1,38 +1,61 @@
 /* eslint-disable no-unused-vars */
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styles from "./index.module.css";
+import useTermIdData from "../../../../hooks/useTermId";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import useTermIdData from "../../../../hooks/useTermId";
 import {
   Button,
   Dialog,
   DialogTitle,
+  Fade,
   List,
   ListItem,
+  Menu,
+  MenuItem,
   Typography,
 } from "@mui/material";
-import CourseCard from "../../../../components/dashboard/courseCard/courseCard";
-import Empty from "../../../../components/dashboard/empty/empty";
+import { useState } from "react";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import useCourseRegistrationsData from "../../../../hooks/useRegistrations";
 import { updateRegistrationsData } from "../../../../redux/registrations";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import CourseCard from "../../../../components/dashboard/courseCard/courseCard";
+import Empty from "../../../../components/dashboard/empty/empty";
 
-const Registrations = () => {
-  const registrationsData = useSelector((s) => s.registrations);
-  const dispatch = useDispatch();
+const ProfessorDashboardTermId = () => {
   const { termId } = useParams();
-  const [searchQuery, setSearchQuery] = useState("");
+  const registrationData = useSelector((s) => s.registrations);
+  const [sortType, setSortType] = useState(null);
   const termIdData = useSelector((s) => s.termId);
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { isLoading, isError } = useCourseRegistrationsData(
     termId,
-    searchQuery
+    searchQuery,
+    sortType
   );
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  console.log(registrationsData);
+  const open = Boolean(anchorEl);
+
+  const settingSortType = (type) => {
+    if (type == null) return;
+    setSortType(type);
+    dispatch(
+      updateRegistrationsData({
+        isDataLoadedBefore: false,
+      })
+    );
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const dispatch = useDispatch();
+
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
     dispatch(
@@ -45,7 +68,9 @@ const Registrations = () => {
   const changeSearchBox = (e) => {
     setSearchQuery(e.currentTarget.value);
   };
-
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
   return (
     <>
       {termIdState.isLoading || isLoading ? (
@@ -68,22 +93,29 @@ const Registrations = () => {
               startSearch={startSearch}
               value={searchQuery}
             />
-            <Typography>لیست دروس ثبت نامی</Typography>
+            <div dir="rtl">
+              <Typography>لیست دروس ترم {termIdData.name}</Typography>
+              <Typography
+                sx={{ display: "flex", alignItems: "center" }}
+                onClick={handleClick}
+                variant="caption"
+              >
+                فیلتر بر اساس
+                <FilterAltIcon />
+              </Typography>
+            </div>
           </div>
           <div className={styles.items}>
-            {registrationsData.registrations.length == 0 ? (
+            {registrationData.registrations.length == 0 ? (
               <Empty />
             ) : (
-              registrationsData.registrations.map((term, i) => {
+              registrationData.registrations.map((course, i) => {
                 return (
                   <CourseCard
+                    url={`/dashboard/professor/course/${course.id}/registrations`}
                     key={i}
-                    {...term}
+                    {...course}
                     term={termIdData.name}
-                    isreg={{
-                      is: true,
-                      registered: true,
-                    }}
                   />
                 );
               })
@@ -126,10 +158,38 @@ const Registrations = () => {
               </ListItem>
             </List>
           </Dialog>
+          <Menu
+            dir="rtl"
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            onClick={handleClose}
+            open={open}
+            PaperProps={{
+              elevation: 0,
+              className: styles.menuPaper,
+            }}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            TransitionComponent={Fade}
+          >
+            <MenuItem onClick={() => settingSortType("mostRegister")}>
+              بیشترین تعداد ثبت نام
+            </MenuItem>
+            <MenuItem onClick={() => settingSortType("lowRegister")}>
+              کمترین تعداد ثبت نام
+            </MenuItem>
+            <MenuItem onClick={() => settingSortType(null)}>هیچ کدام</MenuItem>
+          </Menu>
         </div>
       )}
     </>
   );
 };
 
-export default Registrations;
+export default ProfessorDashboardTermId;

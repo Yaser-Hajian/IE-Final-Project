@@ -22,6 +22,7 @@ import registerCourse from "../../../utils/dashboard/registerCourse";
 import { updateRegistrationCoursesData } from "../../../redux/registrationCourses";
 import { updateRegistrationsData } from "../../../redux/registrations";
 import { updatePreregistrationsData } from "../../../redux/preregistrations";
+import { useNavigate } from "react-router-dom";
 
 const CourseCard = ({
   name,
@@ -30,11 +31,13 @@ const CourseCard = ({
   term,
   occupiedCapacity,
   id,
+  url = null,
   ispre = { is: false },
   isreg = { is: false },
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const registrationProcess = async (type, isCancel) => {
     const loadingToast = toast("لطفا صبر کنید ...", {
       autoClose: true,
@@ -81,7 +84,13 @@ const CourseCard = ({
     }
   };
   return (
-    <div className={styles.con}>
+    <div
+      className={styles.con}
+      onClick={() => {
+        if (url == null) return;
+        navigate(url, { replace: true });
+      }}
+    >
       <div className={styles.top}>
         <Typography variant="body1">{name}</Typography>
         {ispre.is || isreg.is ? (

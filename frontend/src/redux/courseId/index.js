@@ -1,18 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const termIdSlice = createSlice({
+const courseIdSlice = createSlice({
   name: "courseId",
   initialState: {
     isDataLoadedBefore: false,
-    name: "",
+    registrations: [],
   },
   reducers: {
-    updateTermIdData(preState, action) {
+    updateCourseIdData(preState, action) {
       return { ...preState, ...action.payload };
     },
   },
 });
 
-export const updateTermIdData = termIdSlice.actions.updateTermIdData;
+export const updateCourseIdData = courseIdSlice.actions.updateCourseIdData;
 
-export { termIdSlice };
+export { courseIdSlice };

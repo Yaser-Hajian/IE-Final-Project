@@ -2,7 +2,12 @@
 import { Divider, IconButton, InputBase, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const SearchBox = ({ startSearch, value, onChange }) => {
+const SearchBox = ({
+  startSearch,
+  value,
+  onChange,
+  placeholder = "جست و جوی یک درس بر اساس اسم",
+}) => {
   return (
     <Paper
       component="form"
@@ -18,7 +23,7 @@ const SearchBox = ({ startSearch, value, onChange }) => {
           }
         }}
         sx={{ ml: 1, flex: 1 }}
-        placeholder="جست و جوی یک درس بر اساس اسم"
+        placeholder={placeholder}
       />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <IconButton

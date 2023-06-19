@@ -1,0 +1,98 @@
+.con {
+  padding: 32px 158px;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0rem;
+  align-items: center;
+}
+
+.main {
+  margin: 1rem 0;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.main > div {
+  margin-bottom: 1rem;
+}
+
+.head {
+  width: 100%;
+}
+
+.datepicker {
+  /* top: 22rem; */
+  width: 100%;
+}
+
+.datepickerCon input {
+  width: 100%;
+  font-family: Vazirmatn;
+  margin: 0.5rem 0;
+  padding: 0.6rem;
+}
+.datepickerCon {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.dialogOpener {
+  border: 1px solid gray;
+  padding: 0.7rem;
+  opacity: 0.8;
+  cursor: pointer;
+}
+.dialogOpener:hover {
+  opacity: 1;
+}
+
+.dialogListItems {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialogListItemName {
+  display: flex;
+}
+
+.fileInputCon {
+  position: relative;
+}
+
+.fileInput {
+  position: absolute;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  z-index: 2;
+}
+
+@media (max-width: 1200px) {
+  .con {
+    padding: 32px 64px;
+  }
+}
+
+@media (max-width: 800px) {
+  .main {
+    width: 80%;
+  }
+  .con {
+    padding: 32px 32px;
+  }
+}
+
+@media (max-width: 500px) {
+  .main {
+    width: 100%;
+  }
+}
+@media (max-width: 400px) {
+  .con {
+    padding: 16px 16px;
+  }
+}
