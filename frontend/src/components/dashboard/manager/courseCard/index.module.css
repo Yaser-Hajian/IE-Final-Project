@@ -1,0 +1,66 @@
+.con {
+  display: flex;
+  flex-direction: column;
+  /* width: fit-content; */
+  border: 1px solid black;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 15px;
+  justify-content: space-between;
+}
+
+.con p {
+  display: flex;
+  align-items: center;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.topText {
+  display: flex;
+  flex-direction: column;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialogItems {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.dialogItems p:first-child {
+  padding-right: 1rem;
+}
+.dialogItems p:last-child {
+  padding-left: 1rem;
+}
+
+.dialogTitle {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menuPaper {
+  overflow: visible;
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
+  margin-top: 1.5px;
+}
+.menuPaper::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 22px;
+  width: 10px;
+  height: 10px;
+  transform: translateY(-50%) rotate(45deg);
+  z-index: 0;
+  background-color: inherit;
+}

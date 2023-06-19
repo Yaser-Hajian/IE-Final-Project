@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCourseIdData } from "../redux/courseId";
 import getCourseRegistrations from "../utils/dashboard/getCourseRegistrations";
+import { updateCourseRegistrationsData } from "../redux/courseRegistrations";
 
-const useCourseRegistrationsData = (termId, searchQuery) => {
+const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isDataLoadedBefore } = useSelector((s) => s.courseId);
+  const { isDataLoadedBefore } = useSelector((s) => s.courseRegistrations);
   useEffect(() => {
     async function fetchData() {
       if (isDataLoadedBefore) {
@@ -17,14 +17,18 @@ const useCourseRegistrationsData = (termId, searchQuery) => {
       }
       setIsLoading(true);
       try {
-        const registerData = await getCourseRegistrations(termId, searchQuery);
+        const registerData = await getCourseRegistrations(
+          termId,
+          searchQuery,
+          sortType
+        );
         if (registerData.error) {
           setIsError(true);
         }
 
         const apiCallData = { ...registerData.data };
         dispatch(
-          updateCourseIdData({
+          updateCourseRegistrationsData({
             ...apiCallData,
             isDataLoadedBefore: true,
           })

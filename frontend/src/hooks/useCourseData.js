@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getPreregistrationCourses from "../utils/dashboard/getPreregistrationCourses";
-import { updatePreregistrationCoursesData } from "../redux/preregistrationCourses";
+import { updateCourseData } from "../redux/course";
+import getCourse from "../utils/dashboard/getCourse";
 
-const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
+const useCourseData = (courseId) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isDataLoadedBefore } = useSelector((s) => s.preregistrationCourses);
+  const { isDataLoadedBefore } = useSelector((s) => s.course);
   useEffect(() => {
     async function fetchData() {
       if (isDataLoadedBefore) {
@@ -17,18 +17,14 @@ const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
       }
       setIsLoading(true);
       try {
-        const preregisterCoursesData = await getPreregistrationCourses(
-          termId,
-          searchQuery,
-          sortType
-        );
-        if (preregisterCoursesData.error) {
+        const preregisterData = await getCourse(courseId);
+        if (preregisterData.error) {
           setIsError(true);
         }
 
-        const apiCallData = { ...preregisterCoursesData.data };
+        const apiCallData = { ...preregisterData.data };
         dispatch(
-          updatePreregistrationCoursesData({
+          updateCourseData({
             ...apiCallData,
             isDataLoadedBefore: true,
           })
@@ -39,9 +35,9 @@ const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
       }
     }
     fetchData();
-  }, [dispatch, termId, isDataLoadedBefore]);
+  }, [dispatch, courseId, isDataLoadedBefore]);
 
   return { isLoading, isError };
 };
 
-export default usePreregistrationCoursesData;
+export default useCourseData;

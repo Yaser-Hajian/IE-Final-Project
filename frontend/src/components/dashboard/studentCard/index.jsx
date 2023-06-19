@@ -7,7 +7,12 @@ import { updateCourseIdData } from "../../../redux/courseId";
 import acceptCourseRegistration from "../../../utils/dashboard/acceptCourseRegistration";
 import rejectCourseRegistration from "../../../utils/dashboard/rejectCourseRegistration";
 
-const StudentCard = ({ name, familyName, id }) => {
+const StudentCard = ({
+  name,
+  familyName,
+  id,
+  isPreregistrationCard = false,
+}) => {
   const dispatch = useDispatch();
   const acceptOrDisagree = async (type) => {
     const loadingToast = toast("لطفا صبر کنید ...", {
@@ -54,14 +59,16 @@ const StudentCard = ({ name, familyName, id }) => {
           {name} {familyName}
         </Typography>
       </div>
-      <div className={styles.bottom}>
-        <Button onClick={() => acceptOrDisagree("accept")} variant="outlined">
-          تایید دانشجو
-        </Button>
-        <Button onClick={() => acceptOrDisagree("Disagree")} color="error">
-          رد دانشجو
-        </Button>
-      </div>
+      {!isPreregistrationCard && (
+        <div className={styles.bottom}>
+          <Button onClick={() => acceptOrDisagree("accept")} variant="outlined">
+            تایید دانشجو
+          </Button>
+          <Button onClick={() => acceptOrDisagree("Disagree")} color="error">
+            رد دانشجو
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

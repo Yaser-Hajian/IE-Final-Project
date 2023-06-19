@@ -11,7 +11,6 @@ import LoginPage from "./pages/login";
 import StudentDashboard from "./pages/dashboard/studentDashboard";
 import Home from "./components/dashboard/home/home";
 import Terms from "./components/dashboard/terms/terms";
-import TermId from "./pages/dashboard/studentDashboard/terms[Id]";
 import PreregistrationCourses from "./pages/dashboard/studentDashboard/preregistration_courses";
 import Preregistrations from "./pages/dashboard/studentDashboard/preregistrations";
 import Registrations from "./pages/dashboard/studentDashboard/registrations";
@@ -21,6 +20,13 @@ import ProfessorDashboardTermId from "./pages/dashboard/professorDashboard/terms
 import ProfessorDashboardCourseId from "./pages/dashboard/professorDashboard/course[id]";
 import ManagerDashboard from "./pages/dashboard/manager";
 import EditOrAddTerm from "./pages/dashboard/manager/editOrAddTerm";
+import TermId from "./components/dashboard/terms[Id]/index";
+import ManagerRegistrationCourses from "./pages/dashboard/manager/registration_courses";
+import ManagerPreregistrationCourses from "./pages/dashboard/manager/preregistration_courses";
+import ManagerCoursePreregistrations from "./pages/dashboard/manager/coursePreregistrations";
+import ManagerCourseRegistrations from "./pages/dashboard/manager/courseRegistrations";
+import ManagerProfessors from "./pages/dashboard/manager/professors";
+import ManagerStudents from "./pages/dashboard/manager/students";
 
 function App() {
   return (
@@ -73,7 +79,31 @@ function App() {
               path="terms/edit/:termId"
               element={<EditOrAddTerm type={"edit"} />}
             />
+            <Route
+              path="terms/:termId"
+              element={<TermId userType={"manager"} />}
+            />
             <Route path="terms/add" element={<EditOrAddTerm type={"add"} />} />
+            <Route
+              path="terms/:termId/preregistration_courses"
+              element={<ManagerPreregistrationCourses />}
+            />
+            <Route
+              path="terms/:termId/registration_courses"
+              element={<ManagerRegistrationCourses />}
+            />
+
+            <Route
+              path="course/:courseId/registrations"
+              element={<ManagerCourseRegistrations />}
+            />
+            <Route
+              path="course/:courseId/preregistrations"
+              element={<ManagerCoursePreregistrations />}
+            />
+
+            <Route path="professors" element={<ManagerProfessors />} />
+            <Route path="students" element={<ManagerStudents />} />
           </Route>
 
           <Route

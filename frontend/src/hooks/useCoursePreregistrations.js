@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getPreregistrationCourses from "../utils/dashboard/getPreregistrationCourses";
-import { updatePreregistrationCoursesData } from "../redux/preregistrationCourses";
+import getCoursePreregistrations from "../utils/dashboard/getCoursePreregistrations";
+import { updateCoursePreregistrationsData } from "../redux/coursePreregistrations";
 
-const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
+const useCoursePreregistrations = (termId, searchQuery, sortType) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isDataLoadedBefore } = useSelector((s) => s.preregistrationCourses);
+  const { isDataLoadedBefore } = useSelector((s) => s.coursePreregistrations);
   useEffect(() => {
     async function fetchData() {
       if (isDataLoadedBefore) {
@@ -17,18 +17,19 @@ const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
       }
       setIsLoading(true);
       try {
-        const preregisterCoursesData = await getPreregistrationCourses(
+        const preregisterData = await getCoursePreregistrations(
           termId,
           searchQuery,
           sortType
         );
-        if (preregisterCoursesData.error) {
+        if (preregisterData.error) {
           setIsError(true);
         }
 
-        const apiCallData = { ...preregisterCoursesData.data };
+        const apiCallData = { ...preregisterData.data };
+        console.log(apiCallData);
         dispatch(
-          updatePreregistrationCoursesData({
+          updateCoursePreregistrationsData({
             ...apiCallData,
             isDataLoadedBefore: true,
           })
@@ -44,4 +45,4 @@ const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
   return { isLoading, isError };
 };
 
-export default usePreregistrationCoursesData;
+export default useCoursePreregistrations;

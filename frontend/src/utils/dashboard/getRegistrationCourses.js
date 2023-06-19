@@ -2,9 +2,10 @@ import { apiBaseUrl } from "../../config";
 
 const getRegistrationCourses = async (id, searchQuery) => {
   try {
-    const query = searchQuery == "" ? "" : `?search=${searchQuery}`;
+    const queries = new URLSearchParams();
+    searchQuery != "" && queries.append("search", searchQuery);
     const response = await fetch(
-      apiBaseUrl + `/term/${id}/registration_courses${query}`,
+      apiBaseUrl + `/term/${id}/registration_courses?${queries.toString()}`,
       {
         headers: { "Content-Type": "application/json" },
       }

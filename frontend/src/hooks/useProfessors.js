@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getPreregistrationCourses from "../utils/dashboard/getPreregistrationCourses";
-import { updatePreregistrationCoursesData } from "../redux/preregistrationCourses";
+import getProfessors from "../utils/dashboard/getProfessors";
+import { updateProfessorsData } from "../redux/professors";
 
-const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
+const useProfessorsData = (searchQuery) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isDataLoadedBefore } = useSelector((s) => s.preregistrationCourses);
+  const { isDataLoadedBefore } = useSelector((s) => s.professors);
   useEffect(() => {
     async function fetchData() {
       if (isDataLoadedBefore) {
@@ -17,18 +17,15 @@ const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
       }
       setIsLoading(true);
       try {
-        const preregisterCoursesData = await getPreregistrationCourses(
-          termId,
-          searchQuery,
-          sortType
-        );
-        if (preregisterCoursesData.error) {
+        const studentsData = await getProfessors(searchQuery);
+        console.log(studentsData);
+        if (studentsData.error) {
           setIsError(true);
         }
 
-        const apiCallData = { ...preregisterCoursesData.data };
+        const apiCallData = { ...studentsData.data };
         dispatch(
-          updatePreregistrationCoursesData({
+          updateProfessorsData({
             ...apiCallData,
             isDataLoadedBefore: true,
           })
@@ -39,9 +36,9 @@ const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
       }
     }
     fetchData();
-  }, [dispatch, termId, isDataLoadedBefore]);
+  }, [dispatch, isDataLoadedBefore]);
 
   return { isLoading, isError };
 };
 
-export default usePreregistrationCoursesData;
+export default useProfessorsData;

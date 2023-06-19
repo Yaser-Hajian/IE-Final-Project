@@ -1,10 +1,17 @@
 import { apiBaseUrl } from "../../config";
 
-const getPreregistrationCourses = async (id, searchQuery) => {
+const getPreregistrationCourses = async (
+  termId,
+  searchQuery = "",
+  sortType = ""
+) => {
   try {
-    const query = searchQuery == "" ? "" : `?search=${searchQuery}`;
+    const queries = new URLSearchParams();
+    searchQuery != "" && queries.append("search", searchQuery);
+    sortType != "" && queries.append("sort", sortType);
     const response = await fetch(
-      apiBaseUrl + `/term/${id}/preregistration_courses${query}`,
+      apiBaseUrl +
+        `/term/${termId}/preregistration_courses?${queries.toString()}`,
       {
         headers: { "Content-Type": "application/json" },
       }

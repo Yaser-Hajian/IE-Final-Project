@@ -1,12 +1,11 @@
 import { apiBaseUrl } from "../../config";
 
-const getRegistrations = async (id, searchQ, sortType) => {
+const getProfessors = async (searchQuery) => {
   try {
     const queries = new URLSearchParams();
-    searchQ != "" && queries.append("search", searchQ);
-    sortType !== null && queries.append("sort", sortType);
+    searchQuery != "" && queries.append("search", searchQuery);
     const response = await fetch(
-      apiBaseUrl + `/term/${id}/registrations?${queries.toString()}`,
+      apiBaseUrl + `/professors?${queries.toString()}`,
       {
         headers: { "Content-Type": "application/json" },
       }
@@ -18,4 +17,5 @@ const getRegistrations = async (id, searchQ, sortType) => {
     return { error: true, errorMessage: "نتونستم به سرور وصل شم" };
   }
 };
-export default getRegistrations;
+
+export default getProfessors;

@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { Link, useParams } from "react-router-dom";
 import styles from "./index.module.css";
-import useTermIdData from "../../../../hooks/useTermId";
-import Loader from "../../../../components/dashboard/loader/loader";
+
 import { useSelector } from "react-redux";
 import {
   Button,
@@ -14,8 +14,10 @@ import {
 } from "@mui/material";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import { useState } from "react";
+import useTermIdData from "../../../hooks/useTermId";
+import Loader from "../loader/loader";
 
-const TermId = () => {
+const TermId = ({ userType }) => {
   const { termId } = useParams();
   const termIdData = useSelector((s) => s.termId);
   const { isLoading, isError } = useTermIdData(termId);
@@ -31,31 +33,36 @@ const TermId = () => {
             <div>
               <Typography variant="h5">{termIdData.name}</Typography>
               <Typography variant="caption">
-                {termIdData.startDate}-{termIdData.endDate}
+                {Intl.DateTimeFormat("fa-IR").format(termIdData.startDate)}-
+                {Intl.DateTimeFormat("fa-IR").format(termIdData.endDate)}
               </Typography>
             </div>
 
             <Button onClick={() => setIsDialogOpen(true)}>اطلاعات ترم</Button>
           </div>
           <div className={styles.main}>
-            <Link to={"registrations"}>
-              <div className={styles.items}>
-                <AssignmentOutlinedIcon />
-                <Typography>لیست دروس ثبت نامی</Typography>
-              </div>
-            </Link>
+            {userType != "manager" && (
+              <Link to={"registrations"}>
+                <div className={styles.items}>
+                  <AssignmentOutlinedIcon />
+                  <Typography>لیست دروس ثبت نامی</Typography>
+                </div>
+              </Link>
+            )}
             <Link to={"registration_courses"}>
               <div className={styles.items}>
                 <AssignmentOutlinedIcon />
                 <Typography>لیست دروس ارایه شده ثبت نامی</Typography>
               </div>
             </Link>
-            <Link to={"preregistrations"}>
-              <div className={styles.items}>
-                <AssignmentOutlinedIcon />
-                <Typography>لیست دروس پیش ثبت نامی</Typography>
-              </div>
-            </Link>
+            {userType != "manager" && (
+              <Link to={"preregistrations"}>
+                <div className={styles.items}>
+                  <AssignmentOutlinedIcon />
+                  <Typography>لیست دروس پیش ثبت نامی</Typography>
+                </div>
+              </Link>
+            )}
             <Link to={"preregistration_courses"}>
               <div className={styles.items}>
                 <AssignmentOutlinedIcon />
@@ -74,13 +81,17 @@ const TermId = () => {
             <List>
               <ListItem>
                 <div className={styles.dialogItems}>
-                  <Typography>{termIdData.startDate}</Typography>
+                  <Typography>
+                    {Intl.DateTimeFormat("fa-IR").format(termIdData.startDate)}
+                  </Typography>
                   <Typography>تاریخ شروع</Typography>
                 </div>
               </ListItem>
               <ListItem>
                 <div className={styles.dialogItems}>
-                  <Typography>{termIdData.endDate}</Typography>
+                  <Typography>
+                    {Intl.DateTimeFormat("fa-IR").format(termIdData.endDate)}
+                  </Typography>
                   <Typography>تاریخ پایان</Typography>
                 </div>
               </ListItem>
