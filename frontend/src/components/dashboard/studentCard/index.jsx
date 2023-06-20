@@ -1,17 +1,23 @@
 /* eslint-disable react/prop-types */
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, Container, Typography } from "@mui/material";
 import styles from "./index.module.css";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { updateCourseIdData } from "../../../redux/courseId";
 import acceptCourseRegistration from "../../../utils/dashboard/acceptCourseRegistration";
 import rejectCourseRegistration from "../../../utils/dashboard/rejectCourseRegistration";
+import deleteStudent from "../../../utils/dashboard/deleteStudent";
+import { updateStudentsData } from "../../../redux/students";
 
 const StudentCard = ({
   name,
   familyName,
   id,
   isPreregistrationCard = false,
+  isItControlled = false,
+  userType,
+  editOrAdd,
+  openDialog,
 }) => {
   const dispatch = useDispatch();
   const acceptOrDisagree = async (type) => {
@@ -51,13 +57,52 @@ const StudentCard = ({
     }
   };
 
+  const removePerson = async () => {
+    const loadingToast = toast("لطفا صبر کنید ...", {
+      autoClose: true,
+      position: "top-left",
+      theme: "light",
+      isLoading: true,
+    });
+    let data;
+    if (userType == "student") {
+      data = await deleteStudent(id);
+    }
+    if (data.error === true) {
+      toast.update(loadingToast, {
+        render:
+          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
+        autoClose: true,
+        position: "top-left",
+        isLoading: false,
+        type: "error",
+      });
+    } else {
+      toast.update(loadingToast, {
+        render: data.message ?? "ورود موفقیت آمیز ",
+        type: "success",
+        autoClose: true,
+        position: "top-left",
+        isLoading: false,
+      });
+
+      setTimeout(() => {
+        toast.dismiss(loadingToast);
+        dispatch(updateStudentsData({ isDataLoadedBefore: false }));
+      }, 1500);
+    }
+  };
+
   return (
     <div className={styles.con}>
       <div className={styles.top}>
-        <Avatar />
-        <Typography>
-          {name} {familyName}
-        </Typography>
+        <div>
+          <Avatar />
+          <Typography>
+            {name} {familyName}
+          </Typography>
+        </div>
+        <div></div>
       </div>
       {!isPreregistrationCard && (
         <div className={styles.bottom}>
@@ -68,6 +113,21 @@ const StudentCard = ({
             رد دانشجو
           </Button>
         </div>
+      )}
+      {!isItControlled && (
+        <Container sx={{ justifyContent: "space-between", display: "flex" }}>
+          <Button
+            onClick={() => {
+              editOrAdd(true);
+              openDialog(true);
+            }}
+          >
+            ویرایش
+          </Button>
+          <Button color="error" onClick={removePerson}>
+            حذف
+          </Button>
+        </Container>
       )}
     </div>
   );

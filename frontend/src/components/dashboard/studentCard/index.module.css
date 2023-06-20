@@ -16,13 +16,21 @@
 
 .top {
   display: flex;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
+  justify-content: space-between;
+  align-items: center;
 }
+
+.top :first-child {
+  display: flex;
+}
+
 .top p {
   padding-right: 0.5rem;
 }
 
 .bottom {
   display: flex;
+  margin-top: 1rem;
   justify-content: space-between;
 }

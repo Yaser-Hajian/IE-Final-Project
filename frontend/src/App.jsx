@@ -27,6 +27,8 @@ import ManagerCoursePreregistrations from "./pages/dashboard/manager/coursePrere
 import ManagerCourseRegistrations from "./pages/dashboard/manager/courseRegistrations";
 import ManagerProfessors from "./pages/dashboard/manager/professors";
 import ManagerStudents from "./pages/dashboard/manager/students";
+import ITDashboard from "./pages/dashboard/IT";
+import ITStudents from "./pages/dashboard/IT/students";
 
 function App() {
   return (
@@ -43,6 +45,17 @@ function App() {
               </CheckAuthentication>
             }
           />
+
+          <Route
+            path="/dashboard/admin"
+            element={
+              <CheckAuthentication>
+                <ITDashboard />
+              </CheckAuthentication>
+            }
+          >
+            <Route path="students" element={<ITStudents />} />
+          </Route>
 
           <Route
             path="/dashboard/professor"

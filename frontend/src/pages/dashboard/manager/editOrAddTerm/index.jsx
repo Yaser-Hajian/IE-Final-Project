@@ -149,12 +149,11 @@ const EditOrAddTerm = ({ type }) => {
       const workbook = XLSX.read(data, { type: "array" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      console.log(excelData);
       const newList = [...editOrAddData[type]];
       for (let row in excelData) {
         if (row != 0 && excelData[row].length != 0) {
           const newPerson = {};
-          for (let item in row) {
+          for (let item in excelData[row]) {
             newPerson[excelData[0][item]] = excelData[row][item];
           }
           newList.push(newPerson);
