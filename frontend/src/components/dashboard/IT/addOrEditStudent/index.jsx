@@ -38,9 +38,8 @@ const AddOrEditStudent = ({ open, closeHandle, type, studentId }) => {
   const professorsData = useSelector((s) => s.professors);
   const professorsDataState = useProfessorsData();
   const dispatch = useDispatch();
-
+  console.log(studentData);
   const checkInputs = () => {
-    console.log(studentData);
     if (studentData.name == "") {
       toast.error("اسم دانشجو را وارد کنید", { position: "top-left" });
       return false;
@@ -110,6 +109,7 @@ const AddOrEditStudent = ({ open, closeHandle, type, studentId }) => {
         toast.dismiss(loadingToast);
         closeHandle();
         dispatch(updateStudentsData({ isDataLoadedBefore: false }));
+        dispatch(resetStudentData());
       }, 1500);
     }
   };
@@ -203,21 +203,25 @@ const AddOrEditStudent = ({ open, closeHandle, type, studentId }) => {
             <Container className={styles.formHolderLeft}>
               <Autocomplete
                 fullWidth
-                value={studentData.college}
+                value={studentData.college == "" ? null : studentData.college}
                 onChange={(e, newData) => {
                   dispatch(
                     updateStudentData({
                       college: newData == null ? { name: "" } : newData,
                     })
                   );
-
+                  if (newData == null) {
+                    dispatch(updateStudentData({ major: null }));
+                  }
                   dispatch(
                     updateMajorsData({
                       majors: newData == null ? [] : newData.majors,
                     })
                   );
                 }}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                isOptionEqualToValue={(option, value) =>
+                  option.collegeId === value.collegeId
+                }
                 getOptionLabel={(option) => `${option.name}`}
                 options={collegesData.colleges}
                 renderInput={(params) => (
@@ -232,11 +236,14 @@ const AddOrEditStudent = ({ open, closeHandle, type, studentId }) => {
               />
               <Autocomplete
                 fullWidth
+                value={studentData.major == "" ? null : studentData.major}
                 onChange={(e, newData) => {
                   dispatch(updateStudentData({ major: newData }));
                 }}
                 placeholder="رشته ها"
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                isOptionEqualToValue={(option, value) =>
+                  option.majorId === value.majorId
+                }
                 getOptionLabel={(option) => `${option.name}`}
                 options={majorsData.majors}
                 renderInput={(params) => (
@@ -262,6 +269,9 @@ const AddOrEditStudent = ({ open, closeHandle, type, studentId }) => {
 
               <Autocomplete
                 fullWidth
+                value={
+                  studentData.professor == "" ? null : studentData.professor
+                }
                 onChange={(e, newData) => {
                   dispatch(updateStudentData({ professor: newData }));
                 }}
