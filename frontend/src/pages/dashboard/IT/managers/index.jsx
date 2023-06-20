@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,23 +8,23 @@ import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import StudentCard from "../../../../components/dashboard/studentCard";
-import AddOrEditProfessor from "../../../../components/dashboard/IT/addOrEditProfessor";
 import useManagersData from "../../../../hooks/useManagers";
 import { updateManagersData } from "../../../../redux/managers";
 import addManagers from "../../../../utils/dashboard/addManagers";
+import AddOrEditManager from "../../../../components/dashboard/IT/addOrEditManager";
 
 const ITManagers = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const managersData = useSelector((s) => s.managers);
-  const { isLoading, isError } = useManagersData(searchQuery);
+  const { isLoading } = useManagersData(searchQuery);
   const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
 
   const closeHandle = () => {
     setOpen(false);
+    setIsEdit({ isEdit: false });
   };
-
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
     dispatch(
@@ -103,8 +102,8 @@ const ITManagers = () => {
             <Typography variant="h5">لیست مدیران</Typography>
             <Button
               onClick={() => {
+                setIsEdit({ isEdit: false });
                 setOpen(true);
-                setIsEdit(false);
               }}
             >
               افزودن مدیر
@@ -133,7 +132,7 @@ const ITManagers = () => {
             {managersData.managers.length == 0 ? (
               <Empty />
             ) : (
-              managersData.managers.map((professor, i) => {
+              managersData.managers.map((manager, i) => {
                 return (
                   <StudentCard
                     editOrAdd={setIsEdit}
@@ -141,18 +140,21 @@ const ITManagers = () => {
                     isITControlled
                     isPreregistrationCard
                     key={i}
-                    {...professor}
+                    {...manager}
                     userType={"manager"}
                   />
                 );
               })
             )}
           </div>
-          <AddOrEditProfessor
-            type={isEdit}
-            open={open}
-            closeHandle={closeHandle}
-          />
+          {open && (
+            <AddOrEditManager
+              type={isEdit.isEdit}
+              id={isEdit.id}
+              open={open}
+              closeHandle={closeHandle}
+            />
+          )}
         </div>
       )}
     </>

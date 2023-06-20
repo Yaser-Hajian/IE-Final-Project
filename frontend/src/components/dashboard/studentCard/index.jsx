@@ -11,6 +11,7 @@ import { updateStudentsData } from "../../../redux/students";
 import deleteProfessor from "../../../utils/dashboard/deleteProfessor";
 import deleteManager from "../../../utils/dashboard/deleteManager";
 import { updateProfessorsData } from "../../../redux/professors";
+import { updateManagersData } from "../../../redux/managers";
 
 const StudentCard = ({
   name,
@@ -99,6 +100,7 @@ const StudentCard = ({
         toast.dismiss(loadingToast);
         dispatch(updateStudentsData({ isDataLoadedBefore: false }));
         dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
+        dispatch(updateManagersData({ isDataLoadedBefore: false }));
       }, 1500);
     }
   };
