@@ -211,26 +211,7 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
           </Container>
         </>
       )}
-
-      {/* <List>
-        <ListItem button>
-          <ListItemText primary="Phone ringtone" secondary="Titania" />
-        </ListItem>
-        <Divider />
-        <ListItem button>
-          <ListItemText
-            primary="Default notification ringtone"
-            secondary="Tethys"
-          />
-        </ListItem>
-      </List> */}
     </Dialog>
-    // <Dialog fullScreen onClose={closeHandle} open={open} className={styles.con}>
-    //   <DialogTitle>افزودن درس</DialogTitle>
-    //   <DialogContent>
-    //     <TextField label="نام درس" />
-    //   </DialogContent>
-    // </Dialog>
   );
 };
 

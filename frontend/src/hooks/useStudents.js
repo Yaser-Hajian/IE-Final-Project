@@ -18,7 +18,6 @@ const useStudentsData = () => {
       setIsLoading(true);
       try {
         const studentsData = await getStudents();
-        console.log(studentsData);
         if (studentsData.error) {
           setIsError(true);
         }

@@ -126,7 +126,7 @@ const StudentCard = ({
         <Container sx={{ justifyContent: "space-between", display: "flex" }}>
           <Button
             onClick={() => {
-              editOrAdd(true);
+              editOrAdd({ isEdit: true, studentId: id });
               openDialog(true);
             }}
           >

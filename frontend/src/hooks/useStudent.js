@@ -1,30 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getProfessors from "../utils/dashboard/getProfessors";
-import { updateProfessorsData } from "../redux/professors";
+import { updateStudentData } from "../redux/student";
+import getStudent from "../utils/dashboard/getStudent";
 
-const useProfessorsData = (searchQuery) => {
+const useStudentData = (studentId, type) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isDataLoadedBefore } = useSelector((s) => s.professors);
+  const { isDataLoadedBefore } = useSelector((s) => s.student);
   useEffect(() => {
     async function fetchData() {
+      if (!type) {
+        setIsLoading(false);
+        return;
+      }
       if (isDataLoadedBefore) {
         setIsLoading(false);
         return;
       }
       setIsLoading(true);
       try {
-        const professorsData = await getProfessors(searchQuery);
-        if (professorsData.error) {
+        const studentData = await getStudent(studentId);
+        if (studentData.error) {
           setIsError(true);
         }
 
-        const apiCallData = { ...professorsData.data };
+        const apiCallData = { ...studentData.data };
         dispatch(
-          updateProfessorsData({
+          updateStudentData({
             ...apiCallData,
             isDataLoadedBefore: true,
           })
@@ -40,4 +44,4 @@ const useProfessorsData = (searchQuery) => {
   return { isLoading, isError };
 };
 
-export default useProfessorsData;
+export default useStudentData;

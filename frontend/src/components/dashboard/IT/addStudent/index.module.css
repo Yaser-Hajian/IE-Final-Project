@@ -1,8 +1,0 @@
-.formHolder {
-  display: flex;
-  justify-content: space-around;
-}
-
-.formHolder > * {
-  margin: 0 1rem;
-}

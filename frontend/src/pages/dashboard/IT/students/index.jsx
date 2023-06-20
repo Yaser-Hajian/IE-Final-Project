@@ -12,7 +12,7 @@ import StudentCard from "../../../../components/dashboard/studentCard";
 import useStudentsData from "../../../../hooks/useStudents";
 import { updateStudentsData } from "../../../../redux/students";
 import addStudents from "../../../../utils/dashboard/addStudents";
-import AddOrEdit from "../../../../components/dashboard/IT/addStudent";
+import AddOrEditStudent from "../../../../components/dashboard/IT/addOrEditStudent";
 
 const ITStudents = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const ITStudents = () => {
   const studentsData = useSelector((s) => s.students);
   const { isLoading, isError } = useStudentsData(searchQuery);
   const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState({ isEdit: false, studentId: null });
 
   const closeHandle = () => {
     setOpen(false);
@@ -104,7 +104,7 @@ const ITStudents = () => {
             <Button
               onClick={() => {
                 setOpen(true);
-                setIsEdit(false);
+                setIsEdit({ isEdit: false });
               }}
             >
               افزودن دانشجو
@@ -148,13 +148,16 @@ const ITStudents = () => {
               })
             )}
           </div>
-          <AddOrEdit
-            // type={"preregistration"}
-            // termId={termId}
-            type={isEdit}
-            open={open}
-            closeHandle={closeHandle}
-          />
+          {open && (
+            <AddOrEditStudent
+              // type={"preregistration"}
+              // termId={termId}
+              studentId={isEdit.studentId}
+              type={isEdit.isEdit}
+              open={open}
+              closeHandle={closeHandle}
+            />
+          )}
         </div>
       )}
     </>

@@ -12,7 +12,7 @@ import StudentCard from "../../../../components/dashboard/studentCard";
 import useStudentsData from "../../../../hooks/useStudents";
 import { updateStudentsData } from "../../../../redux/students";
 import addStudents from "../../../../utils/dashboard/addStudents";
-import AddOrEdit from "../../../../components/dashboard/IT/addStudent";
+import AddOrEditStudent from "../../../../components/dashboard/IT/addOrEditStudent";
 import useProfessorsData from "../../../../hooks/useProfessors";
 import { updateProfessorsData } from "../../../../redux/professors";
 import AddOrEditProfessor from "../../../../components/dashboard/IT/addProfessor";
