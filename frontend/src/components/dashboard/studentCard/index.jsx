@@ -8,6 +8,8 @@ import acceptCourseRegistration from "../../../utils/dashboard/acceptCourseRegis
 import rejectCourseRegistration from "../../../utils/dashboard/rejectCourseRegistration";
 import deleteStudent from "../../../utils/dashboard/deleteStudent";
 import { updateStudentsData } from "../../../redux/students";
+import deleteProfessor from "../../../utils/dashboard/deleteProfessor";
+import deleteManager from "../../../utils/dashboard/deleteManager";
 
 const StudentCard = ({
   name,
@@ -67,6 +69,12 @@ const StudentCard = ({
     let data;
     if (userType == "student") {
       data = await deleteStudent(id);
+    }
+    if (userType == "professor") {
+      data = await deleteProfessor(id);
+    }
+    if (userType == "manager") {
+      data = await deleteManager(id);
     }
     if (data.error === true) {
       toast.update(loadingToast, {

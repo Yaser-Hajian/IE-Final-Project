@@ -15,6 +15,7 @@ import { courseSlice } from "./course";
 import { courseRegistrationsSlice } from "./courseRegistrations";
 import { professorsSlice } from "./professors";
 import { coursesSlice } from "./courses";
+import { managersSlice } from "./managers";
 
 const globalSlice = createSlice({
   name: "global",
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   course: courseSlice.reducer,
   professors: professorsSlice.reducer,
   courses: coursesSlice.reducer,
+  managers: managersSlice.reducer,
 });
 
 const store = configureStore({

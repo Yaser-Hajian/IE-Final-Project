@@ -29,6 +29,8 @@ import ManagerProfessors from "./pages/dashboard/manager/professors";
 import ManagerStudents from "./pages/dashboard/manager/students";
 import ITDashboard from "./pages/dashboard/IT";
 import ITStudents from "./pages/dashboard/IT/students";
+import ITProfessors from "./pages/dashboard/IT/professors";
+import ITManagers from "./pages/dashboard/IT/managers";
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
             }
           >
             <Route path="students" element={<ITStudents />} />
+            <Route path="professors" element={<ITProfessors />} />
+            <Route path="managers" element={<ITManagers />} />
           </Route>
 
           <Route
