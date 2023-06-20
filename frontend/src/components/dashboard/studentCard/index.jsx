@@ -10,6 +10,7 @@ import deleteStudent from "../../../utils/dashboard/deleteStudent";
 import { updateStudentsData } from "../../../redux/students";
 import deleteProfessor from "../../../utils/dashboard/deleteProfessor";
 import deleteManager from "../../../utils/dashboard/deleteManager";
+import { updateProfessorsData } from "../../../redux/professors";
 
 const StudentCard = ({
   name,
@@ -97,6 +98,7 @@ const StudentCard = ({
       setTimeout(() => {
         toast.dismiss(loadingToast);
         dispatch(updateStudentsData({ isDataLoadedBefore: false }));
+        dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
       }, 1500);
     }
   };
@@ -126,7 +128,7 @@ const StudentCard = ({
         <Container sx={{ justifyContent: "space-between", display: "flex" }}>
           <Button
             onClick={() => {
-              editOrAdd({ isEdit: true, studentId: id });
+              editOrAdd({ isEdit: true, id: id });
               openDialog(true);
             }}
           >

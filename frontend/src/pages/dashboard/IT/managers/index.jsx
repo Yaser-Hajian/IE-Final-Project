@@ -9,7 +9,7 @@ import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import StudentCard from "../../../../components/dashboard/studentCard";
-import AddOrEditProfessor from "../../../../components/dashboard/IT/addProfessor";
+import AddOrEditProfessor from "../../../../components/dashboard/IT/addOrEditProfessor";
 import useManagersData from "../../../../hooks/useManagers";
 import { updateManagersData } from "../../../../redux/managers";
 import addManagers from "../../../../utils/dashboard/addManagers";

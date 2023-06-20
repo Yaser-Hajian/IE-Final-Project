@@ -20,7 +20,7 @@ const ITStudents = () => {
   const studentsData = useSelector((s) => s.students);
   const { isLoading, isError } = useStudentsData(searchQuery);
   const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState({ isEdit: false, studentId: null });
+  const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
 
   const closeHandle = () => {
     setOpen(false);
@@ -150,9 +150,7 @@ const ITStudents = () => {
           </div>
           {open && (
             <AddOrEditStudent
-              // type={"preregistration"}
-              // termId={termId}
-              studentId={isEdit.studentId}
+              id={isEdit.id}
               type={isEdit.isEdit}
               open={open}
               closeHandle={closeHandle}

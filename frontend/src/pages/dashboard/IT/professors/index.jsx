@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,27 +8,23 @@ import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import StudentCard from "../../../../components/dashboard/studentCard";
-import useStudentsData from "../../../../hooks/useStudents";
-import { updateStudentsData } from "../../../../redux/students";
-import addStudents from "../../../../utils/dashboard/addStudents";
-import AddOrEditStudent from "../../../../components/dashboard/IT/addOrEditStudent";
 import useProfessorsData from "../../../../hooks/useProfessors";
 import { updateProfessorsData } from "../../../../redux/professors";
-import AddOrEditProfessor from "../../../../components/dashboard/IT/addProfessor";
+import AddOrEditProfessor from "../../../../components/dashboard/IT/addOrEditProfessor";
 import addProfessors from "../../../../utils/dashboard/addProfessors";
 
 const ITProfessors = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const professorsData = useSelector((s) => s.professors);
-  const { isLoading, isError } = useProfessorsData(searchQuery);
+  const { isLoading } = useProfessorsData(searchQuery);
   const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
 
   const closeHandle = () => {
     setOpen(false);
+    setIsEdit({ isEdit: false });
   };
-
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
     dispatch(
@@ -107,8 +102,8 @@ const ITProfessors = () => {
             <Typography variant="h5">لیست اساتید</Typography>
             <Button
               onClick={() => {
+                setIsEdit({ isEdit: false });
                 setOpen(true);
-                setIsEdit(false);
               }}
             >
               افزودن استاد
@@ -152,11 +147,14 @@ const ITProfessors = () => {
               })
             )}
           </div>
-          <AddOrEditProfessor
-            type={isEdit}
-            open={open}
-            closeHandle={closeHandle}
-          />
+          {open && (
+            <AddOrEditProfessor
+              id={isEdit.id}
+              type={isEdit.isEdit}
+              open={open}
+              closeHandle={closeHandle}
+            />
+          )}
         </div>
       )}
     </>
