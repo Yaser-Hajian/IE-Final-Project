@@ -12,7 +12,6 @@ import Terms from "./components/dashboard/terms/terms";
 import PreregistrationCourses from "./pages/dashboard/studentDashboard/preregistration_courses";
 import Preregistrations from "./pages/dashboard/studentDashboard/preregistrations";
 import Registrations from "./pages/dashboard/studentDashboard/registrations";
-import RegistrationCourses from "./pages/dashboard/studentDashboard/reregistration_courses";
 import ProfessorDashboard from "./pages/dashboard/professorDashboard";
 import ProfessorDashboardTermId from "./pages/dashboard/professorDashboard/terms[Id]";
 import ProfessorDashboardCourseId from "./pages/dashboard/professorDashboard/course[id]";
@@ -32,6 +31,7 @@ import ITManagers from "./pages/dashboard/IT/managers";
 import ITAddCollege from "./pages/dashboard/IT/addCollege";
 import { darkTheme, lightTheme } from "./styles/theme";
 import useTheme from "./hooks/useTheme";
+import RegistrationCourses from "./pages/dashboard/studentDashboard/registration_courses";
 
 function App() {
   useTheme();

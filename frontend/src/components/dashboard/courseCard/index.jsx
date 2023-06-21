@@ -1,13 +1,5 @@
 /* eslint-disable react/prop-types */
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  List,
-  ListItem,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import styles from "./index.module.css";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -24,6 +16,7 @@ import { updateRegistrationCoursesData } from "../../../redux/registrationCourse
 import { updateRegistrationsData } from "../../../redux/registrations";
 import { updatePreregistrationsData } from "../../../redux/preregistrations";
 import { useNavigate } from "react-router-dom";
+import CourseDialogData from "../courseDialogData";
 
 const CourseCard = ({
   name,
@@ -93,7 +86,7 @@ const CourseCard = ({
         navigate(url, { replace: true });
       }}
     >
-      <div className={styles.top}>
+      <div dir="rtl" className={styles.top}>
         <Typography variant="body1">{name}</Typography>
         {ispre.is || isreg.is ? (
           <Typography variant="caption">{professor}</Typography>
@@ -151,41 +144,11 @@ const CourseCard = ({
           </>
         )}
       </div>
-      <Dialog
-        dir="ltr"
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-      >
-        <DialogTitle className={styles.dialogTitle}>{name}</DialogTitle>
-        <List>
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{professor}</Typography>
-              <Typography>استاد</Typography>
-            </div>
-          </ListItem>
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{capacity}</Typography>
-              <Typography>ظرفیت</Typography>
-            </div>
-          </ListItem>
-
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{occupiedCapacity}</Typography>
-              <Typography>پر شده</Typography>
-            </div>
-          </ListItem>
-
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{term}</Typography>
-              <Typography>ترم</Typography>
-            </div>
-          </ListItem>
-        </List>
-      </Dialog>
+      <CourseDialogData
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        courseData={{ professor, capacity, occupiedCapacity, term, name }}
+      />
     </Paper>
   );
 };

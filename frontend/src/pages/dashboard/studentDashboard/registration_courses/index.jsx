@@ -8,32 +8,31 @@ import { Typography } from "@mui/material";
 import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
-import usePreregistrationsData from "../../../../hooks/usePreregistrations";
-import { updatePreregistrationsData } from "../../../../redux/preregistrations";
+import useRegistrationCoursesData from "../../../../hooks/useRegistrationCourses";
+import { updateRegistrationCoursesData } from "../../../../redux/registrationCourses";
 import TermHeadInfo from "../../../../components/dashboard/termHeadInfo";
 import TermDialogData from "../../../../components/dashboard/termDialogData";
-import Pagination from "../../../../components/dashboard/pagination";
 import usePagination from "../../../../hooks/usePagination";
+import Pagination from "../../../../components/dashboard/pagination";
 
-const Preregistrations = () => {
-  const preregistrationsData = useSelector((s) => s.preregistrations);
+const RegistrationCourses = () => {
+  const registrationCoursesData = useSelector((s) => s.registrationCourses);
   const dispatch = useDispatch();
+  const loggedUser = useSelector((s) => s.loggedUser);
   const { termId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const termIdData = useSelector((s) => s.termId);
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { isLoading } = usePreregistrationsData(termId, searchQuery);
-
+  const { isLoading } = useRegistrationCoursesData(termId, searchQuery);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
-    preregistrationsData.preregistrations.length,
+    registrationCoursesData.registrationCourses.length,
     6
   );
-
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
     dispatch(
-      updatePreregistrationsData({
+      updateRegistrationCoursesData({
         isDataLoadedBefore: false,
       })
     );
@@ -59,33 +58,40 @@ const Preregistrations = () => {
               startSearch={startSearch}
               value={searchQuery}
             />
-            <Typography>لیست دروس پیش ثبت نامی</Typography>
+            <Typography>لیست دروس ارایه شده ثبت نامی</Typography>
           </div>
           <div dir="rtl" className={styles.items}>
-            {preregistrationsData.preregistrations.length == 0 ? (
-              <Empty />
-            ) : (
-              preregistrationsData.preregistrations
-                .slice(sliceInit, sliceFinish)
-                .map((term, i) => {
-                  return (
-                    <CourseCard
-                      key={i}
-                      {...term}
-                      term={termIdData.name}
-                      ispre={{
-                        is: true,
-                        preregistered: true,
-                      }}
-                    />
-                  );
-                })
-            )}
+            <>
+              {registrationCoursesData.registrationCourses.length == 0 ? (
+                <Empty />
+              ) : (
+                registrationCoursesData.registrationCourses
+                  .slice(sliceInit, sliceFinish)
+                  .map((term, i) => {
+                    const isRegistered = loggedUser.registrations.filter(
+                      (id) => id == term.id
+                    );
+                    return (
+                      <CourseCard
+                        key={i}
+                        {...term}
+                        term={termIdData.name}
+                        isreg={{
+                          is: true,
+                          registered: isRegistered.length != 0,
+                        }}
+                      />
+                    );
+                  })
+              )}
+            </>
           </div>
+
           <Pagination count={count} page={page} setPage={setPage} />
+
           <TermDialogData
-            setIsDialogOpen={setIsDialogOpen}
             isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
             termData={termIdData}
           />
         </div>
@@ -94,4 +100,4 @@ const Preregistrations = () => {
   );
 };
 
-export default Preregistrations;
+export default RegistrationCourses;

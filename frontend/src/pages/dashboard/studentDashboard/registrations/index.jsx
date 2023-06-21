@@ -18,6 +18,10 @@ import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import useCourseRegistrationsData from "../../../../hooks/useRegistrations";
 import { updateRegistrationsData } from "../../../../redux/registrations";
+import TermHeadInfo from "../../../../components/dashboard/termHeadInfo";
+import TermDialogData from "../../../../components/dashboard/termDialogData";
+import Pagination from "../../../../components/dashboard/pagination";
+import usePagination from "../../../../hooks/usePagination";
 
 const Registrations = () => {
   const registrationsData = useSelector((s) => s.registrations);
@@ -31,8 +35,10 @@ const Registrations = () => {
     termId,
     searchQuery
   );
-
-  console.log(registrationsData);
+  const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
+    registrationsData.registrations.length,
+    6
+  );
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
     dispatch(
@@ -51,18 +57,12 @@ const Registrations = () => {
       {termIdState.isLoading || isLoading ? (
         <Loader />
       ) : (
-        <div dir="rtl" className={styles.con}>
-          <div className={styles.head}>
-            <div>
-              <Typography variant="h5">{termIdData.name}</Typography>
-              <Typography variant="caption">
-                {termIdData.startDate}-{termIdData.endDate}
-              </Typography>
-            </div>
-
-            <Button onClick={() => setIsDialogOpen(true)}>اطلاعات ترم</Button>
-          </div>
-          <div dir="ltr" className={styles.top}>
+        <div className={styles.con}>
+          <TermHeadInfo
+            setIsDialogOpen={setIsDialogOpen}
+            termData={termIdData}
+          />
+          <div className={styles.top}>
             <SearchBox
               onChange={changeSearchBox}
               startSearch={startSearch}
@@ -70,62 +70,33 @@ const Registrations = () => {
             />
             <Typography>لیست دروس ثبت نامی</Typography>
           </div>
-          <div className={styles.items}>
+          <div dir="rtl" className={styles.items}>
             {registrationsData.registrations.length == 0 ? (
               <Empty />
             ) : (
-              registrationsData.registrations.map((term, i) => {
-                return (
-                  <CourseCard
-                    key={i}
-                    {...term}
-                    term={termIdData.name}
-                    isreg={{
-                      is: true,
-                      registered: true,
-                    }}
-                  />
-                );
-              })
+              registrationsData.registrations
+                .slice(sliceInit, sliceFinish)
+                .map((term, i) => {
+                  return (
+                    <CourseCard
+                      key={i}
+                      {...term}
+                      term={termIdData.name}
+                      isreg={{
+                        is: true,
+                        registered: true,
+                      }}
+                    />
+                  );
+                })
             )}
           </div>
-          <Dialog
-            dir="ltr"
-            open={isDialogOpen}
-            onClose={() => setIsDialogOpen(false)}
-          >
-            <DialogTitle className={styles.dialogTitle}>
-              {termIdData.name}
-            </DialogTitle>
-            <List>
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.startDate}</Typography>
-                  <Typography>تاریخ شروع</Typography>
-                </div>
-              </ListItem>
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.endDate}</Typography>
-                  <Typography>تاریخ پایان</Typography>
-                </div>
-              </ListItem>
-
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.courseNum}</Typography>
-                  <Typography>تعداد دروس</Typography>
-                </div>
-              </ListItem>
-
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.studentNum}</Typography>
-                  <Typography>تعداد دانشجویان</Typography>
-                </div>
-              </ListItem>
-            </List>
-          </Dialog>
+          <Pagination count={count} page={page} setPage={setPage} />
+          <TermDialogData
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+            termData={termIdData}
+          />
         </div>
       )}
     </>

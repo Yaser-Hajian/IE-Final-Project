@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Divider, Pagination, Typography } from "@mui/material";
+import { Box, Button, Pagination, Typography } from "@mui/material";
 import styles from "./terms.module.css";
 import Empty from "../empty/empty";
 import useTermsData from "../../../hooks/useTermsData";
@@ -20,7 +20,7 @@ const Terms = ({ userType }) => {
   const navigate = useNavigate();
   return (
     <div className={styles.con}>
-      <div className={styles.head}>
+      <Box borderBottom={1} dir="rtl" className={styles.head}>
         {userType === "manager" && (
           <Button
             onClick={() => navigate("/dashboard/manager/terms/add")}
@@ -32,8 +32,7 @@ const Terms = ({ userType }) => {
         <Typography sx={{ m: 1 }} variant="h5">
           لیست ترم ها
         </Typography>
-      </div>
-      <Divider />
+      </Box>
       {isLoading ? (
         <Loader />
       ) : (

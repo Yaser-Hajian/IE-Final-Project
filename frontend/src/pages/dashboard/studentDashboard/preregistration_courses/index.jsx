@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import usePreregistrationCoursesData from "../../../../hooks/usePreregistrationCourses";
@@ -6,18 +5,15 @@ import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import useTermIdData from "../../../../hooks/useTermId";
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  List,
-  ListItem,
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
+import TermDialogData from "../../../../components/dashboard/termDialogData";
+import TermHeadInfo from "../../../../components/dashboard/termHeadInfo";
+import Pagination from "../../../../components/dashboard/pagination";
+import usePagination from "../../../../hooks/usePagination";
 
 const PreregistrationCourses = () => {
   const preregistrationCoursesData = useSelector(
@@ -30,9 +26,13 @@ const PreregistrationCourses = () => {
   const termIdData = useSelector((s) => s.termId);
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { isLoading, isError } = usePreregistrationCoursesData(
+  const preregistrationCoursesDataState = usePreregistrationCoursesData(
     termId,
     searchQuery
+  );
+  const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
+    preregistrationCoursesData.preregistrationCourses.length,
+    6
   );
 
   const startSearch = () => {
@@ -50,21 +50,15 @@ const PreregistrationCourses = () => {
 
   return (
     <>
-      {termIdState.isLoading || isLoading ? (
+      {termIdState.isLoading || preregistrationCoursesDataState.isLoading ? (
         <Loader />
       ) : (
-        <div dir="rtl" className={styles.con}>
-          <div className={styles.head}>
-            <div>
-              <Typography variant="h5">{termIdData.name}</Typography>
-              <Typography variant="caption">
-                {termIdData.startDate}-{termIdData.endDate}
-              </Typography>
-            </div>
-
-            <Button onClick={() => setIsDialogOpen(true)}>اطلاعات ترم</Button>
-          </div>
-          <div dir="ltr" className={styles.top}>
+        <div className={styles.con}>
+          <TermHeadInfo
+            setIsDialogOpen={setIsDialogOpen}
+            termData={termIdData}
+          />
+          <div className={styles.top}>
             <SearchBox
               onChange={changeSearchBox}
               startSearch={startSearch}
@@ -72,12 +66,13 @@ const PreregistrationCourses = () => {
             />
             <Typography>لیست دروس ارایه شده پیش ثبت نامی</Typography>
           </div>
-          <div className={styles.items}>
+          <div dir="rtl" className={styles.items}>
             {preregistrationCoursesData.preregistrationCourses.length == 0 ? (
               <Empty />
             ) : (
-              preregistrationCoursesData.preregistrationCourses.map(
-                (term, i) => {
+              preregistrationCoursesData.preregistrationCourses
+                .slice(sliceInit, sliceFinish)
+                .map((term, i) => {
                   const isPreregistered = loggedUser.preregistrations.filter(
                     (id) => id == term.id
                   );
@@ -92,47 +87,15 @@ const PreregistrationCourses = () => {
                       }}
                     />
                   );
-                }
-              )
+                })
             )}
           </div>
-          <Dialog
-            dir="ltr"
-            open={isDialogOpen}
-            onClose={() => setIsDialogOpen(false)}
-          >
-            <DialogTitle className={styles.dialogTitle}>
-              {termIdData.name}
-            </DialogTitle>
-            <List>
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.startDate}</Typography>
-                  <Typography>تاریخ شروع</Typography>
-                </div>
-              </ListItem>
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.endDate}</Typography>
-                  <Typography>تاریخ پایان</Typography>
-                </div>
-              </ListItem>
-
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.courseNum}</Typography>
-                  <Typography>تعداد دروس</Typography>
-                </div>
-              </ListItem>
-
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.studentNum}</Typography>
-                  <Typography>تعداد دانشجویان</Typography>
-                </div>
-              </ListItem>
-            </List>
-          </Dialog>
+          <Pagination count={count} page={page} setPage={setPage} />
+          <TermDialogData
+            termData={termIdData}
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+          />
         </div>
       )}
     </>

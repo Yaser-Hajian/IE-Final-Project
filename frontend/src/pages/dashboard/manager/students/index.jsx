@@ -14,7 +14,6 @@ import { updateStudentsData } from "../../../../redux/students";
 
 const ManagerStudents = () => {
   const dispatch = useDispatch();
-  console.log(location);
   const [searchQuery, setSearchQuery] = useState("");
   const studentsData = useSelector((s) => s.students);
   const { isLoading, isError } = useStudentsData(searchQuery);
