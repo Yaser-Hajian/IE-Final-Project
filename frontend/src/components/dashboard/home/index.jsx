@@ -32,7 +32,7 @@ const Home = ({ userType }) => {
               {homeData.lastObservedTerms.length == 0 ? (
                 <Empty />
               ) : (
-                homeData.lastObservedTerms.map((term, i) => {
+                homeData.lastObservedTerms.slice(0, 3).map((term, i) => {
                   return (
                     <TermCard
                       url={`/dashboard/${userType}/terms/${term.id}`}
@@ -51,7 +51,7 @@ const Home = ({ userType }) => {
               {homeData.lastObservedCourses.length == 0 ? (
                 <Empty />
               ) : (
-                homeData.lastObservedCourses.map((course, i) => {
+                homeData.lastObservedCourses.slice(0, 3).map((course, i) => {
                   return <CourseCard key={i} {...course} />;
                 })
               )}

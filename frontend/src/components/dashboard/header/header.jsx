@@ -25,7 +25,6 @@ const DashboardHeader = ({ userType }) => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
-
   const open = Boolean(anchorEl);
   const switchTheme = useThemeSwitch();
   const handleClick = (e) => {

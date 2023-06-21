@@ -4,11 +4,12 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  margin: 2rem 0rem;
+  justify-content: flex-start;
+  margin: 1.5rem 0rem;
 }
 
 .items {
-  margin: 1rem 0;
+  margin: 2rem 0;
   display: grid;
   grid-template-columns: auto auto auto;
   grid-gap: 1rem;

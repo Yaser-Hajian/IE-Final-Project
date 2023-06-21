@@ -6,7 +6,6 @@ const useTheme = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const theme = JSON.parse(localStorage.getItem("theme"));
-    console.log(theme);
     if (theme == null || theme.mode == null) {
       localStorage.setItem("theme", JSON.stringify({ mode: "light" }));
     } else {
