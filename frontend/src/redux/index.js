@@ -29,9 +29,15 @@ const globalSlice = createSlice({
     theme: "light",
   },
   reducers: {
-    switchTheme(preState) {
+    switchTheme(preState, action) {
+      const newTheme =
+        action.payload != null
+          ? action.payload
+          : preState.theme === "light"
+          ? "dark"
+          : "light";
       return {
-        theme: preState.theme === "light" ? "dark" : "light",
+        theme: newTheme,
       };
     },
   },

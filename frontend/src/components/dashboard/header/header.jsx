@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import {
   Avatar,
+  Box,
   Divider,
   Fade,
   IconButton,
   Menu,
   MenuItem,
+  Paper,
   Typography,
 } from "@mui/material";
 import styles from "./header.module.css";
@@ -16,14 +18,16 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import userNavigation from "../../../utils/userNavigation";
 import { useDispatch, useSelector } from "react-redux";
-import { switchTheme } from "../../../redux";
+import useThemeSwitch from "../../../hooks/useThemeSwitch";
 
 const DashboardHeader = ({ userType }) => {
   const loggedStudent = useSelector((s) => s.loggedUser);
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
+  const switchTheme = useThemeSwitch();
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
@@ -31,22 +35,15 @@ const DashboardHeader = ({ userType }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const signoutProcess = async () => {
     const token = getLoginToken();
     const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
       isLoading: true,
     });
     const data = await signout(token);
     if (data.error === true) {
       toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
+        render: data.message ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
         isLoading: false,
         type: "error",
       });
@@ -54,8 +51,6 @@ const DashboardHeader = ({ userType }) => {
       toast.update(loadingToast, {
         render: data.message ?? "با موفقیت از داشبورد خارج شدی ",
         type: "success",
-        autoClose: true,
-        position: "top-left",
         isLoading: false,
       });
 
@@ -73,9 +68,9 @@ const DashboardHeader = ({ userType }) => {
 
   return (
     <>
-      <div className={styles.con}>
+      <Paper className={styles.con} variant="outlined">
         <Typography variant="h6">دانشگاه شریف</Typography>
-        <div className={styles.right}>
+        <Box className={styles.right}>
           <div className={styles.name}>
             <Typography>
               {loggedStudent.name} {loggedStudent.familyName}
@@ -87,18 +82,14 @@ const DashboardHeader = ({ userType }) => {
           <IconButton onClick={handleClick}>
             <Avatar />
           </IconButton>
-        </div>
-      </div>
+        </Box>
+      </Paper>
       <Menu
         dir="rtl"
         anchorEl={anchorEl}
         onClose={handleClose}
         onClick={handleClose}
         open={open}
-        PaperProps={{
-          elevation: 0,
-          className: styles.menuPaper,
-        }}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "right",
@@ -116,15 +107,15 @@ const DashboardHeader = ({ userType }) => {
         >
           داشبورد
         </MenuItem>
-        {userNavigation[userType].menuItems.map((item, i) => {
+        {userNavigation[userType].menuItems.map((navItem, i) => {
           return (
             <MenuItem
               key={i}
               onClick={() => {
-                navigation(item.url, { replace: true });
+                navigation(navItem.url, { replace: true });
               }}
             >
-              {item.name}
+              {navItem.name}
             </MenuItem>
           );
         })}

@@ -14,7 +14,7 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
-import CourseCard from "../../../../components/dashboard/courseCard/courseCard";
+import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";

@@ -5,9 +5,10 @@ import {
   DialogTitle,
   List,
   ListItem,
+  Paper,
   Typography,
 } from "@mui/material";
-import styles from "./courseCard.module.css";
+import styles from "./index.module.css";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import { useState } from "react";
@@ -84,8 +85,9 @@ const CourseCard = ({
     }
   };
   return (
-    <div
+    <Paper
       className={styles.con}
+      variant="outlined"
       onClick={() => {
         if (url == null) return;
         navigate(url, { replace: true });
@@ -184,7 +186,7 @@ const CourseCard = ({
           </ListItem>
         </List>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

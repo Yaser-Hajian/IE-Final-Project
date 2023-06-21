@@ -5,30 +5,11 @@
   align-items: center;
   padding: 16px 158px;
   height: fit-content;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.32);
 }
 .right {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.menuPaper {
-  overflow: visible;
-  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
-  margin-top: 1.5px;
-}
-.menuPaper::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 22px;
-  width: 10px;
-  height: 10px;
-  transform: translateY(-50%) rotate(45deg);
-  z-index: 0;
-  background-color: inherit;
 }
 
 .name {

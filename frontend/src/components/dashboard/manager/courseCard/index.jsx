@@ -9,6 +9,7 @@ import {
   ListItem,
   Menu,
   MenuItem,
+  Paper,
   Typography,
 } from "@mui/material";
 import styles from "./index.module.css";
@@ -78,7 +79,7 @@ const CourseCard = ({
     }
   };
   return (
-    <div className={styles.con}>
+    <Paper className={styles.con} variant="outlined">
       <div className={styles.top}>
         <div className={styles.topText}>
           <Link href={url}>
@@ -166,7 +167,7 @@ const CourseCard = ({
           </ListItem>
         </List>
       </Dialog>
-    </div>
+    </Paper>
   );
 };
 

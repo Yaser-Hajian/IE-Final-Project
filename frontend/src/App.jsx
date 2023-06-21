@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import LoginPage from "./pages/login";
 import StudentDashboard from "./pages/dashboard/studentDashboard";
-import Home from "./components/dashboard/home/home";
+import Home from "./components/dashboard/home";
 import Terms from "./components/dashboard/terms/terms";
 import PreregistrationCourses from "./pages/dashboard/studentDashboard/preregistration_courses";
 import Preregistrations from "./pages/dashboard/studentDashboard/preregistrations";
@@ -31,12 +31,21 @@ import ITProfessors from "./pages/dashboard/IT/professors";
 import ITManagers from "./pages/dashboard/IT/managers";
 import ITAddCollege from "./pages/dashboard/IT/addCollege";
 import { darkTheme, lightTheme } from "./styles/theme";
+import useTheme from "./hooks/useTheme";
 
 function App() {
+  useTheme();
   const { theme } = useSelector((s) => s.global);
   return (
     <ThemeProvider theme={theme == "light" ? lightTheme : darkTheme}>
-      <ToastContainer limit={3} bodyClassName={"toasts"} rtl />
+      <ToastContainer
+        limit={3}
+        bodyClassName={"toasts"}
+        rtl
+        autoClose
+        position="top-left"
+      />
+      <CssBaseline />
       <Routes>
         <Route path="/" element={<CheckAuthentication />} />
         <Route

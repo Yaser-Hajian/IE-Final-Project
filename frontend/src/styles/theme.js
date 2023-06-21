@@ -1,12 +1,16 @@
 import { createTheme } from "@mui/material";
 
-const lightTheme = createTheme({
+const sharedTokens = {
   typography: { fontFamily: ["Vazirmatn"].join(",") },
+};
+
+const lightTheme = createTheme({
+  ...sharedTokens,
   palette: { mode: "light" },
 });
 
 const darkTheme = createTheme({
-  typography: { fontFamily: ["Vazirmatn"].join(",") },
+  ...sharedTokens,
   palette: { mode: "dark" },
 });
 

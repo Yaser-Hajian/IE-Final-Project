@@ -5,6 +5,7 @@ import {
   Link,
   Menu,
   MenuItem,
+  Paper,
   Typography,
 } from "@mui/material";
 import styles from "./termCard.module.css";
@@ -74,7 +75,7 @@ const TermCard = ({
   };
 
   return (
-    <div className={styles.con}>
+    <Paper className={styles.con} variant="outlined">
       <div className={styles.top}>
         <div className={styles.topText}>
           <Link href={url} variant="body1">
@@ -109,10 +110,6 @@ const TermCard = ({
         onClose={handleClose}
         onClick={handleClose}
         open={open}
-        // PaperProps={{
-        //   elevation: 0,
-        //   className: styles.menuPaper,
-        // }}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "right",
@@ -132,7 +129,7 @@ const TermCard = ({
         </MenuItem>
         <MenuItem onClick={deleteTermProcess}>حذف ترم</MenuItem>
       </Menu>
-    </div>
+    </Paper>
   );
 };
 

@@ -20,7 +20,7 @@ import SearchBox from "../../../../components/dashboard/searchBox";
 import useCourseRegistrationsData from "../../../../hooks/useRegistrations";
 import { updateRegistrationsData } from "../../../../redux/registrations";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import CourseCard from "../../../../components/dashboard/courseCard/courseCard";
+import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
 
 const ProfessorDashboardTermId = () => {

@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Divider, Typography } from "@mui/material";
-import styles from "./home.module.css";
+import styles from "./index.module.css";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import TermCard from "../termCard/termCard";
-import CourseCard from "../courseCard/courseCard";
+import CourseCard from "../courseCard";
 import useHomeData from "../../../hooks/useHomeData";
 import { useSelector } from "react-redux";
 import Loader from "../loader/loader";
@@ -12,7 +11,7 @@ import Empty from "../empty/empty";
 
 const Home = ({ userType }) => {
   const homeData = useSelector((s) => s.home);
-  const { isLoading, isError } = useHomeData();
+  const { isLoading } = useHomeData();
   return (
     <>
       {isLoading ? (
@@ -52,9 +51,8 @@ const Home = ({ userType }) => {
               {homeData.lastObservedCourses.length == 0 ? (
                 <Empty />
               ) : (
-                homeData.lastObservedCourses.map((term, i) => {
-                  console.log(homeData.lastObservedCourses.length);
-                  return <CourseCard key={i} {...term} />;
+                homeData.lastObservedCourses.map((course, i) => {
+                  return <CourseCard key={i} {...course} />;
                 })
               )}
             </div>

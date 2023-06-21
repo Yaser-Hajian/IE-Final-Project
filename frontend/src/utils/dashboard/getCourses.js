@@ -1,8 +1,10 @@
 import { apiBaseUrl } from "../../config";
 
-const getCourses = async () => {
+const getCourses = async (coursesList = []) => {
   try {
-    const response = await fetch(apiBaseUrl + `/courses`, {
+    const query =
+      coursesList.length == 0 ? "" : `?search=${coursesList.join(",")}`;
+    const response = await fetch(apiBaseUrl + `/courses${query}`, {
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
