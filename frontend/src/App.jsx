@@ -1,8 +1,6 @@
 import { ThemeProvider } from "@mui/material";
 import { ToastContainer } from "react-toastify";
-import { Provider } from "react-redux";
-import { store } from "./redux";
-import { theme } from "./styles/theme";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { CheckAuthentication } from "./components/checkAuthentication";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,134 +29,136 @@ import ITDashboard from "./pages/dashboard/IT";
 import ITStudents from "./pages/dashboard/IT/students";
 import ITProfessors from "./pages/dashboard/IT/professors";
 import ITManagers from "./pages/dashboard/IT/managers";
+import ITAddCollege from "./pages/dashboard/IT/addCollege";
+import { darkTheme, lightTheme } from "./styles/theme";
 
 function App() {
+  const { theme } = useSelector((s) => s.global);
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <ToastContainer limit={3} bodyClassName={"toasts"} rtl />
-        <Routes>
-          <Route path="/" element={<CheckAuthentication />} />
+    <ThemeProvider theme={theme == "light" ? lightTheme : darkTheme}>
+      <ToastContainer limit={3} bodyClassName={"toasts"} rtl />
+      <Routes>
+        <Route path="/" element={<CheckAuthentication />} />
+        <Route
+          path="/login"
+          element={
+            <CheckAuthentication>
+              <LoginPage />
+            </CheckAuthentication>
+          }
+        />
+
+        <Route
+          path="/dashboard/admin"
+          element={
+            <CheckAuthentication>
+              <ITDashboard />
+            </CheckAuthentication>
+          }
+        >
+          <Route path="students" element={<ITStudents />} />
+          <Route path="professors" element={<ITProfessors />} />
+          <Route path="managers" element={<ITManagers />} />
+          <Route path="college/add" element={<ITAddCollege />} />
+        </Route>
+
+        <Route
+          path="/dashboard/professor"
+          element={
+            <CheckAuthentication>
+              <ProfessorDashboard />
+            </CheckAuthentication>
+          }
+        >
+          <Route path="" element={<Home userType={"professor"} />} />
+          <Route path="terms" element={<Terms userType={"professor"} />} />
+
           <Route
-            path="/login"
-            element={
-              <CheckAuthentication>
-                <LoginPage />
-              </CheckAuthentication>
-            }
+            path="terms/:termId"
+            element={<ProfessorDashboardTermId userType={"professor"} />}
+          />
+          <Route
+            path="course/:courseId/registrations"
+            element={<ProfessorDashboardCourseId />}
+          />
+        </Route>
+
+        <Route
+          path="/dashboard/manager"
+          element={
+            <CheckAuthentication>
+              <ManagerDashboard />
+            </CheckAuthentication>
+          }
+        >
+          <Route path="" element={<Home userType={"manager"} />} />
+          <Route path="terms" element={<Terms userType={"manager"} />} />
+          <Route
+            path="terms/edit/:termId"
+            element={<EditOrAddTerm type={"edit"} />}
+          />
+          <Route
+            path="terms/:termId"
+            element={<TermId userType={"manager"} />}
+          />
+          <Route path="terms/add" element={<EditOrAddTerm type={"add"} />} />
+          <Route
+            path="terms/:termId/preregistration_courses"
+            element={<ManagerPreregistrationCourses />}
+          />
+          <Route
+            path="terms/:termId/registration_courses"
+            element={<ManagerRegistrationCourses />}
           />
 
           <Route
-            path="/dashboard/admin"
-            element={
-              <CheckAuthentication>
-                <ITDashboard />
-              </CheckAuthentication>
-            }
-          >
-            <Route path="students" element={<ITStudents />} />
-            <Route path="professors" element={<ITProfessors />} />
-            <Route path="managers" element={<ITManagers />} />
-          </Route>
+            path="course/:courseId/registrations"
+            element={<ManagerCourseRegistrations />}
+          />
+          <Route
+            path="course/:courseId/preregistrations"
+            element={<ManagerCoursePreregistrations />}
+          />
+
+          <Route path="professors" element={<ManagerProfessors />} />
+          <Route path="students" element={<ManagerStudents />} />
+        </Route>
+
+        <Route
+          path="/dashboard/student"
+          element={
+            <CheckAuthentication>
+              <StudentDashboard />
+            </CheckAuthentication>
+          }
+        >
+          <Route path="" element={<Home userType={"student"} />} />
+          <Route path="terms" element={<Terms userType={"student"} />} />
+          <Route
+            path="terms/:termId"
+            element={<TermId userType={"student"} />}
+          />
 
           <Route
-            path="/dashboard/professor"
-            element={
-              <CheckAuthentication>
-                <ProfessorDashboard />
-              </CheckAuthentication>
-            }
-          >
-            <Route path="" element={<Home userType={"professor"} />} />
-            <Route path="terms" element={<Terms userType={"professor"} />} />
-
-            <Route
-              path="terms/:termId"
-              element={<ProfessorDashboardTermId userType={"professor"} />}
-            />
-            <Route
-              path="course/:courseId/registrations"
-              element={<ProfessorDashboardCourseId />}
-            />
-          </Route>
-
+            path="terms/:termId/preregistration_courses"
+            element={<PreregistrationCourses />}
+          />
           <Route
-            path="/dashboard/manager"
-            element={
-              <CheckAuthentication>
-                <ManagerDashboard />
-              </CheckAuthentication>
-            }
-          >
-            <Route path="" element={<Home userType={"manager"} />} />
-            <Route path="terms" element={<Terms userType={"manager"} />} />
-            <Route
-              path="terms/edit/:termId"
-              element={<EditOrAddTerm type={"edit"} />}
-            />
-            <Route
-              path="terms/:termId"
-              element={<TermId userType={"manager"} />}
-            />
-            <Route path="terms/add" element={<EditOrAddTerm type={"add"} />} />
-            <Route
-              path="terms/:termId/preregistration_courses"
-              element={<ManagerPreregistrationCourses />}
-            />
-            <Route
-              path="terms/:termId/registration_courses"
-              element={<ManagerRegistrationCourses />}
-            />
-
-            <Route
-              path="course/:courseId/registrations"
-              element={<ManagerCourseRegistrations />}
-            />
-            <Route
-              path="course/:courseId/preregistrations"
-              element={<ManagerCoursePreregistrations />}
-            />
-
-            <Route path="professors" element={<ManagerProfessors />} />
-            <Route path="students" element={<ManagerStudents />} />
-          </Route>
-
+            path="terms/:termId/preregistrations"
+            element={<Preregistrations />}
+          />
           <Route
-            path="/dashboard/student"
-            element={
-              <CheckAuthentication>
-                <StudentDashboard />
-              </CheckAuthentication>
-            }
-          >
-            <Route path="" element={<Home userType={"student"} />} />
-            <Route path="terms" element={<Terms userType={"student"} />} />
-            <Route
-              path="terms/:termId"
-              element={<TermId userType={"student"} />}
-            />
-
-            <Route
-              path="terms/:termId/preregistration_courses"
-              element={<PreregistrationCourses />}
-            />
-            <Route
-              path="terms/:termId/preregistrations"
-              element={<Preregistrations />}
-            />
-            <Route
-              path="terms/:termId/registrations"
-              element={<Registrations />}
-            />
-            <Route
-              path="terms/:termId/registration_courses"
-              element={<RegistrationCourses />}
-            />
-          </Route>
-          <Route path="*" element={<h4>NOT FOUND 404</h4>} />
-        </Routes>
-      </ThemeProvider>
-    </Provider>
+            path="terms/:termId/registrations"
+            element={<Registrations />}
+          />
+          <Route
+            path="terms/:termId/registration_courses"
+            element={<RegistrationCourses />}
+          />
+        </Route>
+        <Route path="*" element={<h4>NOT FOUND 404</h4>} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 

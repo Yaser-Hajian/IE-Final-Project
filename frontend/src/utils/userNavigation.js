@@ -21,6 +21,7 @@ const userNavigation = {
       { name: "لیست دانشجویان", url: "/dashboard/admin/students" },
       { name: "لیست اساتید", url: "/dashboard/admin/professors" },
       { name: "لیست مدیران", url: "/dashboard/admin/managers" },
+      { name: "افزودن دانشکده", url: "/dashboard/admin/college/add" },
     ],
   },
 };

@@ -1,7 +1,14 @@
 import { createTheme } from "@mui/material";
 
-const theme = createTheme({
+const lightTheme = createTheme({
   typography: { fontFamily: ["Vazirmatn"].join(",") },
+  palette: { mode: "light" },
 });
 
-export { theme };
+const darkTheme = createTheme({
+  typography: { fontFamily: ["Vazirmatn"].join(",") },
+  palette: { mode: "dark" },
+});
+
+export { lightTheme };
+export { darkTheme };

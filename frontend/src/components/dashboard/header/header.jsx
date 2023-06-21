@@ -15,11 +15,13 @@ import getLoginToken from "../../../utils/getLoginToken";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import userNavigation from "../../../utils/userNavigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { switchTheme } from "../../../redux";
 
 const DashboardHeader = ({ userType }) => {
   const loggedStudent = useSelector((s) => s.loggedUser);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (e) => {
@@ -63,6 +65,10 @@ const DashboardHeader = ({ userType }) => {
         navigation("/login", { replace: true });
       }, 1500);
     }
+  };
+
+  const changeTheme = () => {
+    dispatch(switchTheme());
   };
 
   return (
@@ -123,6 +129,8 @@ const DashboardHeader = ({ userType }) => {
           );
         })}
 
+        <Divider />
+        <MenuItem onClick={changeTheme}>تغییر تم</MenuItem>
         <Divider />
         <MenuItem onClick={signoutProcess}>خروج از اکانت</MenuItem>
       </Menu>

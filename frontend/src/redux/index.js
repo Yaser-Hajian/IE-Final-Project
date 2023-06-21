@@ -21,11 +21,19 @@ import { collegesSlice } from "./colleges";
 import { majorsSlice } from "./majors";
 import { professorSlice } from "./professor";
 import { managerSlice } from "./manager";
+import { collegeSlice } from "./college";
 
 const globalSlice = createSlice({
   name: "global",
   initialState: {
     theme: "light",
+  },
+  reducers: {
+    switchTheme(preState) {
+      return {
+        theme: preState.theme === "light" ? "dark" : "light",
+      };
+    },
   },
 });
 
@@ -53,6 +61,7 @@ const rootReducer = combineReducers({
   majors: majorsSlice.reducer,
   professor: professorSlice.reducer,
   manager: managerSlice.reducer,
+  college: collegeSlice.reducer,
 });
 
 const store = configureStore({
@@ -60,3 +69,4 @@ const store = configureStore({
 });
 
 export { store };
+export const switchTheme = globalSlice.actions.switchTheme;
