@@ -52,13 +52,13 @@ const RegistrationCourses = () => {
             setIsDialogOpen={setIsDialogOpen}
             termData={termIdData}
           />
-          <div className={styles.top}>
+          <div dir="rtl" className={styles.top}>
+            <Typography>لیست دروس ارایه شده ثبت نامی</Typography>
             <SearchBox
               onChange={changeSearchBox}
               startSearch={startSearch}
               value={searchQuery}
             />
-            <Typography>لیست دروس ارایه شده ثبت نامی</Typography>
           </div>
           <div dir="rtl" className={styles.items}>
             <>

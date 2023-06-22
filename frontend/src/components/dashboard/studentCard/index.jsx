@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Avatar, Button, Container, Typography } from "@mui/material";
+import { Avatar, Button, Container, Paper, Typography } from "@mui/material";
 import styles from "./index.module.css";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -106,7 +106,7 @@ const StudentCard = ({
   };
 
   return (
-    <div className={styles.con}>
+    <Paper variant="outlined" className={styles.con}>
       <div className={styles.top}>
         <div>
           <Avatar />
@@ -114,7 +114,6 @@ const StudentCard = ({
             {name} {familyName}
           </Typography>
         </div>
-        <div></div>
       </div>
       {!isPreregistrationCard && (
         <div className={styles.bottom}>
@@ -141,7 +140,7 @@ const StudentCard = ({
           </Button>
         </Container>
       )}
-    </div>
+    </Paper>
   );
 };
 

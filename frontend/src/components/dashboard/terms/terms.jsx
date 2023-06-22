@@ -21,17 +21,18 @@ const Terms = ({ userType }) => {
   return (
     <div className={styles.con}>
       <Box borderBottom={1} dir="rtl" className={styles.head}>
+        <Typography sx={{ m: 1 }} variant="h5">
+          لیست ترم ها
+        </Typography>
         {userType === "manager" && (
           <Button
+            dir="ltr"
             onClick={() => navigate("/dashboard/manager/terms/add")}
             startIcon={<Add />}
           >
             افزودن ترم
           </Button>
         )}
-        <Typography sx={{ m: 1 }} variant="h5">
-          لیست ترم ها
-        </Typography>
       </Box>
       {isLoading ? (
         <Loader />

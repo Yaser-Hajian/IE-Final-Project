@@ -4,7 +4,10 @@ const courseIdSlice = createSlice({
   name: "courseId",
   initialState: {
     isDataLoadedBefore: false,
-    registrations: [],
+    courseRegistrations: [],
+    name: "",
+    capacity: "",
+    occupiedCapacity: "",
   },
   reducers: {
     updateCourseIdData(preState, action) {

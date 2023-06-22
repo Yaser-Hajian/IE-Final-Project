@@ -30,23 +30,6 @@
   text-align: center;
 }
 
-.dialogItems {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-.dialogItems p:first-child {
-  padding-right: 1rem;
-}
-.dialogItems p:last-child {
-  padding-left: 1rem;
-}
-
-.dialogTitle {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .items {
   margin: 1rem 0;
   display: grid;
@@ -60,26 +43,19 @@
   display: flex;
   justify-content: space-between;
   padding: 1rem 0;
-  align-items: center;
+  align-items: flex-start;
 }
 
-.menuPaper {
-  overflow: visible;
-  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
-  margin-top: 1.5px;
+.topHead {
+  display: flex;
+  align-items: center;
 }
-.menuPaper::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 22px;
-  width: 10px;
-  height: 10px;
-  transform: translateY(-50%) rotate(45deg);
-  z-index: 0;
-  background-color: inherit;
+.searchBoxCon {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
+
 @media (max-width: 1200px) {
   .con {
     padding: 32px 64px;
@@ -91,6 +67,17 @@
     grid-template-columns: auto auto;
     justify-content: space-around;
     row-gap: 2rem;
+  }
+  .top {
+    flex-direction: column;
+  }
+  .searchBoxCon {
+    width: 100%;
+    margin: 1rem 0;
+    align-items: flex-start;
+  }
+  .searchBoxCon > :first-child {
+    width: 100%;
   }
 }
 
@@ -109,6 +96,10 @@
   }
   .items {
     grid-template-columns: auto;
+  }
+  .topHead {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 @media (max-width: 400px) {

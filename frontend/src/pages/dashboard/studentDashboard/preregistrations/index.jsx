@@ -53,13 +53,13 @@ const Preregistrations = () => {
             setIsDialogOpen={setIsDialogOpen}
             termData={termIdData}
           />
-          <div className={styles.top}>
+          <div dir="rtl" className={styles.top}>
+            <Typography>لیست دروس پیش ثبت نامی</Typography>
             <SearchBox
               onChange={changeSearchBox}
               startSearch={startSearch}
               value={searchQuery}
             />
-            <Typography>لیست دروس پیش ثبت نامی</Typography>
           </div>
           <div dir="rtl" className={styles.items}>
             {preregistrationsData.preregistrations.length == 0 ? (

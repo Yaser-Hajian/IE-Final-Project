@@ -1,20 +1,9 @@
-/* eslint-disable no-unused-vars */
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import useTermIdData from "../../../../hooks/useTermId";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  Fade,
-  List,
-  ListItem,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Button, Pagination, Typography } from "@mui/material";
 import { useState } from "react";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import useCourseRegistrationsData from "../../../../hooks/useRegistrations";
@@ -22,6 +11,10 @@ import { updateRegistrationsData } from "../../../../redux/registrations";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
+import TermHeadInfo from "../../../../components/dashboard/termHeadInfo";
+import TermDialogData from "../../../../components/dashboard/termDialogData";
+import FilterMenu from "../../../../components/dashboard/filterMenu";
+import usePagination from "../../../../hooks/usePagination";
 
 const ProfessorDashboardTermId = () => {
   const { termId } = useParams();
@@ -31,14 +24,16 @@ const ProfessorDashboardTermId = () => {
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { isLoading, isError } = useCourseRegistrationsData(
+  const { isLoading } = useCourseRegistrationsData(
     termId,
     searchQuery,
     sortType
   );
+  const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
+    registrationData.registrations.length,
+    6
+  );
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const open = Boolean(anchorEl);
 
   const settingSortType = (type) => {
     if (type == null) return;
@@ -76,116 +71,68 @@ const ProfessorDashboardTermId = () => {
       {termIdState.isLoading || isLoading ? (
         <Loader />
       ) : (
-        <div dir="rtl" className={styles.con}>
-          <div className={styles.head}>
+        <div className={styles.con}>
+          <TermHeadInfo
+            setIsDialogOpen={setIsDialogOpen}
+            termData={termIdData}
+          />
+          <div dir="rtl" className={styles.top}>
             <div>
-              <Typography variant="h5">{termIdData.name}</Typography>
-              <Typography variant="caption">
-                {termIdData.startDate}-{termIdData.endDate}
-              </Typography>
+              <Typography>لیست دروس این ترم</Typography>
+              <Button
+                size="small"
+                onClick={handleClick}
+                dir="ltr"
+                startIcon={<FilterAltIcon />}
+              >
+                فیلتر بر اساس
+              </Button>
             </div>
-
-            <Button onClick={() => setIsDialogOpen(true)}>اطلاعات ترم</Button>
-          </div>
-          <div dir="ltr" className={styles.top}>
             <SearchBox
               onChange={changeSearchBox}
               startSearch={startSearch}
               value={searchQuery}
             />
-            <div dir="rtl">
-              <Typography>لیست دروس ترم {termIdData.name}</Typography>
-              <Typography
-                sx={{ display: "flex", alignItems: "center" }}
-                onClick={handleClick}
-                variant="caption"
-              >
-                فیلتر بر اساس
-                <FilterAltIcon />
-              </Typography>
-            </div>
           </div>
-          <div className={styles.items}>
+          <div dir="rtl" className={styles.items}>
             {registrationData.registrations.length == 0 ? (
               <Empty />
             ) : (
-              registrationData.registrations.map((course, i) => {
-                return (
-                  <CourseCard
-                    url={`/dashboard/professor/course/${course.id}/registrations`}
-                    key={i}
-                    {...course}
-                    term={termIdData.name}
-                  />
-                );
-              })
+              registrationData.registrations
+                .slice(sliceInit, sliceFinish)
+                .map((course, i) => {
+                  return (
+                    <CourseCard
+                      url={`/dashboard/professor/course/${course.id}/registrations`}
+                      key={i}
+                      {...course}
+                      term={termIdData.name}
+                    />
+                  );
+                })
             )}
           </div>
-          <Dialog
-            dir="ltr"
-            open={isDialogOpen}
-            onClose={() => setIsDialogOpen(false)}
-          >
-            <DialogTitle className={styles.dialogTitle}>
-              {termIdData.name}
-            </DialogTitle>
-            <List>
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.startDate}</Typography>
-                  <Typography>تاریخ شروع</Typography>
-                </div>
-              </ListItem>
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.endDate}</Typography>
-                  <Typography>تاریخ پایان</Typography>
-                </div>
-              </ListItem>
 
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.courseNum}</Typography>
-                  <Typography>تعداد دروس</Typography>
-                </div>
-              </ListItem>
-
-              <ListItem>
-                <div className={styles.dialogItems}>
-                  <Typography>{termIdData.studentNum}</Typography>
-                  <Typography>تعداد دانشجویان</Typography>
-                </div>
-              </ListItem>
-            </List>
-          </Dialog>
-          <Menu
-            dir="rtl"
+          <Pagination
+            count={count}
+            page={page}
+            onChange={(e, v) => setPage(v)}
+          />
+          <TermDialogData
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+            termData={termIdData}
+          />
+          <FilterMenu
             anchorEl={anchorEl}
-            onClose={handleClose}
-            onClick={handleClose}
-            open={open}
-            PaperProps={{
-              elevation: 0,
-              className: styles.menuPaper,
-            }}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            TransitionComponent={Fade}
-          >
-            <MenuItem onClick={() => settingSortType("mostRegister")}>
-              بیشترین تعداد ثبت نام
-            </MenuItem>
-            <MenuItem onClick={() => settingSortType("lowRegister")}>
-              کمترین تعداد ثبت نام
-            </MenuItem>
-            <MenuItem onClick={() => settingSortType(null)}>هیچ کدام</MenuItem>
-          </Menu>
+            settingSortType={settingSortType}
+            handleClose={handleClose}
+            open
+            menuItems={[
+              { text: "بیشترین ثبت نام", sortType: "mostRegister" },
+              { text: "کمترین ثبت نام", sortType: "minimum Register" },
+            ]}
+          />
         </div>
       )}
     </>

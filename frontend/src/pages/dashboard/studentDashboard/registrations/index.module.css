@@ -30,23 +30,6 @@
   text-align: center;
 }
 
-.dialogItems {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-.dialogItems p:first-child {
-  padding-right: 1rem;
-}
-.dialogItems p:last-child {
-  padding-left: 1rem;
-}
-
-.dialogTitle {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .items {
   margin: 1rem 0;
   display: grid;
@@ -83,6 +66,16 @@
   }
   .items {
     grid-template-columns: auto auto;
+  }
+  .top {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .top > :last-child {
+    margin-top: 1rem;
+    width: 100%;
   }
 }
 @media (max-width: 500px) {

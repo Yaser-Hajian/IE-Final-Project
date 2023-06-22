@@ -1,8 +1,6 @@
 .con {
   display: flex;
   flex-direction: column;
-  /* width: fit-content; */
-  border: 1px solid black;
   width: 100%;
   padding: 0.5rem;
   border-radius: 15px;
@@ -16,7 +14,6 @@
 
 .top {
   display: flex;
-  /* margin-bottom: 1rem; */
   justify-content: space-between;
   align-items: center;
 }

@@ -1,18 +1,17 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import {
   Avatar,
+  Box,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
-  Divider,
   IconButton,
-  Input,
   List,
   ListItem,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,7 +20,6 @@ import Loader from "../../../../components/dashboard/loader/loader";
 import { useNavigate, useParams } from "react-router-dom";
 import useEditOrAddData from "../../../../hooks/useAddOrEditData";
 import { updateEditOrAddTermData } from "../../../../redux/editOrAddTerm";
-import { DatePicker } from "zaman";
 import { useState } from "react";
 import { Add, Delete } from "@mui/icons-material";
 import useStudentsData from "../../../../hooks/useStudents";
@@ -29,6 +27,9 @@ import { toast } from "react-toastify";
 import updateTerm from "../../../../utils/dashboard/updateTerm";
 import addTerm from "../../../../utils/dashboard/addTerm";
 import * as XLSX from "xlsx";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 const EditOrAddTerm = ({ type }) => {
   const editOrAddData = useSelector((s) => s.editOrAddTerm);
@@ -38,11 +39,14 @@ const EditOrAddTerm = ({ type }) => {
   const navigate = useNavigate();
   const { students } = useSelector((s) => s.students);
   const getStudentsState = useStudentsData();
-  const { isLoading, isError } = useEditOrAddData(termId);
+  const { isLoading } = useEditOrAddData(termId);
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogType, setDialogType] = useState("students");
   const [isAddingPerson, setIsAddingPerson] = useState(false);
+  const theme = useTheme();
+
   const open = Boolean(anchorEl);
+
   const handleClickOpen = (e, type, isAdd) => {
     setAnchorEl(e.currentTarget);
     setDialogType(type);
@@ -64,8 +68,8 @@ const EditOrAddTerm = ({ type }) => {
   const datePickerChangeHandle = (e) => {
     dispatch(
       updateEditOrAddTermData({
-        startDate: e.from.getTime(),
-        endDate: e.to.getTime(),
+        startDate: new Date(e[0]).getTime(),
+        endDate: new Date(e[1]).getTime() ?? null,
       })
     );
   };
@@ -166,12 +170,11 @@ const EditOrAddTerm = ({ type }) => {
 
   return (
     <div className={styles.con}>
-      <div dir="rtl" className={styles.head}>
+      <Box borderBottom={1} dir="rtl" className={styles.head}>
         <Typography sx={{ m: 1 }} variant="h5">
           {type === "edit" ? "ویرایش ترم" : "افزودن ترم"}
         </Typography>
-        <Divider />
-      </div>
+      </Box>
       {getStudentsState.isLoading || isLoading ? (
         <Loader />
       ) : (
@@ -183,15 +186,22 @@ const EditOrAddTerm = ({ type }) => {
             onChange={handleInputsChange}
             name="name"
           />
-          <div className={styles.datepickerCon}>
-            <Typography>زمان شروع و پایان ترم</Typography>
+          <div className={styles.datePickerCon}>
+            <Typography>تاریخ شروع و پایان ترم</Typography>
             <DatePicker
-              defaultValue={new Date()}
-              className={styles.datepicker}
+              dateSeparator=" تا "
               range
-              from={startDate}
-              to={endDate}
+              rangeHover
+              locale={persian_fa}
+              calendar={persian}
+              value={[new Date(startDate), new Date(endDate)]}
               onChange={datePickerChangeHandle}
+              containerClassName={styles.datePickerCon}
+              inputClass={
+                theme.palette.mode == "dark"
+                  ? styles.datePickerInputDark
+                  : styles.datePickerInputLight
+              }
             />
           </div>
 
@@ -248,13 +258,13 @@ const EditOrAddTerm = ({ type }) => {
             {type == "edit" ? "ثبت تغییرات" : "ثبت ترم جدید"}
           </Button>
           <Dialog
-            dir=""
+            fullWidth
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
             scroll={"paper"}
           >
-            <DialogTitle>
+            <DialogTitle className={styles.dialogTitle}>
               {dialogType == "students"
                 ? "دانشجویان این ترم"
                 : "اساتید این ترم"}

@@ -1,12 +1,8 @@
 /* eslint-disable react/prop-types */
 import {
-  Dialog,
-  DialogTitle,
   Fade,
   IconButton,
   Link,
-  List,
-  ListItem,
   Menu,
   MenuItem,
   Paper,
@@ -22,6 +18,7 @@ import { toast } from "react-toastify";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
 import { useDispatch } from "react-redux";
 import removePreregistrationCourse from "../../../../utils/dashboard/removePreregistrationCourse";
+import CourseDialogData from "../../courseDialogData";
 
 const CourseCard = ({
   name,
@@ -132,41 +129,11 @@ const CourseCard = ({
         <MenuItem onClick={deleteTermProcess}>حذف درس</MenuItem>
       </Menu>
 
-      <Dialog
-        dir="ltr"
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-      >
-        <DialogTitle className={styles.dialogTitle}>{name}</DialogTitle>
-        <List>
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{professor}</Typography>
-              <Typography>استاد</Typography>
-            </div>
-          </ListItem>
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{capacity}</Typography>
-              <Typography>ظرفیت</Typography>
-            </div>
-          </ListItem>
-
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{occupiedCapacity}</Typography>
-              <Typography>پر شده</Typography>
-            </div>
-          </ListItem>
-
-          <ListItem>
-            <div className={styles.dialogItems}>
-              <Typography>{term}</Typography>
-              <Typography>ترم</Typography>
-            </div>
-          </ListItem>
-        </List>
-      </Dialog>
+      <CourseDialogData
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        courseData={{ professor, name, capacity, occupiedCapacity, term }}
+      />
     </Paper>
   );
 };

@@ -10,6 +10,7 @@ import {
   TextField,
   Toolbar,
   Typography,
+  useTheme,
 } from "@mui/material";
 import styles from "./index.module.css";
 import { Close } from "@mui/icons-material";
@@ -17,7 +18,7 @@ import useProfessorsData from "../../../../hooks/useProfessors";
 import { useDispatch, useSelector } from "react-redux";
 import useCoursesData from "../../../../hooks/useCourses";
 import Loader from "../../loader/loader";
-import { updateCourseData } from "../../../../redux/course";
+import { resetCourseData, updateCourseData } from "../../../../redux/course";
 import { updateProfessorsData } from "../../../../redux/professors";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
@@ -34,38 +35,33 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
   const coursesDataState = useCoursesData();
   const { isLoading } = useProfessorsData();
   const courseData = useSelector((s) => s.course);
+  const theme = useTheme().palette.mode;
   const dispatch = useDispatch();
-
   const checkInputs = () => {
     if (courseData.course == null) {
-      toast.error("اسم درس را وارد کنید", { position: "top-left" });
+      toast.error("اسم درس را وارد کنید");
       return false;
     }
     if (courseData.professor == null) {
-      toast.error("اسم استاد را وارد کنید", { position: "top-left" });
+      toast.error("اسم استاد را وارد کنید");
       return false;
     }
     if (courseData.capacity == null) {
-      toast.error("ظرفیت درس را وارد کنید", { position: "top-left" });
+      toast.error("ظرفیت درس را وارد کنید");
       return false;
     } else if (isNaN(Number(courseData.capacity))) {
-      toast.error("لطفا از عدد صحیح برای ظرفیت استفاده کنید", {
-        position: "top-left",
-      });
+      toast.error("لطفا از عدد صحیح برای ظرفیت استفاده کنید");
       return false;
     } else if (Number(courseData.capacity) < 0) {
-      toast.error("لطفا از عدد بالای 0 برای ظرفیت استفاده کنید", {
-        position: "top-left",
-      });
+      toast.error("لطفا از عدد بالای 0 برای ظرفیت استفاده کنید");
       return false;
     }
     if (courseData.classTimes.length == 0) {
-      toast.error("ساعات و روز کلاس را وارد کنید", { position: "top-left" });
+      toast.error("ساعات و روز کلاس را وارد کنید");
       return false;
     }
     if (courseData.examDate == null) {
-      console.log(courseData.examDate);
-      toast.error("تاریخ امتحان را وارد کنید", { position: "top-left" });
+      toast.error("تاریخ امتحان را وارد کنید");
       return false;
     }
     return true;
@@ -75,7 +71,7 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
     if (!checkInputs()) return;
     const loadingToast = toast("لطفا صبر کنید ...", {
       autoClose: true,
-      position: "top-left",
+
       theme: "light",
       isLoading: true,
     });
@@ -85,7 +81,7 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
         render:
           data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
         autoClose: true,
-        position: "top-left",
+
         isLoading: false,
         type: "error",
       });
@@ -94,13 +90,14 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
         render: data.message ?? "ورود موفقیت آمیز ",
         type: "success",
         autoClose: true,
-        position: "top-left",
+
         isLoading: false,
       });
 
       setTimeout(() => {
         toast.dismiss(loadingToast);
         closeHandle();
+        dispatch(resetCourseData());
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
@@ -109,7 +106,6 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
     }
   };
 
-  console.log(courseData);
   return (
     <Dialog dir="rtl" fullScreen open={open} onClose={closeHandle}>
       <AppBar sx={{ position: "relative" }}>
@@ -120,6 +116,7 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
             onClick={() => {
               dispatch(updateCourseData({ isDataLoadedBefore: false }));
               dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
+              dispatch(resetCourseData());
               closeHandle();
             }}
             aria-label="close"
@@ -140,7 +137,6 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
             <Autocomplete
               fullWidth
               disablePortal
-              // value={courseData}
               onChange={(e, newData) => {
                 dispatch(updateCourseData({ course: newData }));
               }}
@@ -179,6 +175,13 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
               fullWidth
             />
             <DatePicker
+              placeholder="تاریخ کلاس ها"
+              inputClass={
+                theme == "dark"
+                  ? styles.datePickerInputDark
+                  : styles.datePickerInputLight
+              }
+              containerClassName={styles.datePickerCon}
               value={courseData.classTimes}
               onChange={(e) => {
                 dispatch(updateCourseData({ classTimes: e }));
@@ -191,8 +194,14 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
               name="classTimes"
             />
           </Container>
-          <Container>
+          <Container className={styles.formHolder}>
             <DatePicker
+              placeholder="تاریخ امتحان"
+              inputClass={
+                theme == "dark"
+                  ? styles.datePickerInputDark
+                  : styles.datePickerInputLight
+              }
               value={courseData.examDate}
               onChange={(e) => {
                 dispatch(updateCourseData({ examDate: e }));
@@ -204,7 +213,8 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
               name="examDay"
             />
           </Container>
-          <Container>
+
+          <Container sx={{ mt: 2 }}>
             <Button onClick={addCourseProcess} variant="contained">
               ثبت درس
             </Button>

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, Link, Paper, Typography } from "@mui/material";
 import styles from "./index.module.css";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -78,16 +78,11 @@ const CourseCard = ({
     }
   };
   return (
-    <Paper
-      className={styles.con}
-      variant="outlined"
-      onClick={() => {
-        if (url == null) return;
-        navigate(url, { replace: true });
-      }}
-    >
+    <Paper className={styles.con} variant="outlined">
       <div dir="rtl" className={styles.top}>
-        <Typography variant="body1">{name}</Typography>
+        <Link href={url}>
+          <Typography variant="body1">{name}</Typography>
+        </Link>
         {ispre.is || isreg.is ? (
           <Typography variant="caption">{professor}</Typography>
         ) : (

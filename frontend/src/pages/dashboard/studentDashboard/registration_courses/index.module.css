@@ -67,6 +67,16 @@
   .items {
     grid-template-columns: auto auto;
   }
+  .top {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .top > :last-child {
+    margin-top: 1rem;
+    width: 100%;
+  }
 }
 @media (max-width: 500px) {
   .main {

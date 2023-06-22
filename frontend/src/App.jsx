@@ -42,7 +42,6 @@ function App() {
         limit={3}
         bodyClassName={"toasts"}
         rtl
-        autoClose
         position="top-left"
       />
       <CssBaseline />

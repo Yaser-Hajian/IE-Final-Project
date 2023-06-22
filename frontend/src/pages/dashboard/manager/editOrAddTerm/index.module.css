@@ -9,7 +9,7 @@
 }
 
 .main {
-  margin: 1rem 0;
+  margin: 2rem 0;
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -22,20 +22,31 @@
   width: 100%;
 }
 
-.datepicker {
-  /* top: 22rem; */
-  width: 100%;
-}
-
-.datepickerCon input {
+.datePickerCon {
   width: 100%;
   font-family: Vazirmatn;
-  margin: 0.5rem 0;
-  padding: 0.6rem;
+  margin-bottom: 1rem;
 }
-.datepickerCon {
+
+.datePickerInputLight {
+  border-radius: 2px;
+  padding: 1rem 0.5rem;
+  background-color: transparent;
   width: 100%;
-  margin: 1rem 0;
+  color: black;
+  border: 1px solid gray;
+}
+.datePickerInputDark {
+  border-radius: 2px;
+  padding: 1rem 0.5rem;
+  background-color: transparent;
+  width: 100%;
+  color: white;
+  border: 1px solid gray;
+}
+
+.dialogTitle {
+  direction: rtl;
 }
 
 .dialogOpener {

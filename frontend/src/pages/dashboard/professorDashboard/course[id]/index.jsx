@@ -1,28 +1,26 @@
-/* eslint-disable no-unused-vars */
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
-import useTermIdData from "../../../../hooks/useTermId";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import SearchBox from "../../../../components/dashboard/searchBox";
-import { updateRegistrationsData } from "../../../../redux/registrations";
 import Empty from "../../../../components/dashboard/empty/empty";
 import useCourseRegistrationsData from "../../../../hooks/useCourseRegistrations";
 import StudentCard from "../../../../components/dashboard/studentCard";
 import { updateCourseIdData } from "../../../../redux/courseId";
+import usePagination from "../../../../hooks/usePagination";
+import Pagination from "../../../../components/dashboard/pagination";
 
 const ProfessorDashboardCourseId = () => {
   const { courseId } = useParams();
   const courseRegistrationData = useSelector((s) => s.courseId);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { isLoading, isError } = useCourseRegistrationsData(
-    courseId,
-    searchQuery
+  const { isLoading } = useCourseRegistrationsData(courseId, searchQuery);
+  const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
+    courseRegistrationData.courseRegistrations.length,
+    6
   );
-
   const dispatch = useDispatch();
 
   const startSearch = () => {
@@ -43,8 +41,8 @@ const ProfessorDashboardCourseId = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div dir="rtl" className={styles.con}>
-          <div className={styles.head}>
+        <div dir="" className={styles.con}>
+          <Box borderBottom={1} className={styles.head}>
             <div>
               <Typography variant="h5">
                 {courseRegistrationData.name}
@@ -54,7 +52,7 @@ const ProfessorDashboardCourseId = () => {
             <Typography>
               {courseRegistrationData.occupiedCapacity}نفر ثبت نام کرده اند
             </Typography>
-          </div>
+          </Box>
           <div className={styles.searchBoxHolder}>
             <SearchBox
               placeholder="جست و جوی دانشجو"
@@ -63,16 +61,18 @@ const ProfessorDashboardCourseId = () => {
               value={searchQuery}
             />
           </div>
-          <div dir="ltr" className={styles.top}></div>
-          <div className={styles.items}>
-            {courseRegistrationData.registrations.length == 0 ? (
+          <div dir="rtl" className={styles.items}>
+            {courseRegistrationData.courseRegistrations.length == 0 ? (
               <Empty />
             ) : (
-              courseRegistrationData.registrations.map((reg, i) => {
-                return <StudentCard key={i} {...reg} />;
-              })
+              courseRegistrationData.courseRegistrations
+                .slice(sliceInit, sliceFinish)
+                .map((reg, i) => {
+                  return <StudentCard isItControlled key={i} {...reg} />;
+                })
             )}
           </div>
+          <Pagination page={page} setPage={setPage} count={count} />
         </div>
       )}
     </>
