@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const deleteProfessor = async (professorId) => {
   try {
@@ -6,7 +7,7 @@ const deleteProfessor = async (professorId) => {
       apiBaseUrl + `/admin/professor/${professorId}`,
       {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

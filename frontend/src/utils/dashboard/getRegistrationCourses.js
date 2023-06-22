@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const getRegistrationCourses = async (id, searchQuery) => {
   try {
@@ -7,7 +8,7 @@ const getRegistrationCourses = async (id, searchQuery) => {
     const response = await fetch(
       apiBaseUrl + `/term/${id}/registration_courses?${queries.toString()}`,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

@@ -1,10 +1,11 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const deleteManager = async (managerId) => {
   try {
     const response = await fetch(apiBaseUrl + `/admin/manager/${managerId}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
     return data;

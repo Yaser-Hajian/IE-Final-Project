@@ -18,6 +18,7 @@ import CourseHeadInfo from "../../../../components/dashboard/courseHeadInfo";
 import CourseDialogData from "../../../../components/dashboard/courseDialogData";
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
+import useAddCourseToLastSeen from "../../../../hooks/useAddCourseToLastSeen";
 
 const ManagerCoursePreregistrations = () => {
   const coursePreregistrations = useSelector((s) => s.coursePreregistrations);
@@ -39,6 +40,7 @@ const ManagerCoursePreregistrations = () => {
     coursePreregistrations.coursePreregistrations.length,
     6
   );
+  useAddCourseToLastSeen(courseId);
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);

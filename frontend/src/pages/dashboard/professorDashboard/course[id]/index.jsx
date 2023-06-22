@@ -11,16 +11,18 @@ import StudentCard from "../../../../components/dashboard/studentCard";
 import { updateCourseIdData } from "../../../../redux/courseId";
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
+import useAddCourseToLastSeen from "../../../../hooks/useAddCourseToLastSeen";
 
 const ProfessorDashboardCourseId = () => {
   const { courseId } = useParams();
-  const courseRegistrationData = useSelector((s) => s.courseId);
+  const courseRegistrationData = useSelector((s) => s.courseRegistrations);
   const [searchQuery, setSearchQuery] = useState("");
   const { isLoading } = useCourseRegistrationsData(courseId, searchQuery);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     courseRegistrationData.courseRegistrations.length,
     6
   );
+  useAddCourseToLastSeen(courseId);
   const dispatch = useDispatch();
 
   const startSearch = () => {

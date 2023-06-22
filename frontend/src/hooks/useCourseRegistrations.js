@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import getCourseRegistrations from "../utils/dashboard/getCourseRegistrations";
 import { updateCourseRegistrationsData } from "../redux/courseRegistrations";
 
-const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
+const useCourseRegistrationsData = (courseId, searchQuery, sortType) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -17,16 +17,16 @@ const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
       }
       setIsLoading(true);
       try {
-        const registerData = await getCourseRegistrations(
-          termId,
+        const courseRegistrationData = await getCourseRegistrations(
+          courseId,
           searchQuery,
           sortType
         );
-        if (registerData.error) {
+        if (courseRegistrationData.error) {
           setIsError(true);
         }
 
-        const apiCallData = { ...registerData.data };
+        const apiCallData = { ...courseRegistrationData.data };
         dispatch(
           updateCourseRegistrationsData({
             ...apiCallData,
@@ -39,7 +39,7 @@ const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
       }
     }
     fetchData();
-  }, [dispatch, termId, isDataLoadedBefore]);
+  }, [dispatch, courseId, isDataLoadedBefore]);
 
   return { isLoading, isError };
 };

@@ -18,6 +18,7 @@ import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
 import FilterMenu from "../../../../components/dashboard/filterMenu";
 import { updateCourseRegistrationsData } from "../../../../redux/courseRegistrations";
+import useAddCourseToLastSeen from "../../../../hooks/useAddCourseToLastSeen";
 
 const ManagerCourseRegistrations = () => {
   const courseRegistrations = useSelector((s) => s.courseRegistrations);
@@ -40,7 +41,7 @@ const ManagerCourseRegistrations = () => {
     courseRegistrations.courseRegistrations.length,
     6
   );
-
+  useAddCourseToLastSeen(courseId);
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);

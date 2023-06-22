@@ -15,6 +15,7 @@ import TermHeadInfo from "../../../../components/dashboard/termHeadInfo";
 import TermDialogData from "../../../../components/dashboard/termDialogData";
 import FilterMenu from "../../../../components/dashboard/filterMenu";
 import usePagination from "../../../../hooks/usePagination";
+import useAddTermToLastSeen from "../../../../hooks/useAddTermToLastSeen";
 
 const ProfessorDashboardTermId = () => {
   const { termId } = useParams();
@@ -29,6 +30,7 @@ const ProfessorDashboardTermId = () => {
     searchQuery,
     sortType
   );
+  useAddTermToLastSeen(termId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     registrationData.registrations.length,
     6

@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const rejectCourseRegistration = async (registrationId) => {
   try {
@@ -7,7 +8,7 @@ const rejectCourseRegistration = async (registrationId) => {
       {
         method: "PUT",
         body: JSON.stringify({ isPass: false }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

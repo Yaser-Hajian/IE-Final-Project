@@ -1,10 +1,11 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const getManager = async (managerId) => {
   try {
     console.log("HERE", managerId);
     const response = await fetch(apiBaseUrl + `/admin/manager/${managerId}`, {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
     return data;

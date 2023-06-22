@@ -1,11 +1,12 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const getCourses = async (coursesList = []) => {
   try {
     const query =
       coursesList.length == 0 ? "" : `?search=${coursesList.join(",")}`;
     const response = await fetch(apiBaseUrl + `/courses${query}`, {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
     return data;

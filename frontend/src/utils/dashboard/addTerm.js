@@ -1,11 +1,12 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const addTerm = async (termData) => {
   try {
     const response = await fetch(apiBaseUrl + `/term`, {
       method: "POST",
       body: JSON.stringify({ ...termData }),
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
     return data;

@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const removePreregistrationCourse = async (termId, courseId) => {
   try {
@@ -7,7 +8,7 @@ const removePreregistrationCourse = async (termId, courseId) => {
       {
         method: "DELETE",
         body: JSON.stringify({ courseId }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

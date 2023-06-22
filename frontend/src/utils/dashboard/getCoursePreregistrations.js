@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const getCoursePreregistrations = async (id, searchQ, sortType) => {
   try {
@@ -8,7 +9,7 @@ const getCoursePreregistrations = async (id, searchQ, sortType) => {
     const response = await fetch(
       apiBaseUrl + `/course/${id}/preregistrations?${queries.toString()}`,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

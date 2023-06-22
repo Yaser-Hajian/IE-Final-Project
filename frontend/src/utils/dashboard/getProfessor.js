@@ -1,11 +1,12 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const getProfessor = async (professorId) => {
   try {
     const response = await fetch(
       apiBaseUrl + `/admin/professor/${professorId}`,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

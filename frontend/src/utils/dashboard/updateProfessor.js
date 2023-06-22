@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const updateProfessor = async (professorId, professorData) => {
   try {
@@ -7,7 +8,7 @@ const updateProfessor = async (professorId, professorData) => {
       {
         method: "PUT",
         body: JSON.stringify({ ...professorData }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const getPreregistrations = async (id, searchQuery) => {
   try {
@@ -6,7 +7,7 @@ const getPreregistrations = async (id, searchQuery) => {
     const response = await fetch(
       apiBaseUrl + `/term/${id}/preregistrations${query}`,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();

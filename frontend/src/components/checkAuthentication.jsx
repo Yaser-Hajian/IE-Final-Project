@@ -8,6 +8,10 @@ const CheckAuthentication = ({ children }) => {
   const isLogin = /^\/login/.test(pathname);
   const isAuthenticated = useAuth();
   const userType = useUserType();
+  const checkAccess = new RegExp(`/dashboard/${userType}`);
+  if (!checkAccess.test(pathname) && !isLogin) {
+    return <Navigate to={`/dashboard/${userType}`} replace />;
+  }
   if (isAuthenticated) {
     return isLogin || pathname == "/" ? (
       <Navigate to={`/dashboard/${userType}`} replace />

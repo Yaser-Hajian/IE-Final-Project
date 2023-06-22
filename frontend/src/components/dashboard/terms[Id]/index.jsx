@@ -10,13 +10,14 @@ import useTermIdData from "../../../hooks/useTermId";
 import Loader from "../loader/loader";
 import TermDialogData from "../termDialogData";
 import TermHeadInfo from "../termHeadInfo";
+import useAddTermToLastSeen from "../../../hooks/useAddTermToLastSeen";
 
 const TermId = ({ userType }) => {
   const { termId } = useParams();
   const termIdData = useSelector((s) => s.termId);
   const { isLoading } = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  useAddTermToLastSeen(termId);
   return (
     <>
       {isLoading ? (

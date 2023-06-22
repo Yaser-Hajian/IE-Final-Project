@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "../../config";
+import generateHeaders from "../generateHeaders";
 
 const getPreregistrationCourses = async (
   termId,
@@ -13,7 +14,7 @@ const getPreregistrationCourses = async (
       apiBaseUrl +
         `/term/${termId}/preregistration_courses?${queries.toString()}`,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );
     const data = await response.json();
