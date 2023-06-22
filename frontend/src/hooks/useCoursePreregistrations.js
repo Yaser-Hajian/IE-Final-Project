@@ -27,7 +27,6 @@ const useCoursePreregistrations = (termId, searchQuery, sortType) => {
         }
 
         const apiCallData = { ...preregisterData.data };
-        console.log(apiCallData);
         dispatch(
           updateCoursePreregistrationsData({
             ...apiCallData,

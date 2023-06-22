@@ -22,6 +22,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 2rem 0;
 }
 .items > * {
   margin-top: 1rem;
@@ -48,6 +49,9 @@
   }
   .items {
     grid-template-columns: auto auto;
+  }
+  .items > * {
+    width: 100%;
   }
 }
 @media (max-width: 500px) {

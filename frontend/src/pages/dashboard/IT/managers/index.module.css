@@ -13,7 +13,6 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid;
 }
 
 .main {
@@ -115,6 +114,22 @@
     grid-template-columns: auto auto;
   }
 }
+
+@media (max-width: 600px) {
+  .top {
+    margin: 1rem 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .top > :last-child {
+    margin-top: 0.5rem;
+  }
+  .top > :first-child {
+    width: 100%;
+  }
+}
+
 @media (max-width: 500px) {
   .main {
     grid-template-columns: auto;

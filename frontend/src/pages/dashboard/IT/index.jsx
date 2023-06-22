@@ -15,7 +15,7 @@ const ITDashboard = () => {
         <Loader loadingText="داشبورد در حال لود شدن" />
       ) : (
         <div className={styles.con}>
-          <DashboardHeader userType={"it"} />
+          <DashboardHeader userType={"admin"} />
           <Outlet />
           <Footer />
         </div>

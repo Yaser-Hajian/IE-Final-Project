@@ -19,6 +19,7 @@ import { updatePreregistrationCoursesData } from "../../../../redux/preregistrat
 import { useDispatch } from "react-redux";
 import removePreregistrationCourse from "../../../../utils/dashboard/removePreregistrationCourse";
 import CourseDialogData from "../../courseDialogData";
+import { updateRegistrationCoursesData } from "../../../../redux/registrationCourses";
 
 const CourseCard = ({
   name,
@@ -41,7 +42,7 @@ const CourseCard = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const deleteTermProcess = async () => {
+  const deleteCourseProcess = async () => {
     const loadingToast = toast("لطفا صبر کنید ...", {
       autoClose: true,
       position: "top-left",
@@ -72,6 +73,7 @@ const CourseCard = ({
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
+        dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
       }, 1500);
     }
   };
@@ -126,7 +128,7 @@ const CourseCard = ({
         >
           اطلاعات کامل
         </MenuItem>
-        <MenuItem onClick={deleteTermProcess}>حذف درس</MenuItem>
+        <MenuItem onClick={deleteCourseProcess}>حذف درس</MenuItem>
       </Menu>
 
       <CourseDialogData

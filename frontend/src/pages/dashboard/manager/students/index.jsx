@@ -1,23 +1,27 @@
-/* eslint-disable no-unused-vars */
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import StudentCard from "../../../../components/dashboard/studentCard";
 import useStudentsData from "../../../../hooks/useStudents";
 import { updateStudentsData } from "../../../../redux/students";
+import Pagination from "../../../../components/dashboard/pagination";
+import usePagination from "../../../../hooks/usePagination";
 
 const ManagerStudents = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const studentsData = useSelector((s) => s.students);
-  const { isLoading, isError } = useStudentsData(searchQuery);
-
+  const { isLoading } = useStudentsData(searchQuery);
+  const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
+    studentsData.students.length,
+    6
+  );
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
     dispatch(
@@ -88,34 +92,40 @@ const ManagerStudents = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div dir="rtl" className={styles.con}>
-          <div className={styles.head}>
+        <div className={styles.con}>
+          <Box borderBottom={1} dir="rtl" className={styles.head}>
             <Typography variant="h5">لیست دانشجویان</Typography>
-          </div>
-          <div dir="ltr" className={styles.top}>
-            <div>
-              <SearchBox
-                onChange={changeSearchBox}
-                startSearch={startSearch}
-                value={searchQuery}
-              />
+          </Box>
+          <div dir="rtl" className={styles.top}>
+            <SearchBox
+              onChange={changeSearchBox}
+              startSearch={startSearch}
+              value={searchQuery}
+            />
 
-              <Button onClick={downloadExcel} sx={{ mt: 2 }} variant="outlined">
-                دانلود اکسل
-              </Button>
-            </div>
+            <Button onClick={downloadExcel} variant="outlined">
+              دانلود اکسل
+            </Button>
           </div>
-          <div className={styles.items}>
+          <div dir="rtl" className={styles.items}>
             {studentsData.students.length == 0 ? (
               <Empty />
             ) : (
-              studentsData.students.map((professor, i) => {
-                return (
-                  <StudentCard isPreregistrationCard key={i} {...professor} />
-                );
-              })
+              studentsData.students
+                .slice(sliceInit, sliceFinish)
+                .map((professor, i) => {
+                  return (
+                    <StudentCard
+                      isItControlled
+                      isPreregistrationCard
+                      key={i}
+                      {...professor}
+                    />
+                  );
+                })
             )}
           </div>
+          <Pagination count={count} page={page} setPage={setPage} />
         </div>
       )}
     </>

@@ -15,7 +15,7 @@ const userNavigation = {
       { name: "لیست اساتید", url: "/dashboard/manager/professors" },
     ],
   },
-  it: {
+  admin: {
     position: "مدیر It",
     menuItems: [
       { name: "لیست دانشجویان", url: "/dashboard/admin/students" },

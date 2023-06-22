@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
@@ -13,15 +12,21 @@ import useStudentsData from "../../../../hooks/useStudents";
 import { updateStudentsData } from "../../../../redux/students";
 import addStudents from "../../../../utils/dashboard/addStudents";
 import AddOrEditStudent from "../../../../components/dashboard/IT/addOrEditStudent";
+import { Add } from "@mui/icons-material";
+import usePagination from "../../../../hooks/usePagination";
+import Pagination from "../../../../components/dashboard/pagination";
 
 const ITStudents = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const studentsData = useSelector((s) => s.students);
-  const { isLoading, isError } = useStudentsData(searchQuery);
+  const { isLoading } = useStudentsData(searchQuery);
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
-
+  const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
+    studentsData.students.length,
+    6
+  );
   const closeHandle = () => {
     setOpen(false);
   };
@@ -99,9 +104,11 @@ const ITStudents = () => {
         <Loader />
       ) : (
         <div dir="rtl" className={styles.con}>
-          <div className={styles.head}>
+          <Box borderBottom={1} className={styles.head}>
             <Typography variant="h5">لیست دانشجویان</Typography>
             <Button
+              dir="ltr"
+              startIcon={<Add />}
               onClick={() => {
                 setOpen(true);
                 setIsEdit({ isEdit: false });
@@ -109,14 +116,14 @@ const ITStudents = () => {
             >
               افزودن دانشجو
             </Button>
-          </div>
+          </Box>
           <div className={styles.top}>
             <SearchBox
+              placeholder="جست جوی دانشجو بر اساس اسم"
               onChange={changeSearchBox}
               startSearch={startSearch}
               value={searchQuery}
             />
-
             <Button className={styles.fileInputCon}>
               آپلود اکسل
               {
@@ -133,21 +140,24 @@ const ITStudents = () => {
             {studentsData.students.length == 0 ? (
               <Empty />
             ) : (
-              studentsData.students.map((professor, i) => {
-                return (
-                  <StudentCard
-                    editOrAdd={setIsEdit}
-                    openDialog={setOpen}
-                    isITControlled
-                    isPreregistrationCard
-                    key={i}
-                    {...professor}
-                    userType={"student"}
-                  />
-                );
-              })
+              studentsData.students
+                .slice(sliceInit, sliceFinish)
+                .map((professor, i) => {
+                  return (
+                    <StudentCard
+                      editOrAdd={setIsEdit}
+                      openDialog={setOpen}
+                      isITControlled
+                      isPreregistrationCard
+                      key={i}
+                      {...professor}
+                      userType={"student"}
+                    />
+                  );
+                })
             )}
           </div>
+          <Pagination count={count} page={page} setPage={setPage} />
           {open && (
             <AddOrEditStudent
               id={isEdit.id}

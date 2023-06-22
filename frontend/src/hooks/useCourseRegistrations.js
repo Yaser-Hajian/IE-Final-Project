@@ -2,13 +2,13 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import getCourseRegistrations from "../utils/dashboard/getCourseRegistrations";
-import { updateCourseIdData } from "../redux/courseId";
+import { updateCourseRegistrationsData } from "../redux/courseRegistrations";
 
 const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isDataLoadedBefore } = useSelector((s) => s.courseId);
+  const { isDataLoadedBefore } = useSelector((s) => s.courseRegistrations);
   useEffect(() => {
     async function fetchData() {
       if (isDataLoadedBefore) {
@@ -22,14 +22,13 @@ const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
           searchQuery,
           sortType
         );
-        console.log(registerData);
         if (registerData.error) {
           setIsError(true);
         }
 
         const apiCallData = { ...registerData.data };
         dispatch(
-          updateCourseIdData({
+          updateCourseRegistrationsData({
             ...apiCallData,
             isDataLoadedBefore: true,
           })

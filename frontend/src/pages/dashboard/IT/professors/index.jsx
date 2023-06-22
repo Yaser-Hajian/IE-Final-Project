@@ -3,7 +3,7 @@ import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
@@ -12,6 +12,9 @@ import useProfessorsData from "../../../../hooks/useProfessors";
 import { updateProfessorsData } from "../../../../redux/professors";
 import AddOrEditProfessor from "../../../../components/dashboard/IT/addOrEditProfessor";
 import addProfessors from "../../../../utils/dashboard/addProfessors";
+import usePagination from "../../../../hooks/usePagination";
+import Pagination from "../../../../components/dashboard/pagination";
+import { Add } from "@mui/icons-material";
 
 const ITProfessors = () => {
   const dispatch = useDispatch();
@@ -20,7 +23,10 @@ const ITProfessors = () => {
   const { isLoading } = useProfessorsData(searchQuery);
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
-
+  const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
+    professorsData.professors.length,
+    6
+  );
   const closeHandle = () => {
     setOpen(false);
     setIsEdit({ isEdit: false });
@@ -98,9 +104,11 @@ const ITProfessors = () => {
         <Loader />
       ) : (
         <div dir="rtl" className={styles.con}>
-          <div className={styles.head}>
+          <Box borderBottom={1} className={styles.head}>
             <Typography variant="h5">لیست اساتید</Typography>
             <Button
+              dir="ltr"
+              startIcon={<Add />}
               onClick={() => {
                 setIsEdit({ isEdit: false });
                 setOpen(true);
@@ -108,9 +116,10 @@ const ITProfessors = () => {
             >
               افزودن استاد
             </Button>
-          </div>
+          </Box>
           <div className={styles.top}>
             <SearchBox
+              placeholder="جست جوی استاد بر اساس اسم"
               onChange={changeSearchBox}
               startSearch={startSearch}
               value={searchQuery}
@@ -132,21 +141,25 @@ const ITProfessors = () => {
             {professorsData.professors.length == 0 ? (
               <Empty />
             ) : (
-              professorsData.professors.map((professor, i) => {
-                return (
-                  <StudentCard
-                    editOrAdd={setIsEdit}
-                    openDialog={setOpen}
-                    isITControlled
-                    isPreregistrationCard
-                    key={i}
-                    {...professor}
-                    userType={"professor"}
-                  />
-                );
-              })
+              professorsData.professors
+                .slice(sliceInit, sliceFinish)
+                .map((professor, i) => {
+                  return (
+                    <StudentCard
+                      editOrAdd={setIsEdit}
+                      openDialog={setOpen}
+                      isITControlled
+                      isPreregistrationCard
+                      key={i}
+                      {...professor}
+                      userType={"professor"}
+                    />
+                  );
+                })
             )}
           </div>
+          <Pagination count={count} page={page} setPage={setPage} />
+
           {open && (
             <AddOrEditProfessor
               id={isEdit.id}

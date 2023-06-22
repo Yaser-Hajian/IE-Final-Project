@@ -6,6 +6,7 @@ const Pagination = ({ count, page, setPage }) => {
     <>
       {count != 1 && (
         <MuiPagination
+          dir="ltr"
           count={count}
           page={page}
           onChange={(e, v) => setPage(v)}

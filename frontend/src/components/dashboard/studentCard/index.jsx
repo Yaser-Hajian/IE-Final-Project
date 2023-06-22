@@ -12,6 +12,7 @@ import deleteProfessor from "../../../utils/dashboard/deleteProfessor";
 import deleteManager from "../../../utils/dashboard/deleteManager";
 import { updateProfessorsData } from "../../../redux/professors";
 import { updateManagersData } from "../../../redux/managers";
+import { updateCourseRegistrationsData } from "../../../redux/courseRegistrations";
 
 const StudentCard = ({
   name,
@@ -57,6 +58,7 @@ const StudentCard = ({
       setTimeout(() => {
         toast.dismiss(loadingToast);
         dispatch(updateCourseIdData({ isDataLoadedBefore: false }));
+        dispatch(updateCourseRegistrationsData({ isDataLoadedBefore: false }));
       }, 1500);
     }
   };
