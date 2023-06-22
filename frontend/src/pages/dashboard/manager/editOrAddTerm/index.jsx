@@ -26,17 +26,15 @@ import useStudentsData from "../../../../hooks/useStudents";
 import { toast } from "react-toastify";
 import updateTerm from "../../../../utils/dashboard/updateTerm";
 import addTerm from "../../../../utils/dashboard/addTerm";
-import * as XLSX from "xlsx";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import readExcel from "../../../../utils/readExcel";
 
 const EditOrAddTerm = ({ type }) => {
   const editOrAddData = useSelector((s) => s.editOrAddTerm);
   const { termId } = useParams();
-  const dispatch = useDispatch();
   const { name, startDate, endDate } = useSelector((s) => s.editOrAddTerm);
-  const navigate = useNavigate();
   const { students } = useSelector((s) => s.students);
   const getStudentsState = useStudentsData();
   const { isLoading } = useEditOrAddData(termId);
@@ -44,8 +42,9 @@ const EditOrAddTerm = ({ type }) => {
   const [dialogType, setDialogType] = useState("students");
   const [isAddingPerson, setIsAddingPerson] = useState(false);
   const theme = useTheme();
-
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClickOpen = (e, type, isAdd) => {
     setAnchorEl(e.currentTarget);
@@ -108,64 +107,47 @@ const EditOrAddTerm = ({ type }) => {
     return true;
   };
 
-  const addOrEditTermProcess = async () => {
+  const updateTermProcess = () => {
     if (!checkInputs()) return;
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-    const data =
-      type == "edit"
-        ? await updateTerm(termId, editOrAddData)
-        : await addTerm(editOrAddData);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
-
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
+    toast.promise(
+      updateTerm(termId, editOrAddData).then(() => {
         navigate("/dashboard/manager/terms");
-      }, 1500);
-    }
+      }),
+      {
+        error: "یه مشکلی پیش اومده لطفا دوباره تلاش کنید",
+        success: "با موفقیت ترم آپدیت شد",
+        pending: "لطفا منتظر بمانید",
+      }
+    );
   };
 
-  const excelAddHandle = (e, type) => {
-    const file = e.currentTarget.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      const newList = [...editOrAddData[type]];
-      for (let row in excelData) {
-        if (row != 0 && excelData[row].length != 0) {
-          const newPerson = {};
-          for (let item in excelData[row]) {
-            newPerson[excelData[0][item]] = excelData[row][item];
-          }
-          newList.push(newPerson);
-        }
+  const AddTermProcess = () => {
+    if (!checkInputs()) return;
+    toast.promise(
+      addTerm(editOrAddData).then(() => {
+        navigate("/dashboard/manager/terms");
+      }),
+      {
+        error: "یه مشکلی پیش اومده لطفا دوباره تلاش کنید",
+        success: "با موفقیت ترم اضافه شد",
+        pending: "لطفا منتظر بمانید",
       }
-      dispatch(updateEditOrAddTermData({ [type]: newList }));
-    };
-    reader.readAsArrayBuffer(file);
+    );
+  };
+
+  const excelAddHandle = async (e, type) => {
+    const file = e.currentTarget.files[0];
+    toast.promise(
+      readExcel(file).then((res) => {
+        const newData = [...res, ...editOrAddData[type]];
+        dispatch(updateEditOrAddTermData({ [type]: newData }));
+      }),
+      {
+        error: "یه مشکلی پیش اومده لطفا دوباره تلاش کن",
+        pending: "لطفا منتظر بمانید",
+        success: "با موفقیت فایل اکسل بارگذاری شد",
+      }
+    );
   };
 
   return (
@@ -254,7 +236,10 @@ const EditOrAddTerm = ({ type }) => {
               </Button>
             </div>
           </div>
-          <Button variant="contained" onClick={addOrEditTermProcess}>
+          <Button
+            variant="contained"
+            onClick={type == "edit" ? updateTermProcess : AddTermProcess}
+          >
             {type == "edit" ? "ثبت تغییرات" : "ثبت ترم جدید"}
           </Button>
           <Dialog

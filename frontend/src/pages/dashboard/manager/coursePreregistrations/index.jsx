@@ -28,7 +28,6 @@ const ManagerCoursePreregistrations = () => {
   const [sortType, setSortType] = useState(null);
   const courseData = useSelector((s) => s.course);
   const courseDataState = useCourseData(courseId);
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { isLoading } = useCoursePreregistrations(
