@@ -2,29 +2,29 @@ import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import * as XLSX from "xlsx";
 import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import StudentCard from "../../../../components/dashboard/studentCard";
-import useProfessorsData from "../../../../hooks/useProfessors";
-import { updateProfessorsData } from "../../../../redux/professors";
-import AddOrEditProfessor from "../../../../components/dashboard/IT/addOrEditProfessor";
-import addProfessors from "../../../../utils/dashboard/addProfessors";
-import usePagination from "../../../../hooks/usePagination";
+import useManagersData from "../../../../hooks/useManagers";
+import { updateManagersData } from "../../../../redux/managers";
+import addManagers from "../../../../utils/dashboard/addManagers";
+import AddOrEditManager from "../../../../components/dashboard/IT/addOrEditManager";
 import Pagination from "../../../../components/dashboard/pagination";
+import usePagination from "../../../../hooks/usePagination";
 import { Add } from "@mui/icons-material";
+import readExcel from "../../../../utils/readExcel";
 
-const ITProfessors = () => {
+const ITManagers = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-  const professorsData = useSelector((s) => s.professors);
-  const { isLoading } = useProfessorsData(searchQuery);
+  const managersData = useSelector((s) => s.managers);
+  const { isLoading } = useManagersData(searchQuery);
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
-    professorsData.professors.length,
+    managersData.managers.length,
     6
   );
   const closeHandle = () => {
@@ -34,7 +34,7 @@ const ITProfessors = () => {
   const startSearch = () => {
     if (searchQuery.trim() == "") return;
     dispatch(
-      updateProfessorsData({
+      updateManagersData({
         isDataLoadedBefore: false,
       })
     );
@@ -44,58 +44,31 @@ const ITProfessors = () => {
     setSearchQuery(e.currentTarget.value);
   };
 
-  const uploadExcel = async (e) => {
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-
+  const readExcelProcess = (e) => {
     const file = e.currentTarget.files[0];
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      const newList = [];
-      for (let row in excelData) {
-        if (row != 0 && excelData[row].length != 0) {
-          const newPerson = {};
-          for (let item in excelData[row]) {
-            newPerson[excelData[0][item]] = excelData[row][item];
-          }
-          newList.push(newPerson);
-        }
+    toast.promise(
+      readExcel(file).then((res) => {
+        addManagersProcess(res);
+      }),
+      {
+        error: "یه مشکلی پیش اومده لطفا دوباره تلاش کن",
+        pending: "لطفا منتظر بمانید",
+        success: "با موفقیت فایل اکسل بارگذاری شد",
       }
-      const apiCallData = await addProfessors(newList);
-      if (apiCallData.error === true) {
-        toast.update(loadingToast, {
-          render:
-            apiCallData.errorMessage ??
-            "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-          autoClose: true,
-          position: "top-left",
-          isLoading: false,
-          type: "error",
-        });
-      } else {
-        toast.update(loadingToast, {
-          render: apiCallData.message ?? "ورود موفقیت آمیز ",
-          type: "success",
-          autoClose: true,
-          position: "top-left",
-          isLoading: false,
-        });
+    );
+  };
 
-        setTimeout(() => {
-          toast.dismiss(loadingToast);
-          dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
-        }, 1500);
+  const addManagersProcess = (managers) => {
+    toast.promise(
+      addManagers(managers).then(() => {
+        dispatch(updateManagersData({ isDataLoadedBefore: false }));
+      }),
+      {
+        error: "یه مشکلی پیش اومده لطفا دوباره تلاش کن",
+        pending: "لطفا منتظر بمانید در حال اضافه کردن مدیر ها به دیتابیس",
+        success: "با موفقیت مدیر ها به دیتابیس اضافه شدند",
       }
-    };
-    reader.readAsArrayBuffer(file);
+    );
   };
 
   return (
@@ -105,7 +78,7 @@ const ITProfessors = () => {
       ) : (
         <div dir="rtl" className={styles.con}>
           <Box borderBottom={1} className={styles.head}>
-            <Typography variant="h5">لیست اساتید</Typography>
+            <Typography variant="h5">لیست مدیران</Typography>
             <Button
               dir="ltr"
               startIcon={<Add />}
@@ -114,23 +87,22 @@ const ITProfessors = () => {
                 setOpen(true);
               }}
             >
-              افزودن استاد
+              افزودن مدیر
             </Button>
           </Box>
           <div className={styles.top}>
             <SearchBox
-              placeholder="جست جوی استاد بر اساس اسم"
+              placeholder="جست جوی مدیر بر اساس اسم"
               onChange={changeSearchBox}
               startSearch={startSearch}
               value={searchQuery}
             />
-
             <Button className={styles.fileInputCon}>
               آپلود اکسل
               {
                 <input
                   accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                  onChange={(e) => uploadExcel(e)}
+                  onChange={readExcelProcess}
                   className={styles.fileInput}
                   type="file"
                 />
@@ -138,12 +110,12 @@ const ITProfessors = () => {
             </Button>
           </div>
           <div className={styles.items}>
-            {professorsData.professors.length == 0 ? (
+            {managersData.managers.length == 0 ? (
               <Empty />
             ) : (
-              professorsData.professors
+              managersData.managers
                 .slice(sliceInit, sliceFinish)
-                .map((professor, i) => {
+                .map((manager, i) => {
                   return (
                     <StudentCard
                       editOrAdd={setIsEdit}
@@ -151,19 +123,18 @@ const ITProfessors = () => {
                       isITControlled
                       isPreregistrationCard
                       key={i}
-                      {...professor}
-                      userType={"professor"}
+                      {...manager}
+                      userType={"manager"}
                     />
                   );
                 })
             )}
           </div>
           <Pagination count={count} page={page} setPage={setPage} />
-
           {open && (
-            <AddOrEditProfessor
-              id={isEdit.id}
+            <AddOrEditManager
               type={isEdit.isEdit}
+              id={isEdit.id}
               open={open}
               closeHandle={closeHandle}
             />
@@ -174,4 +145,4 @@ const ITProfessors = () => {
   );
 };
 
-export default ITProfessors;
+export default ITManagers;

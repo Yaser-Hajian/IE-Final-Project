@@ -1,6 +1,6 @@
 import { CheckAuthentication } from "./components/checkAuthentication";
-import adminRoutes from "./pages/dashboard/IT/routes";
-import managerRoutes from "./pages/dashboard/manager/routes";
+import adminRoutes from "./pages/dashboard/adminDashboard/routes";
+import managerRoutes from "./pages/dashboard/managerDashboard/routes";
 import professorRoutes from "./pages/dashboard/professorDashboard/routes/index.jsx";
 import studentRoutes from "./pages/dashboard/studentDashboard/routes";
 

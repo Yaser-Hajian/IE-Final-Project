@@ -2,7 +2,6 @@ import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import * as XLSX from "xlsx";
 import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
@@ -15,6 +14,7 @@ import AddOrEditStudent from "../../../../components/dashboard/IT/addOrEditStude
 import { Add } from "@mui/icons-material";
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
+import readExcel from "../../../../utils/readExcel";
 
 const ITStudents = () => {
   const dispatch = useDispatch();
@@ -44,58 +44,31 @@ const ITStudents = () => {
     setSearchQuery(e.currentTarget.value);
   };
 
-  const uploadExcel = async (e) => {
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-
+  const readExcelProcess = (e) => {
     const file = e.currentTarget.files[0];
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      const newList = [];
-      for (let row in excelData) {
-        if (row != 0 && excelData[row].length != 0) {
-          const newPerson = {};
-          for (let item in excelData[row]) {
-            newPerson[excelData[0][item]] = excelData[row][item];
-          }
-          newList.push(newPerson);
-        }
+    toast.promise(
+      readExcel(file).then((res) => {
+        addStudentsProcess(res);
+      }),
+      {
+        error: "یه مشکلی پیش اومده لطفا دوباره تلاش کن",
+        pending: "لطفا منتظر بمانید",
+        success: "با موفقیت فایل اکسل بارگذاری شد",
       }
-      const apiCallData = await addStudents(newList);
-      if (apiCallData.error === true) {
-        toast.update(loadingToast, {
-          render:
-            apiCallData.errorMessage ??
-            "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-          autoClose: true,
-          position: "top-left",
-          isLoading: false,
-          type: "error",
-        });
-      } else {
-        toast.update(loadingToast, {
-          render: apiCallData.message ?? "ورود موفقیت آمیز ",
-          type: "success",
-          autoClose: true,
-          position: "top-left",
-          isLoading: false,
-        });
+    );
+  };
 
-        setTimeout(() => {
-          toast.dismiss(loadingToast);
-          dispatch(updateStudentsData({ isDataLoadedBefore: false }));
-        }, 1500);
+  const addStudentsProcess = (students) => {
+    toast.promise(
+      addStudents(students).then(() => {
+        dispatch(updateStudentsData({ isDataLoadedBefore: false }));
+      }),
+      {
+        error: "یه مشکلی پیش اومده لطفا دوباره تلاش کن",
+        pending: "لطفا منتظر بمانید در حال اضافه کردن دانشجو ها به دیتابیس",
+        success: "با موفقیت دانشجو ها به دیتابیس اضافه شدند",
       }
-    };
-    reader.readAsArrayBuffer(file);
+    );
   };
 
   return (
@@ -129,7 +102,7 @@ const ITStudents = () => {
               {
                 <input
                   accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                  onChange={(e) => uploadExcel(e)}
+                  onChange={readExcelProcess}
                   className={styles.fileInput}
                   type="file"
                 />
