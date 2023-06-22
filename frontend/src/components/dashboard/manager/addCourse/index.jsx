@@ -69,41 +69,21 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
 
   const addCourseProcess = async () => {
     if (!checkInputs()) return;
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-
-      theme: "light",
-      isLoading: true,
-    });
-    const data = await addCourse(type, termId, courseData);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-
-        isLoading: false,
-      });
-
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
+    toast.promise(
+      addCourse(type, termId, courseData).then(() => {
         closeHandle();
         dispatch(resetCourseData());
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
-      }, 1500);
-    }
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت درس مورد نظر اضافه شد",
+      }
+    );
   };
 
   return (

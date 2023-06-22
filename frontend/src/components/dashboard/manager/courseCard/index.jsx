@@ -43,39 +43,19 @@ const CourseCard = ({
     setAnchorEl(null);
   };
   const deleteCourseProcess = async () => {
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-    const data = await removePreregistrationCourse(termId, id);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
-
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
+    toast.promise(
+      removePreregistrationCourse(termId, id).then(() => {
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
-      }, 1500);
-    }
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت درس مورد نظر حذف شد",
+      }
+    );
   };
   return (
     <Paper className={styles.con} variant="outlined">
