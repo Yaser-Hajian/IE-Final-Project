@@ -6,10 +6,10 @@ import useLoggedUserInfo from "../../../hooks/useLoggedUserData";
 import Loader from "../../../components/dashboard/loader/loader";
 
 const ProfessorDashboard = () => {
-  const { isLoading, error } = useLoggedUserInfo();
+  const { isLoading, isError } = useLoggedUserInfo();
   return (
     <>
-      {error ? (
+      {isError ? (
         <h1>error</h1>
       ) : isLoading ? (
         <Loader loadingText="داشبورد در حال لود شدن" />
