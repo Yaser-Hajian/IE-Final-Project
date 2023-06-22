@@ -45,7 +45,7 @@ const AddOrEditManager = ({ open, closeHandle, type, id }) => {
       return false;
     }
     if (managerData.managerId == "") {
-      toast.error("کد مدیریی را وارد کنید", { position: "top-left" });
+      toast.error("شماره پرسنلی را وارد کنید", { position: "top-left" });
       return false;
     }
     if (managerData.college == "") {
@@ -67,45 +67,41 @@ const AddOrEditManager = ({ open, closeHandle, type, id }) => {
     }
     return true;
   };
-
-  const addOrEditManagerProcess = async () => {
+  const addManagerProcess = () => {
     if (!checkInputs()) return;
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-    const data = type
-      ? await updateManager(id, managerData)
-      : await addManager(managerData);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
-
-      closeHandle();
-      dispatch(updateManagersData({ isDataLoadedBefore: false }));
-      toast.dismiss(loadingToast);
-      setTimeout(() => {
-        dispatch(resetManagerData());
-      }, 50);
-    }
+    toast.promise(
+      addManager(managerData).then(() => {
+        closeHandle();
+        dispatch(updateManagersData({ isDataLoadedBefore: false }));
+        setTimeout(() => {
+          dispatch(resetManagerData());
+        }, 50);
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت استاد اضافه شد",
+      }
+    );
   };
 
+  const updateManagerProcess = () => {
+    if (!checkInputs()) return;
+    toast.promise(
+      updateManager(managerData).then(() => {
+        closeHandle();
+        dispatch(updateManagersData({ isDataLoadedBefore: false }));
+        setTimeout(() => {
+          dispatch(resetManagerData());
+        }, 50);
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت اطلاعات استاد آپدیت شد",
+      }
+    );
+  };
   return (
     <Dialog dir="rtl" fullScreen open={open} onClose={closeHandle}>
       <AppBar sx={{ position: "relative" }}>
@@ -252,7 +248,7 @@ const AddOrEditManager = ({ open, closeHandle, type, id }) => {
           <Container className={styles.buttonCon}>
             <Button
               fullWidth
-              onClick={addOrEditManagerProcess}
+              onClick={type ? updateManagerProcess : addManagerProcess}
               variant="contained"
             >
               {type ? "ثبت تغییرات" : "ثبت مدیر"}

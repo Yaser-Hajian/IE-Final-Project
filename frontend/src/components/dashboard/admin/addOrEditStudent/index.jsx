@@ -27,7 +27,6 @@ import addStudent from "../../../../utils/dashboard/addStudent";
 import { updateStudentsData } from "../../../../redux/students";
 
 const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
-  console.log("EDIT,", id, type);
   const studentData = useSelector((s) => s.student);
   const studentDataState = useStudentData(id, type);
   const collegesData = useSelector((s) => s.colleges);
@@ -76,42 +75,40 @@ const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
     return true;
   };
 
-  const addOrEditStudentProcess = async () => {
+  const addStudentProcess = () => {
     if (!checkInputs()) return;
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-    const data = type
-      ? await updateStudent(id, studentData)
-      : await addStudent(studentData);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
+    toast.promise(
+      addStudent(studentData).then(() => {
+        closeHandle();
+        dispatch(updateStudentsData({ isDataLoadedBefore: false }));
+        setTimeout(() => {
+          dispatch(resetStudentData());
+        }, 50);
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت دانشجو اضافه شد",
+      }
+    );
+  };
 
-      toast.dismiss(loadingToast);
-      closeHandle();
-      dispatch(updateStudentsData({ isDataLoadedBefore: false }));
-      setTimeout(() => {
-        dispatch(resetStudentData());
-      }, 50);
-    }
+  const updateStudentProcess = () => {
+    if (!checkInputs()) return;
+    toast.promise(
+      updateStudent(studentData).then(() => {
+        closeHandle();
+        dispatch(updateStudentsData({ isDataLoadedBefore: false }));
+        setTimeout(() => {
+          dispatch(resetStudentData());
+        }, 50);
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت اطلاعات دانشجو آپدیت شد",
+      }
+    );
   };
 
   return (
@@ -294,7 +291,7 @@ const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
           <Container className={styles.buttonCon}>
             <Button
               fullWidth
-              onClick={addOrEditStudentProcess}
+              onClick={type ? updateStudentProcess : addStudentProcess}
               variant="contained"
             >
               {type ? "ثبت تغییرات" : "ثبت دانشجو"}

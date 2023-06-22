@@ -72,44 +72,41 @@ const AddOrEditProfessor = ({ open, closeHandle, type, id }) => {
     return true;
   };
 
-  const addOrEditProfessorProcess = async () => {
+  const addProfessorProcess = () => {
     if (!checkInputs()) return;
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-    const data = type
-      ? await updateProfessor(id, professorData)
-      : await addProfessor(professorData);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
-
-      closeHandle();
-      dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
-      toast.dismiss(loadingToast);
-      setTimeout(() => {
-        dispatch(resetProfessorData());
-      }, 50);
-    }
+    toast.promise(
+      addProfessor(professorData).then(() => {
+        closeHandle();
+        dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
+        setTimeout(() => {
+          dispatch(resetProfessorData());
+        }, 50);
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت استاد اضافه شد",
+      }
+    );
   };
 
+  const updateProfessorProcess = () => {
+    if (!checkInputs()) return;
+    toast.promise(
+      updateProfessor(professorData).then(() => {
+        closeHandle();
+        dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
+        setTimeout(() => {
+          dispatch(resetProfessorData());
+        }, 50);
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت اطلاعات استاد آپدیت شد",
+      }
+    );
+  };
   return (
     <Dialog dir="rtl" fullScreen open={open} onClose={closeHandle}>
       <AppBar sx={{ position: "relative" }}>
@@ -262,7 +259,7 @@ const AddOrEditProfessor = ({ open, closeHandle, type, id }) => {
           <Container className={styles.buttonCon}>
             <Button
               fullWidth
-              onClick={addOrEditProfessorProcess}
+              onClick={type ? updateProfessorProcess : addProfessorProcess}
               variant="contained"
             >
               {type ? "ثبت تغییرات" : "ثبت استاد"}
