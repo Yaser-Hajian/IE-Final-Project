@@ -162,9 +162,11 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                   : styles.datePickerInputLight
               }
               containerClassName={styles.datePickerCon}
-              value={courseData.classTimes}
+              value={courseData.classTimes.map((d) => new Date(d))}
               onChange={(e) => {
-                dispatch(updateCourseData({ classTimes: e }));
+                dispatch(
+                  updateCourseData({ classTimes: e.map((d) => d.toJSON()) })
+                );
               }}
               format="MM/DD/YYYY HH:mm:ss"
               plugins={[<TimePicker position="bottom" />]}
@@ -182,9 +184,9 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                   ? styles.datePickerInputDark
                   : styles.datePickerInputLight
               }
-              value={courseData.examDate}
+              value={new Date(courseData.examDate)}
               onChange={(e) => {
-                dispatch(updateCourseData({ examDate: e }));
+                dispatch(updateCourseData({ examDate: e.toJSON() }));
               }}
               format="MM/DD/YYYY HH:mm:ss"
               plugins={[<TimePicker position="bottom" />]}

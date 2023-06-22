@@ -15,7 +15,6 @@ import registerCourse from "../../../utils/dashboard/registerCourse";
 import { updateRegistrationCoursesData } from "../../../redux/registrationCourses";
 import { updateRegistrationsData } from "../../../redux/registrations";
 import { updatePreregistrationsData } from "../../../redux/preregistrations";
-import { useNavigate } from "react-router-dom";
 import CourseDialogData from "../courseDialogData";
 
 const CourseCard = ({
@@ -31,52 +30,70 @@ const CourseCard = ({
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const registrationProcess = async (type, isCancel) => {
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-    const data =
-      type == "preregister"
-        ? isCancel
-          ? await cancelPreregisterCourse(id)
-          : await preregisterCourse(id)
-        : isCancel
-        ? await cancelRegisterCourse(id)
-        : await registerCourse(id);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
 
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
+  const registerCourseProcess = () => {
+    toast.promise(
+      registerCourse(id).then(() => {
+        dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
+        dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
+        dispatch(updateTermIdData({ isDataLoadedBefore: false }));
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت در درس مورد نظر ثبت نام شدید",
+      }
+    );
+  };
+
+  const cancelCourseRegistrationProcess = () => {
+    toast.promise(
+      cancelRegisterCourse(id).then(() => {
+        dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
+        dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
+        dispatch(updateTermIdData({ isDataLoadedBefore: false }));
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "ثبت نام شما با موفقیت کنسل شد",
+      }
+    );
+  };
+  const preregisterCourseProcess = () => {
+    toast.promise(
+      preregisterCourse(id).then(() => {
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
-        dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
         dispatch(updatePreregistrationsData({ isDataLoadedBefore: false }));
-        dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
-      }, 1500);
-    }
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت در درس مورد نظر پیش ثبت نام شدید",
+      }
+    );
   };
+
+  const cancelCoursePreregistrationProcess = () => {
+    toast.promise(
+      cancelPreregisterCourse(id).then(() => {
+        dispatch(
+          updatePreregistrationCoursesData({ isDataLoadedBefore: false })
+        );
+        dispatch(updatePreregistrationsData({ isDataLoadedBefore: false }));
+        dispatch(updateTermIdData({ isDataLoadedBefore: false }));
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "پیش ثبت نام شما با موفقیت کنسل شد",
+      }
+    );
+  };
+
   return (
     <Paper className={styles.con} variant="outlined">
       <div dir="rtl" className={styles.top}>
@@ -99,9 +116,11 @@ const CourseCard = ({
               <Button
                 variant="outlined"
                 color={ispre.preregistered ? "error" : "primary"}
-                onClick={() => {
-                  registrationProcess("preRegister", ispre.preregistered);
-                }}
+                onClick={
+                  ispre.preregistered
+                    ? cancelCoursePreregistrationProcess
+                    : preregisterCourseProcess
+                }
               >
                 {ispre.preregistered ? "لغو پیش ثبت نام" : "پیش ثبت نام"}
               </Button>
@@ -114,9 +133,11 @@ const CourseCard = ({
               <Button
                 variant="outlined"
                 color={isreg.registered ? "error" : "primary"}
-                onClick={() => {
-                  registrationProcess("register", isreg.registered);
-                }}
+                onClick={
+                  isreg.registered
+                    ? cancelCourseRegistrationProcess
+                    : registerCourseProcess
+                }
               >
                 {isreg.registered ? "لغو ثبت نام" : "ثبت نام"}
               </Button>
