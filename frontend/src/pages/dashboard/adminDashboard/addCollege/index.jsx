@@ -29,39 +29,14 @@ const ITAddCollege = () => {
 
   const addCollegeProcess = async () => {
     if (!checkInputs()) return;
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-
-    const apiCallData = await addCollege(collegeData);
-    if (apiCallData.error === true) {
-      toast.update(loadingToast, {
-        render:
-          apiCallData.errorMessage ??
-          "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: apiCallData.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
-
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
-
-        dispatch(resetCollegeData());
-      }, 1500);
-    }
+    toast.promise(
+      addCollege(collegeData).then(() => dispatch(resetCollegeData())),
+      {
+        error: "یه مشکلی پیش اومده لطفا مجددا تلاش کنید",
+        pending: "لطفا منتظر بمانید",
+        success: "با موفقیت دانشکده به دیتابیس اضافه شد",
+      }
+    );
   };
 
   return (

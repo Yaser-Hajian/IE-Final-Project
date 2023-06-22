@@ -7,11 +7,12 @@ import { useState } from "react";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import Empty from "../../../../components/dashboard/empty/empty";
 import useCourseRegistrationsData from "../../../../hooks/useCourseRegistrations";
-import StudentCard from "../../../../components/dashboard/studentCard";
+
 import { updateCourseIdData } from "../../../../redux/courseId";
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
 import useAddCourseToLastSeen from "../../../../hooks/useAddCourseToLastSeen";
+import UserCard from "../../../../components/dashboard/userCard";
 
 const ProfessorDashboardCourseId = () => {
   const { courseId } = useParams();
@@ -70,7 +71,7 @@ const ProfessorDashboardCourseId = () => {
               courseRegistrationData.courseRegistrations
                 .slice(sliceInit, sliceFinish)
                 .map((reg, i) => {
-                  return <StudentCard isItControlled key={i} {...reg} />;
+                  return <UserCard isItControlled key={i} {...reg} />;
                 })
             )}
           </div>

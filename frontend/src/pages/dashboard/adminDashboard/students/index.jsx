@@ -6,11 +6,11 @@ import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
-import StudentCard from "../../../../components/dashboard/studentCard";
+import UserCard from "../../../../components/dashboard/userCard";
 import useStudentsData from "../../../../hooks/useStudents";
 import { updateStudentsData } from "../../../../redux/students";
 import addStudents from "../../../../utils/dashboard/addStudents";
-import AddOrEditStudent from "../../../../components/dashboard/IT/addOrEditStudent";
+import AddOrEditStudent from "../../../../components/dashboard/admin/addOrEditStudent";
 import { Add } from "@mui/icons-material";
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
@@ -117,7 +117,7 @@ const ITStudents = () => {
                 .slice(sliceInit, sliceFinish)
                 .map((professor, i) => {
                   return (
-                    <StudentCard
+                    <UserCard
                       editOrAdd={setIsEdit}
                       openDialog={setOpen}
                       isITControlled

@@ -10,7 +10,7 @@ import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import useCoursePreregistrations from "../../../../hooks/useCoursePreregistrations";
 import useCourseData from "../../../../hooks/useCourseData";
-import StudentCard from "../../../../components/dashboard/studentCard";
+import UserCard from "../../../../components/dashboard/userCard";
 import { updateCoursePreregistrationsData } from "../../../../redux/coursePreregistrations";
 import FilterMenu from "../../../../components/dashboard/filterMenu";
 import CourseHeadInfo from "../../../../components/dashboard/courseHeadInfo";
@@ -123,7 +123,7 @@ const ManagerCoursePreregistrations = () => {
                 .slice(sliceInit, sliceFinish)
                 .map((course, i) => {
                   return (
-                    <StudentCard
+                    <UserCard
                       isItControlled
                       isPreregistrationCard
                       key={i}

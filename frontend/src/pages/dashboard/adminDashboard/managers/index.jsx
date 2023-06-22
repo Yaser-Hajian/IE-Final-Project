@@ -6,15 +6,15 @@ import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
-import StudentCard from "../../../../components/dashboard/studentCard";
 import useManagersData from "../../../../hooks/useManagers";
 import { updateManagersData } from "../../../../redux/managers";
 import addManagers from "../../../../utils/dashboard/addManagers";
-import AddOrEditManager from "../../../../components/dashboard/IT/addOrEditManager";
+import AddOrEditManager from "../../../../components/dashboard/admin/addOrEditManager";
 import Pagination from "../../../../components/dashboard/pagination";
 import usePagination from "../../../../hooks/usePagination";
 import { Add } from "@mui/icons-material";
 import readExcel from "../../../../utils/readExcel";
+import UserCard from "../../../../components/dashboard/userCard";
 
 const ITManagers = () => {
   const dispatch = useDispatch();
@@ -117,7 +117,7 @@ const ITManagers = () => {
                 .slice(sliceInit, sliceFinish)
                 .map((manager, i) => {
                   return (
-                    <StudentCard
+                    <UserCard
                       editOrAdd={setIsEdit}
                       openDialog={setOpen}
                       isITControlled

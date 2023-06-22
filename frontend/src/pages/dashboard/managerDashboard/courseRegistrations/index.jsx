@@ -9,7 +9,7 @@ import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import useCourseData from "../../../../hooks/useCourseData";
-import StudentCard from "../../../../components/dashboard/studentCard";
+import UserCard from "../../../../components/dashboard/userCard";
 import useCourseRegistrationsData from "../../../../hooks/useCourseRegistrations";
 import CourseHeadInfo from "../../../../components/dashboard/courseHeadInfo";
 import CourseDialogData from "../../../../components/dashboard/courseDialogData";
@@ -123,7 +123,7 @@ const ManagerCourseRegistrations = () => {
                 .slice(sliceInit, sliceFinish)
                 .map((course, i) => {
                   return (
-                    <StudentCard
+                    <UserCard
                       isItControlled
                       key={i}
                       {...course}

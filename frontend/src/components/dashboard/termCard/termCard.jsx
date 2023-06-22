@@ -42,36 +42,16 @@ const TermCard = ({
   };
 
   const deleteTermProcess = async () => {
-    const loadingToast = toast("لطفا صبر کنید ...", {
-      autoClose: true,
-      position: "top-left",
-      theme: "light",
-      isLoading: true,
-    });
-    const data = await deleteTerm(id);
-    if (data.error === true) {
-      toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-        type: "error",
-      });
-    } else {
-      toast.update(loadingToast, {
-        render: data.message ?? "ورود موفقیت آمیز ",
-        type: "success",
-        autoClose: true,
-        position: "top-left",
-        isLoading: false,
-      });
-
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
+    toast.promise(
+      deleteTerm(id).then(() => {
         dispatch(updateTermsData({ isDataLoadedBefore: false }));
-      }, 1500);
-    }
+      }),
+      {
+        error: "مشکلی پیش اومده لطفا دوباره تلا ش کن",
+        pending: "لطفا منتظر بمانید",
+        success: "با موفقیت ترم مورد نظر حذف شد",
+      }
+    );
   };
 
   return (
