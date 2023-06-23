@@ -16,7 +16,7 @@ import { Add } from "@mui/icons-material";
 import readExcel from "../../../../utils/readExcel";
 import UserCard from "../../../../components/dashboard/userCard";
 
-const ITProfessors = () => {
+const AdminProfessor = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const professorsData = useSelector((s) => s.professors);
@@ -147,4 +147,4 @@ const ITProfessors = () => {
   );
 };
 
-export default ITProfessors;
+export default AdminProfessor;

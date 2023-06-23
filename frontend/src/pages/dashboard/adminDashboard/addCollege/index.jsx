@@ -7,7 +7,7 @@ import { resetCollegeData, updateCollegeData } from "../../../../redux/college";
 import { toast } from "react-toastify";
 import addCollege from "../../../../utils/dashboard/addCollege";
 
-const ITAddCollege = () => {
+const AdminAddCollege = () => {
   const dispatch = useDispatch();
   const majorsData = useSelector((s) => s.majors);
   const collegeData = useSelector((s) => s.college);
@@ -89,4 +89,4 @@ const ITAddCollege = () => {
   );
 };
 
-export default ITAddCollege;
+export default AdminAddCollege;

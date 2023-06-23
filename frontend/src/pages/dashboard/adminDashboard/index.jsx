@@ -5,7 +5,7 @@ import Footer from "../../../components/dashboard/footer/footer";
 import useLoggedUserInfo from "../../../hooks/useLoggedUserData";
 import Loader from "../../../components/dashboard/loader/loader";
 
-const ITDashboard = () => {
+const AdminDashboard = () => {
   const { isLoading, error } = useLoggedUserInfo();
   return (
     <>
@@ -24,4 +24,4 @@ const ITDashboard = () => {
   );
 };
 
-export default ITDashboard;
+export default AdminDashboard;

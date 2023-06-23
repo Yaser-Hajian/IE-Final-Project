@@ -1,25 +1,23 @@
-import ITDashboard from "..";
+import AdminDashboard from "..";
 import { CheckAuthentication } from "../../../../components/checkAuthentication";
-import Home from "../../../../components/dashboard/home";
-import ITAddCollege from "../addCollege";
-import ITManagers from "../managers";
-import ITProfessors from "../professors";
-import ITStudents from "../students";
+import AdminAddCollege from "../addCollege";
+import AdminManager from "../managers";
+import AdminProfessor from "../professors";
+import AdminStudent from "../students";
 
 const adminRoutes = [
   {
     path: "/dashboard/admin",
     element: (
       <CheckAuthentication>
-        <ITDashboard />
+        <AdminDashboard />
       </CheckAuthentication>
     ),
     children: [
-      { path: "", element: <Home userType={"admin"} /> },
-      { path: "students", element: <ITStudents /> },
-      { path: "professors", element: <ITProfessors /> },
-      { path: "managers", element: <ITManagers /> },
-      { path: "college/add", element: <ITAddCollege /> },
+      { path: "students", element: <AdminStudent /> },
+      { path: "professors", element: <AdminProfessor /> },
+      { path: "managers", element: <AdminManager /> },
+      { path: "college/add", element: <AdminAddCollege /> },
     ],
   },
 ];

@@ -16,7 +16,7 @@ import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
 import readExcel from "../../../../utils/readExcel";
 
-const ITStudents = () => {
+const AdminStudent = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const studentsData = useSelector((s) => s.students);
@@ -145,4 +145,4 @@ const ITStudents = () => {
   );
 };
 
-export default ITStudents;
+export default AdminStudent;

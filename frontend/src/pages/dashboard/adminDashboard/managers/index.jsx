@@ -16,7 +16,7 @@ import { Add } from "@mui/icons-material";
 import readExcel from "../../../../utils/readExcel";
 import UserCard from "../../../../components/dashboard/userCard";
 
-const ITManagers = () => {
+const AdminManager = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const managersData = useSelector((s) => s.managers);
@@ -145,4 +145,4 @@ const ITManagers = () => {
   );
 };
 
-export default ITManagers;
+export default AdminManager;
