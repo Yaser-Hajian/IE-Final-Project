@@ -1,0 +1,10 @@
+components:
+  schemas:
+    Professor:
+      allOf:
+        - $ref: "baseUser.yml#/components/schemas/BaseUser"
+        - type: object
+          properties:
+            professorId:
+              type: integer
+              description: The Professor's Id

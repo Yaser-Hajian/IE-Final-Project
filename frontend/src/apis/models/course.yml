@@ -1,0 +1,67 @@
+components:
+  schemas:
+    Course:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The Course's name
+        courseId:
+          type: string
+          description: The Course's id
+        major:
+          $ref: "./major.yml#/components/schemas/Major"
+        prerequisites:
+          type: array
+          description: The Course's prerequisites
+          items:
+            type: integer
+        requirements:
+          type: array
+          description: The Course's prerequisites
+          items:
+            type: integer
+        credit:
+          type: integer
+          description: The Course's credit
+
+        classTimes:
+          type: array
+          description: The Course's class times
+          items:
+            type: integer
+        examTime:
+          type: integer
+          description: The Course's exam time
+        professor:
+          $ref: "./professor.yml#/components/schemas/Professor"
+        capacity:
+          type: integer
+          description: The Course's capacity
+        preregistrations:
+          type: array
+          description: The Course's preregistrations
+          items:
+            $ref: "./preregistration.yml#/components/schemas/Preregistration"
+        registrations:
+          type: array
+          description: The Course's registrations
+          items:
+            $ref: "./registration.yml#/components/schemas/Registration"
+        occupiedCapacity:
+          type: integer
+          description: The Course's occupied capacity
+      required:
+        - registrations
+        - preregistrations
+        - capacity
+        - occupiedCapacity
+        - professor
+        - name
+        - courseId
+        - prerequisites
+        - requirements
+        - classTimes
+        - examTime
+        - major
+        - credit

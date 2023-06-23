@@ -1,0 +1,16 @@
+components:
+  schemas:
+    Major:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The Major's name
+        majorId:
+          type: integer
+          description: The Major's id
+        courses:
+          type: array
+          description: The Major's courses
+          items:
+            type: integer

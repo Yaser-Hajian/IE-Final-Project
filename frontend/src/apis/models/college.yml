@@ -1,0 +1,13 @@
+components:
+  schemas:
+    College:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The College's name
+        majors:
+          type: array
+          description: The College's majors
+          items:
+            $ref: "./major.yml#/components/schemas/Major"

@@ -1,0 +1,11 @@
+components:
+  schemas:
+    Registration:
+      type: object
+      properties:
+        registrationId:
+          type: integer
+          description: The Registration's id
+        studentId:
+          type: integer
+          description: The Student's id

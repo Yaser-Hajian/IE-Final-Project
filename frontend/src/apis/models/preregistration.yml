@@ -1,0 +1,11 @@
+components:
+  schemas:
+    Preregistration:
+      type: object
+      properties:
+        preregistrationId:
+          type: integer
+          description: The Preregistration's id
+        studentId:
+          type: integer
+          description: The Student's id

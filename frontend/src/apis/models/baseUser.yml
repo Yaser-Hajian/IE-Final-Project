@@ -1,0 +1,27 @@
+components:
+  schemas:
+    BaseUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The User's ID
+        firstName:
+          type: string
+          description: The User's name
+        lastName:
+          type: string
+          description: The User's family name
+        email:
+          type: string
+          description: The User's email
+        phoneNumber:
+          type: integer
+          description: The User's phone number
+        password:
+          type: string
+          description: The User's password
+      required:
+        - id
+        - firstName
+        - lastName

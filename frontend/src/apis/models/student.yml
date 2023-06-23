@@ -1,0 +1,33 @@
+components:
+  schemas:
+    Student:
+      allOf:
+        - $ref: "baseUser.yml#/components/schemas/BaseUser"
+        - type: object
+          properties:
+            studentId:
+              type: integer
+              description: The Student's Id
+            entranceYear:
+              type: integer
+              description: The Student's entrance year
+            nationId:
+              type: integer
+              description: The Student's nation id
+            college:
+              $ref: "./college.yml#/components/schemas/College"
+            passesCourses:
+              type: array
+              description: The Student's passes course
+            supervisor:
+              $ref: "./professor.yml#/components/schemas/Professor"
+            major:
+              $ref: "./major.yml#/components/schemas/Major"
+          required:
+            - studentId
+            - entranceYear
+            - nationId
+            - college
+            - passesCourses
+            - supervisor
+            - major
