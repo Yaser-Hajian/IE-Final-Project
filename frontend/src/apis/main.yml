@@ -7,3 +7,6 @@ paths:
   /login:
     post:
       $ref: "./login.yml#/post"
+  /signout:
+    get:
+      $ref: "./signout.yml#/get"

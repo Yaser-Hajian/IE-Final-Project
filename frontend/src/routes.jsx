@@ -3,6 +3,7 @@ import adminRoutes from "./pages/dashboard/adminDashboard/routes";
 import managerRoutes from "./pages/dashboard/managerDashboard/routes";
 import professorRoutes from "./pages/dashboard/professorDashboard/routes/index.jsx";
 import studentRoutes from "./pages/dashboard/studentDashboard/routes";
+import loginRoutes from "./pages/login/routes";
 import OpenApi from "./pages/openApi";
 
 const baseRoutes = [
@@ -13,6 +14,7 @@ const baseRoutes = [
 
 const routes = [
   ...baseRoutes,
+  ...loginRoutes,
   ...managerRoutes,
   ...studentRoutes,
   ...professorRoutes,

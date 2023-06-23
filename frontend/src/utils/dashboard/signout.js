@@ -1,11 +1,9 @@
 import { apiBaseUrl } from "../../config";
 import generateHeaders from "../generateHeaders";
 
-const signout = async (token) => {
+const signout = async () => {
   try {
     const response = await fetch(apiBaseUrl + "/signout", {
-      method: "POST",
-      body: JSON.stringify({ token }),
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
