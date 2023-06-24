@@ -10,6 +10,9 @@ import {
 } from "@mui/material";
 import styles from "./index.module.css";
 import { Close } from "@mui/icons-material";
+import msToFullDate from "../../../utils/msToFullDate";
+import getDayName from "../../../utils/getDayName";
+import msToTime from "../../../utils/msToTime";
 
 const CourseDialogData = ({ isDialogOpen, setIsDialogOpen, courseData }) => {
   const closeDialog = () => {
@@ -41,7 +44,7 @@ const CourseDialogData = ({ isDialogOpen, setIsDialogOpen, courseData }) => {
         <ListItem>
           <div className={styles.dialogItems}>
             <Typography>{courseData.occupiedCapacity}</Typography>
-            <Typography>پر شده</Typography>
+            <Typography>تعداد ثبت نامی ها</Typography>
           </div>
         </ListItem>
         <Divider />
@@ -49,6 +52,31 @@ const CourseDialogData = ({ isDialogOpen, setIsDialogOpen, courseData }) => {
           <div className={styles.dialogItems}>
             <Typography>{courseData.term}</Typography>
             <Typography>ترم</Typography>
+          </div>
+        </ListItem>
+        <Divider />
+        <ListItem>
+          <div className={styles.dialogItems}>
+            <Typography>
+              {msToFullDate(new Date(courseData.examTime).getTime())}
+            </Typography>
+            <Typography>تاریخ امتحان</Typography>
+          </div>
+        </ListItem>
+        <Divider />
+        <ListItem>
+          <div className={styles.dialogItems}>
+            <div className={styles.classTimesList}>
+              {courseData.classTimes.map((c, i) => {
+                return (
+                  <Typography key={i}>
+                    {getDayName(c.day)} ها
+                    {msToTime(new Date(c.time).getTime())}
+                  </Typography>
+                );
+              })}
+            </div>
+            <Typography>تاریخ کلاس ها</Typography>
           </div>
         </ListItem>
       </List>

@@ -26,7 +26,7 @@ const AdminHomePage = () => {
         </Link>
       </div>
       <div className={styles.main}>
-        <Link to={"students/add"}>
+        <Link to={"student/add"}>
           <div className={styles.items}>
             <PersonAdd />
             <Typography>اضافه کردن دانشجو</Typography>

@@ -7,6 +7,19 @@
 .formHolder > * {
   margin: 0 1rem;
 }
+.chooseClassTimesCon {
+  width: 100%;
+}
+
+.chooseClassTimesSelect {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.chooseClassTimesSelect > * {
+  width: 100%;
+}
 
 .datePickerCon {
   width: 100%;

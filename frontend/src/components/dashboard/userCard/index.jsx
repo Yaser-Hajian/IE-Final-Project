@@ -13,6 +13,8 @@ import deleteManager from "../../../utils/dashboard/deleteManager";
 import { updateProfessorsData } from "../../../redux/professors";
 import { updateManagersData } from "../../../redux/managers";
 import { updateCourseRegistrationsData } from "../../../redux/courseRegistrations";
+import { useNavigate } from "react-router-dom";
+import { resetStudentData } from "../../../redux/student";
 
 const UserCard = ({
   name,
@@ -21,11 +23,9 @@ const UserCard = ({
   isPreregistrationCard = false,
   isItControlled = false,
   userType,
-  editOrAdd,
-  openDialog,
 }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const acceptingCourseSelection = () => {
     toast.promise(
       acceptCourseRegistration(id).then(() => {
@@ -130,8 +130,8 @@ const UserCard = ({
         <Container sx={{ justifyContent: "space-between", display: "flex" }}>
           <Button
             onClick={() => {
-              editOrAdd({ isEdit: true, id: id });
-              openDialog(true);
+              dispatch(resetStudentData());
+              navigate(`/dashboard/admin/${userType}/${id}/edit`);
             }}
           >
             ویرایش

@@ -21,7 +21,6 @@ const useManagerData = (managerId, type) => {
       }
       setIsLoading(true);
       try {
-        console.log(isDataLoadedBefore, type);
         const managerData = await getManager(managerId);
         if (managerData.error) {
           setIsError(true);

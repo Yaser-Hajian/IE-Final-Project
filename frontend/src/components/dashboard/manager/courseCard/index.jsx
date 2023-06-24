@@ -28,6 +28,8 @@ const CourseCard = ({
   term,
   occupiedCapacity,
   id,
+  classTimes,
+  examTime,
   courseId,
   url = null,
 }) => {
@@ -117,7 +119,15 @@ const CourseCard = ({
       <CourseDialogData
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
-        courseData={{ professor, name, capacity, occupiedCapacity, term }}
+        courseData={{
+          professor,
+          name,
+          capacity,
+          occupiedCapacity,
+          term,
+          classTimes,
+          examTime,
+        }}
       />
     </Paper>
   );

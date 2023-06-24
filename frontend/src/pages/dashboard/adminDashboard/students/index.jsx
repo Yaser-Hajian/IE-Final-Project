@@ -10,26 +10,23 @@ import UserCard from "../../../../components/dashboard/userCard";
 import useStudentsData from "../../../../hooks/useStudents";
 import { updateStudentsData } from "../../../../redux/students";
 import addStudents from "../../../../utils/dashboard/addStudents";
-import AddOrEditStudent from "../../../../components/dashboard/admin/addOrEditStudent";
 import { Add } from "@mui/icons-material";
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
 import readExcel from "../../../../utils/readExcel";
+import { useNavigate } from "react-router-dom";
+import { resetStudentData } from "../../../../redux/student";
 
 const AdminStudent = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const studentsData = useSelector((s) => s.students);
   const { isLoading } = useStudentsData(searchQuery);
-  const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     studentsData.students.length,
     6
   );
-  const closeHandle = () => {
-    setOpen(false);
-  };
 
   const filter = (p) => {
     const regex = new RegExp(`${searchQuery}`);
@@ -92,8 +89,8 @@ const AdminStudent = () => {
               dir="ltr"
               startIcon={<Add />}
               onClick={() => {
-                setOpen(true);
-                setIsEdit({ isEdit: false });
+                dispatch(resetStudentData());
+                navigate(`/dashboard/admin/student/add`);
               }}
             >
               افزودن دانشجو
@@ -127,8 +124,6 @@ const AdminStudent = () => {
                 .map((professor, i) => {
                   return (
                     <UserCard
-                      editOrAdd={setIsEdit}
-                      openDialog={setOpen}
                       isITControlled
                       isPreregistrationCard
                       key={i}
@@ -140,14 +135,6 @@ const AdminStudent = () => {
             )}
           </div>
           <Pagination count={count} page={page} setPage={setPage} />
-          {open && (
-            <AddOrEditStudent
-              id={isEdit.id}
-              type={isEdit.isEdit}
-              open={open}
-              closeHandle={closeHandle}
-            />
-          )}
         </div>
       )}
     </>

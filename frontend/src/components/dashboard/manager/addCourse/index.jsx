@@ -4,9 +4,12 @@ import {
   AppBar,
   Autocomplete,
   Button,
+  Chip,
   Container,
   Dialog,
   IconButton,
+  MenuItem,
+  Select,
   TextField,
   Toolbar,
   Typography,
@@ -29,6 +32,15 @@ import addCourse from "../../../../utils/dashboard/addCourse";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
 import { updateRegistrationCoursesData } from "../../../../redux/registrationCourses";
 import RtlInput from "../../rtlInput";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { TimePicker as TimePick } from "@mui/x-date-pickers/TimePicker";
+import { useState } from "react";
+import dayjs from "dayjs";
+import getDayName from "../../../../utils/getDayName";
+import formatTime from "../../../../utils/formatTime";
+import { v4 as uuid } from "uuid";
 
 const AddCourse = ({ open, closeHandle, type, termId }) => {
   const professorsData = useSelector((s) => s.professors);
@@ -37,7 +49,19 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
   const { isLoading } = useProfessorsData();
   const courseData = useSelector((s) => s.course);
   const theme = useTheme().palette.mode;
+  const [classTime, setClassTime] = useState({
+    time: new Date().toISOString(),
+    day: 0,
+  });
   const dispatch = useDispatch();
+
+  const removeClassTime = (time) => {
+    const newClassTimes = courseData.classTimes.filter((c) => {
+      return c.id !== time.id;
+    });
+    dispatch(updateCourseData({ classTimes: newClassTimes }));
+  };
+
   const checkInputs = () => {
     if (courseData.course == null) {
       toast.error("اسم درس را وارد کنید");
@@ -165,26 +189,71 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
               />
             </RtlInput>
             <RtlInput label={"تاریخ کلاس ها"}>
-              <DatePicker
-                render={<TextField type="reset" fullWidth />}
-                inputClass={
-                  theme == "dark"
-                    ? styles.datePickerInputDark
-                    : styles.datePickerInputLight
-                }
-                containerClassName={styles.datePickerCon}
-                value={courseData.classTimes.map((d) => new Date(d))}
-                onChange={(e) => {
-                  dispatch(
-                    updateCourseData({ classTimes: e.map((d) => d.toJSON()) })
-                  );
-                }}
-                format="MM/DD/YYYY HH:mm:ss"
-                plugins={[<TimePicker position="bottom" />]}
-                locale={persian_fa}
-                calendar={persian}
-                multiple
-              />
+              <div className={styles.chooseClassTimesCon}>
+                <div className={styles.chooseClassTimesSelect}>
+                  <Select
+                    onChange={(e) => {
+                      setClassTime((s) => ({ ...s, day: e.target.value }));
+                    }}
+                    value={classTime.day}
+                    fullWidth
+                    sx={{ ml: 1 }}
+                  >
+                    <MenuItem value={0}>شنبه</MenuItem>
+                    <MenuItem value={1}>یک شنبه</MenuItem>
+                    <MenuItem value={2}>دوشنبه</MenuItem>
+                    <MenuItem value={3}>سه شنبه</MenuItem>
+                    <MenuItem value={4}>چهار شنبه</MenuItem>
+                    <MenuItem value={5}>پنج شنبه</MenuItem>
+                    <MenuItem value={6}>جمعه</MenuItem>
+                  </Select>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["TimePicker"]}>
+                      <TimePick
+                        onChange={(e) => {
+                          setClassTime((s) => ({
+                            ...s,
+                            time: dayjs(e).toISOString(),
+                          }));
+                        }}
+                        value={dayjs(classTime.time)}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </div>
+                <Button
+                  sx={{ mt: 1, mb: 1 }}
+                  onClick={() => {
+                    dispatch(
+                      updateCourseData({
+                        classTimes: [
+                          ...courseData.classTimes,
+                          { ...classTime, id: uuid() },
+                        ],
+                      })
+                    );
+                  }}
+                >
+                  اضافه کردن تایم
+                </Button>
+                <div>
+                  {courseData.classTimes.length != 0 &&
+                    courseData.classTimes.map((times, i) => {
+                      return (
+                        <Chip
+                          onDelete={() => {
+                            removeClassTime(times);
+                          }}
+                          sx={{ mb: 1, ml: 1 }}
+                          key={i}
+                          label={`${getDayName(times.day)} ${formatTime(
+                            times.time
+                          )}`}
+                        />
+                      );
+                    })}
+                </div>
+              </div>
             </RtlInput>
           </Container>
           <Container className={styles.formHolder}>
@@ -195,11 +264,12 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                     ? styles.datePickerInputDark
                     : styles.datePickerInputLight
                 }
+                render={<TextField fullWidth />}
                 value={new Date(courseData.examDate)}
                 onChange={(e) => {
                   dispatch(updateCourseData({ examDate: e.toJSON() }));
                 }}
-                format="MM/DD/YYYY HH:mm:ss"
+                format=" HH:mm YYYY/MM/DD"
                 plugins={[<TimePicker position="bottom" />]}
                 locale={persian_fa}
                 calendar={persian}

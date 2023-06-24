@@ -8,29 +8,26 @@ import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import useProfessorsData from "../../../../hooks/useProfessors";
 import { updateProfessorsData } from "../../../../redux/professors";
-import AddOrEditProfessor from "../../../../components/dashboard/admin/addOrEditProfessor";
 import addProfessors from "../../../../utils/dashboard/addProfessors";
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
 import { Add } from "@mui/icons-material";
 import readExcel from "../../../../utils/readExcel";
 import UserCard from "../../../../components/dashboard/userCard";
+import { useNavigate } from "react-router-dom";
+import { resetProfessorData } from "../../../../redux/professor";
 
 const AdminProfessor = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const professorsData = useSelector((s) => s.professors);
   const { isLoading } = useProfessorsData(searchQuery);
-  const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     professorsData.professors.length,
     6
   );
-  const closeHandle = () => {
-    setOpen(false);
-    setIsEdit({ isEdit: false });
-  };
+
   const filter = (p) => {
     const regex = new RegExp(`${searchQuery}`);
     if (
@@ -93,8 +90,8 @@ const AdminProfessor = () => {
               dir="ltr"
               startIcon={<Add />}
               onClick={() => {
-                setIsEdit({ isEdit: false });
-                setOpen(true);
+                dispatch(resetProfessorData());
+                navigate(`/dashboard/admin/professor/add`);
               }}
             >
               افزودن استاد
@@ -129,8 +126,6 @@ const AdminProfessor = () => {
                 .map((professor, i) => {
                   return (
                     <UserCard
-                      editOrAdd={setIsEdit}
-                      openDialog={setOpen}
                       isITControlled
                       isPreregistrationCard
                       key={i}
@@ -142,15 +137,6 @@ const AdminProfessor = () => {
             )}
           </div>
           <Pagination count={count} page={page} setPage={setPage} />
-
-          {open && (
-            <AddOrEditProfessor
-              id={isEdit.id}
-              type={isEdit.isEdit}
-              open={open}
-              closeHandle={closeHandle}
-            />
-          )}
         </div>
       )}
     </>

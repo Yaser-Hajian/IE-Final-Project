@@ -24,6 +24,8 @@ const CourseCard = ({
   term,
   occupiedCapacity,
   id,
+  classTimes,
+  examTime,
   courseId,
   url = null,
   ispre = { is: false },
@@ -161,7 +163,15 @@ const CourseCard = ({
       <CourseDialogData
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
-        courseData={{ professor, capacity, occupiedCapacity, term, name }}
+        courseData={{
+          professor,
+          capacity,
+          occupiedCapacity,
+          term,
+          name,
+          classTimes,
+          examTime,
+        }}
       />
     </Paper>
   );

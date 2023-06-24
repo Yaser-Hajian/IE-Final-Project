@@ -9,28 +9,25 @@ import { toast } from "react-toastify";
 import useManagersData from "../../../../hooks/useManagers";
 import { updateManagersData } from "../../../../redux/managers";
 import addManagers from "../../../../utils/dashboard/addManagers";
-import AddOrEditManager from "../../../../components/dashboard/admin/addOrEditManager";
 import Pagination from "../../../../components/dashboard/pagination";
 import usePagination from "../../../../hooks/usePagination";
 import { Add } from "@mui/icons-material";
 import readExcel from "../../../../utils/readExcel";
 import UserCard from "../../../../components/dashboard/userCard";
+import { useNavigate } from "react-router-dom";
+import { resetManagerData } from "../../../../redux/manager";
 
 const AdminManager = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const managersData = useSelector((s) => s.managers);
   const { isLoading } = useManagersData(searchQuery);
-  const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState({ isEdit: false, id: null });
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     managersData.managers.length,
     6
   );
-  const closeHandle = () => {
-    setOpen(false);
-    setIsEdit({ isEdit: false });
-  };
+
   const filter = (p) => {
     const regex = new RegExp(`${searchQuery}`);
     if (
@@ -44,6 +41,9 @@ const AdminManager = () => {
   };
 
   const changeSearchBox = (e) => {
+    if (e.currentTarget.value == "\\") {
+      return;
+    }
     setSearchQuery(e.currentTarget.value);
   };
 
@@ -93,8 +93,8 @@ const AdminManager = () => {
               dir="ltr"
               startIcon={<Add />}
               onClick={() => {
-                setIsEdit({ isEdit: false });
-                setOpen(true);
+                dispatch(resetManagerData());
+                navigate(`/dashboard/admin/manager/add`);
               }}
             >
               افزودن مدیر
@@ -128,8 +128,6 @@ const AdminManager = () => {
                 .map((manager, i) => {
                   return (
                     <UserCard
-                      editOrAdd={setIsEdit}
-                      openDialog={setOpen}
                       isITControlled
                       isPreregistrationCard
                       key={i}
@@ -141,14 +139,6 @@ const AdminManager = () => {
             )}
           </div>
           <Pagination count={count} page={page} setPage={setPage} />
-          {open && (
-            <AddOrEditManager
-              type={isEdit.isEdit}
-              id={isEdit.id}
-              open={open}
-              closeHandle={closeHandle}
-            />
-          )}
         </div>
       )}
     </>

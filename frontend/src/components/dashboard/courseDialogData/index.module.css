@@ -3,10 +3,10 @@
   display: flex;
   justify-content: space-between;
 }
-.dialogItems p:first-child {
+.dialogItems > p:first-child {
   padding-right: 1rem;
 }
-.dialogItems p:last-child {
+.dialogItems > p:last-child {
   padding-left: 1rem;
 }
 
@@ -14,4 +14,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.classTimesList {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
