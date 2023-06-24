@@ -3,21 +3,24 @@ import {
   Dialog,
   DialogTitle,
   Divider,
+  IconButton,
   List,
   ListItem,
   Typography,
 } from "@mui/material";
 import styles from "./index.module.css";
+import { Close } from "@mui/icons-material";
 
 const CourseDialogData = ({ isDialogOpen, setIsDialogOpen, courseData }) => {
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
   return (
-    <Dialog
-      dir="ltr"
-      fullWidth
-      open={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
-    >
+    <Dialog dir="ltr" fullWidth open={isDialogOpen} onClose={closeDialog}>
       <DialogTitle className={styles.dialogTitle}>
+        <IconButton onClick={closeDialog}>
+          <Close />
+        </IconButton>
         {courseData.name}
       </DialogTitle>
       <List>

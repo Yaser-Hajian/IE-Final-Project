@@ -10,6 +10,7 @@ import {
   TextField,
   Toolbar,
   Typography,
+  useTheme,
 } from "@mui/material";
 import styles from "./index.module.css";
 import { Close } from "@mui/icons-material";
@@ -25,6 +26,9 @@ import { updateMajorsData } from "../../../../redux/majors";
 import updateStudent from "../../../../utils/dashboard/updateStudent";
 import addStudent from "../../../../utils/dashboard/addStudent";
 import { updateStudentsData } from "../../../../redux/students";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
   const studentData = useSelector((s) => s.student);
@@ -34,7 +38,7 @@ const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
   const coursesData = useSelector((s) => s.courses);
   const coursesDataState = useCoursesData();
   const majorsData = useSelector((s) => s.majors);
-
+  const theme = useTheme().palette.mode;
   const professorsData = useSelector((s) => s.professors);
   const professorsDataState = useProfessorsData();
   const dispatch = useDispatch();
@@ -252,13 +256,28 @@ const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
                   />
                 )}
               />
-              <TextField
-                fullWidth
-                label="سال ورود"
-                value={studentData.entryYear}
+              <DatePicker
+                onlyYearPicker
+                format="YYYY"
+                locale={persian_fa}
+                placeholder="سال ورودی"
+                calendar={persian}
+                inputClass={`${styles.datePickerInput} ${
+                  theme == "dark"
+                    ? styles.datePickerInputDark
+                    : styles.datePickerInputLight
+                }`}
+                containerClassName={styles.datePickerCon}
+                value={
+                  studentData.entryYear == null
+                    ? new Date()
+                    : new Date(studentData.entryYear)
+                }
                 onChange={(e) => {
                   dispatch(
-                    updateStudentData({ entryYear: e.currentTarget.value })
+                    updateStudentData({
+                      entryYear: e.toJSON(),
+                    })
                   );
                 }}
               />

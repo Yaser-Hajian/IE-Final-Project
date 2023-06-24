@@ -21,7 +21,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useEditOrAddData from "../../../../hooks/useAddOrEditData";
 import { updateEditOrAddTermData } from "../../../../redux/editOrAddTerm";
 import { useState } from "react";
-import { Add, Delete } from "@mui/icons-material";
+import { Add, Close, Delete } from "@mui/icons-material";
 import useStudentsData from "../../../../hooks/useStudents";
 import { toast } from "react-toastify";
 import updateTerm from "../../../../utils/dashboard/updateTerm";
@@ -41,7 +41,7 @@ const EditOrAddTerm = ({ type }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogType, setDialogType] = useState("students");
   const [isAddingPerson, setIsAddingPerson] = useState(false);
-  const theme = useTheme();
+  const theme = useTheme().palette.mode;
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -62,15 +62,6 @@ const EditOrAddTerm = ({ type }) => {
   const handleInputsChange = (e) => {
     const { name, value } = e.currentTarget;
     dispatch(updateEditOrAddTermData({ [name]: value }));
-  };
-
-  const datePickerChangeHandle = (e) => {
-    dispatch(
-      updateEditOrAddTermData({
-        startDate: new Date(e[0]).getTime(),
-        endDate: new Date(e[1]).getTime() ?? null,
-      })
-    );
   };
 
   const addPersonProcess = (dialogType, personId) => {
@@ -169,21 +160,46 @@ const EditOrAddTerm = ({ type }) => {
             name="name"
           />
           <div className={styles.datePickerCon}>
-            <Typography>تاریخ شروع و پایان ترم</Typography>
+            <Typography>تاریخ شروع ترم</Typography>
             <DatePicker
-              dateSeparator=" تا "
-              range
-              rangeHover
               locale={persian_fa}
               calendar={persian}
-              value={[new Date(startDate), new Date(endDate)]}
-              onChange={datePickerChangeHandle}
+              value={startDate == null ? new Date() : new Date(startDate)}
+              onChange={(e) => {
+                dispatch(
+                  updateEditOrAddTermData({
+                    startDate: e.toJSON(),
+                  })
+                );
+              }}
               containerClassName={styles.datePickerCon}
-              inputClass={
-                theme.palette.mode == "dark"
+              inputClass={`${styles.datePickerInput} ${
+                theme == "dark"
                   ? styles.datePickerInputDark
                   : styles.datePickerInputLight
-              }
+              }`}
+            />
+          </div>
+
+          <div className={styles.datePickerCon}>
+            <Typography>تاریخ پایان ترم</Typography>
+            <DatePicker
+              locale={persian_fa}
+              calendar={persian}
+              value={endDate == null ? new Date() : new Date(endDate)}
+              onChange={(e) => {
+                dispatch(
+                  updateEditOrAddTermData({
+                    endDate: e.toJSON(),
+                  })
+                );
+              }}
+              containerClassName={styles.datePickerCon}
+              inputClass={`${styles.datePickerInput} ${
+                theme == "dark"
+                  ? styles.datePickerInputDark
+                  : styles.datePickerInputLight
+              }`}
             />
           </div>
 
@@ -250,6 +266,9 @@ const EditOrAddTerm = ({ type }) => {
             scroll={"paper"}
           >
             <DialogTitle className={styles.dialogTitle}>
+              <IconButton onClick={handleClose}>
+                <Close />
+              </IconButton>
               {dialogType == "students"
                 ? "دانشجویان این ترم"
                 : "اساتید این ترم"}

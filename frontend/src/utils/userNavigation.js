@@ -8,7 +8,7 @@ const userNavigation = {
     menuItems: [{ name: "لیست ترم ها", url: "/dashboard/professor/terms" }],
   },
   manager: {
-    position: "مدیر",
+    position: "مدیر آموزشی",
     menuItems: [
       { name: "لیست ترم ها", url: "/dashboard/manager/terms" },
       { name: "لیست دانشجویان", url: "/dashboard/manager/students" },
@@ -16,7 +16,7 @@ const userNavigation = {
     ],
   },
   admin: {
-    position: "مدیر It",
+    position: "ادمین",
     menuItems: [
       { name: "لیست دانشجویان", url: "/dashboard/admin/students" },
       { name: "لیست اساتید", url: "/dashboard/admin/professors" },

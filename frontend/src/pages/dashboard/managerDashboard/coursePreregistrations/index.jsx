@@ -93,7 +93,7 @@ const ManagerCoursePreregistrations = () => {
           />
           <div dir="rtl" className={styles.top}>
             <div className={styles.topHead}>
-              <Typography>لیست ثبت نامی های این درس</Typography>
+              <Typography>لیست پیش ثبت نامی های این درس</Typography>
               <Button
                 dir="ltr"
                 startIcon={<FilterAltIcon />}

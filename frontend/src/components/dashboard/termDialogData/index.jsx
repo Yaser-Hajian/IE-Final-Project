@@ -3,22 +3,27 @@ import {
   Dialog,
   DialogTitle,
   Divider,
+  IconButton,
   List,
   ListItem,
   Typography,
 } from "@mui/material";
 import styles from "./index.module.css";
 import msToDate from "../../../utils/msToDate";
+import { Close } from "@mui/icons-material";
 
 const TermDialogData = ({ isDialogOpen, setIsDialogOpen, termData }) => {
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
   return (
-    <Dialog
-      dir="ltr"
-      fullWidth
-      open={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
-    >
-      <DialogTitle className={styles.dialogTitle}>{termData.name}</DialogTitle>
+    <Dialog dir="ltr" fullWidth open={isDialogOpen} onClose={closeDialog}>
+      <DialogTitle className={styles.dialogTitle}>
+        <IconButton onClick={closeDialog}>
+          <Close />
+        </IconButton>
+        {termData.name}
+      </DialogTitle>
       <List>
         <ListItem>
           <div className={styles.dialogItems}>

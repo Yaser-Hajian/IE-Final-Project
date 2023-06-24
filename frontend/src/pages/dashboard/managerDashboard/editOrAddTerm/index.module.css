@@ -28,25 +28,25 @@
   margin-bottom: 1rem;
 }
 
-.datePickerInputLight {
+.datePickerInput {
+  border: 1px solid gray;
   border-radius: 2px;
   padding: 1rem 0.5rem;
   background-color: transparent;
   width: 100%;
+}
+
+.datePickerInputLight {
   color: black;
-  border: 1px solid gray;
 }
 .datePickerInputDark {
-  border-radius: 2px;
-  padding: 1rem 0.5rem;
-  background-color: transparent;
-  width: 100%;
   color: white;
-  border: 1px solid gray;
 }
 
 .dialogTitle {
-  direction: rtl;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dialogOpener {

@@ -18,6 +18,32 @@
   margin-bottom: 2rem;
 }
 
+.datePickerCon {
+  width: 100%;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.datePickerInput {
+  border: 1px solid gray;
+  font-family: Vazirmatn;
+  font-size: 1rem;
+  direction: ltr;
+  border-radius: 2px;
+  padding: 0.8rem 0.5rem;
+  background-color: transparent;
+  width: 100%;
+}
+.datePickerInput::placeholder {
+  color: #ffffff99;
+}
+.datePickerInputLight {
+  color: black;
+}
+.datePickerInputDark {
+  color: white;
+}
+
 @media (max-width: 800px) {
   .formHolder {
     flex-direction: column;
