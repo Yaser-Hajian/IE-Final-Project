@@ -28,6 +28,7 @@ const CourseCard = ({
   term,
   occupiedCapacity,
   id,
+  courseId,
   url = null,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -62,7 +63,9 @@ const CourseCard = ({
       <div className={styles.top}>
         <div className={styles.topText}>
           <Link href={url}>
-            <Typography variant="body1">{name}</Typography>
+            <Typography variant="body1">
+              {name} ({courseId})
+            </Typography>
           </Link>
           <Typography variant="caption">{professor}</Typography>
         </div>

@@ -7,7 +7,7 @@ import { useState } from "react";
 import preregisterCourse from "../../../utils/dashboard/preregisterCourse";
 import cancelPreregisterCourse from "../../../utils/dashboard/cancelPreregisterCourse";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updatePreregistrationCoursesData } from "../../../redux/preregistrationCourses";
 import { updateTermIdData } from "../../../redux/termId";
 import cancelRegisterCourse from "../../../utils/dashboard/cancelRegisterCourse";
@@ -24,15 +24,13 @@ const CourseCard = ({
   term,
   occupiedCapacity,
   id,
+  courseId,
   url = null,
   ispre = { is: false },
   isreg = { is: false },
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const l = useSelector((s) => s.loggedUser);
-  console.log(l);
   const dispatch = useDispatch();
-
   const registerCourseProcess = () => {
     toast.promise(
       registerCourse(id).then(() => {
@@ -100,14 +98,12 @@ const CourseCard = ({
     <Paper className={styles.con} variant="outlined">
       <div dir="rtl" className={styles.top}>
         <Link href={url}>
-          <Typography variant="body1">{name}</Typography>
-        </Link>
-        {ispre.is || isreg.is ? (
-          <Typography variant="caption">{professor}</Typography>
-        ) : (
-          <Typography variant="caption" sx={{ lineHeight: "5px" }}>
-            {term}
+          <Typography variant="body1">
+            {name} ({courseId})
           </Typography>
+        </Link>
+        {(ispre.is || isreg.is) && (
+          <Typography variant="caption">{professor}</Typography>
         )}
       </div>
 
