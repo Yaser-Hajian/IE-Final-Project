@@ -31,13 +31,16 @@ const AdminManager = () => {
     setOpen(false);
     setIsEdit({ isEdit: false });
   };
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateManagersData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (
+      regex.test(p.name) ||
+      regex.test(p.familyName) ||
+      regex.test(p.managerId)
+    ) {
+      return true;
+    }
+    return false;
   };
 
   const changeSearchBox = (e) => {
@@ -101,7 +104,6 @@ const AdminManager = () => {
             <SearchBox
               placeholder="جست جوی مدیر بر اساس اسم"
               onChange={changeSearchBox}
-              startSearch={startSearch}
               value={searchQuery}
             />
             <Button className={styles.fileInputCon}>
@@ -121,6 +123,7 @@ const AdminManager = () => {
               <Empty />
             ) : (
               managersData.managers
+                .filter(filter)
                 .slice(sliceInit, sliceFinish)
                 .map((manager, i) => {
                   return (

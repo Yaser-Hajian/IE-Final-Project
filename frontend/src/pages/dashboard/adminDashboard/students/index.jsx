@@ -31,15 +31,17 @@ const AdminStudent = () => {
     setOpen(false);
   };
 
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateStudentsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (
+      regex.test(p.name) ||
+      regex.test(p.familyName) ||
+      regex.test(p.studentId)
+    ) {
+      return true;
+    }
+    return false;
   };
-
   const changeSearchBox = (e) => {
     setSearchQuery(e.currentTarget.value);
   };
@@ -101,7 +103,6 @@ const AdminStudent = () => {
             <SearchBox
               placeholder="جست جوی دانشجو بر اساس اسم"
               onChange={changeSearchBox}
-              startSearch={startSearch}
               value={searchQuery}
             />
             <Button className={styles.fileInputCon}>
@@ -121,6 +122,7 @@ const AdminStudent = () => {
               <Empty />
             ) : (
               studentsData.students
+                .filter(filter)
                 .slice(sliceInit, sliceFinish)
                 .map((professor, i) => {
                   return (

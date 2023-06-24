@@ -22,7 +22,11 @@ const ManagerStudents = () => {
   );
   const filter = (p) => {
     const regex = new RegExp(`${searchQuery}`);
-    if (regex.test(p.name) || regex.test(p.familyName)) {
+    if (
+      regex.test(p.name) ||
+      regex.test(p.familyName) ||
+      regex.test(p.studentId)
+    ) {
       return true;
     }
     return false;

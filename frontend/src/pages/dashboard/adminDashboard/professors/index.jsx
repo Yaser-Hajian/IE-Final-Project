@@ -31,13 +31,16 @@ const AdminProfessor = () => {
     setOpen(false);
     setIsEdit({ isEdit: false });
   };
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateProfessorsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (
+      regex.test(p.name) ||
+      regex.test(p.familyName) ||
+      regex.test(p.professorId)
+    ) {
+      return true;
+    }
+    return false;
   };
 
   const changeSearchBox = (e) => {
@@ -101,7 +104,6 @@ const AdminProfessor = () => {
             <SearchBox
               placeholder="جست جوی استاد بر اساس اسم"
               onChange={changeSearchBox}
-              startSearch={startSearch}
               value={searchQuery}
             />
 
@@ -122,6 +124,7 @@ const AdminProfessor = () => {
               <Empty />
             ) : (
               professorsData.professors
+                .filter(filter)
                 .slice(sliceInit, sliceFinish)
                 .map((professor, i) => {
                   return (
