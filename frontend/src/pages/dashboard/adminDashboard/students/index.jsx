@@ -78,7 +78,14 @@ const AdminStudent = () => {
       ) : (
         <div dir="rtl" className={styles.con}>
           <Box borderBottom={1} className={styles.head}>
-            <Typography variant="h5">لیست دانشجویان</Typography>
+            <div className={styles.headTitle}>
+              <Typography variant="h5" sx={{ m: 0.5 }}>
+                لیست دانشجویان
+              </Typography>
+              <Typography variant="caption">
+                ({studentsData.students.length})
+              </Typography>
+            </div>
             <Button
               dir="ltr"
               startIcon={<Add />}

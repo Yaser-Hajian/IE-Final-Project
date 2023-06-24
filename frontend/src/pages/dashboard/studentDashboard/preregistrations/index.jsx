@@ -54,7 +54,12 @@ const Preregistrations = () => {
             termData={termIdData}
           />
           <div dir="rtl" className={styles.top}>
-            <Typography>لیست دروس پیش ثبت نامی</Typography>
+            <div className={styles.topTitle}>
+              <Typography sx={{ m: 0.5 }}> لیست دروس پیش ثبت نامی </Typography>
+              <Typography variant="caption">
+                ({preregistrationsData.preregistrations.length})
+              </Typography>
+            </div>
             <SearchBox
               onChange={changeSearchBox}
               startSearch={startSearch}

@@ -80,7 +80,12 @@ const ProfessorDashboardTermId = () => {
           />
           <div dir="rtl" className={styles.top}>
             <div>
-              <Typography>لیست دروس این ترم</Typography>
+              <div className={styles.topTitle}>
+                <Typography sx={{ m: 0.5 }}>لیست دروس این ترم</Typography>
+                <Typography variant="caption">
+                  ({registrationData.registrations.length})
+                </Typography>
+              </div>
               <Button
                 size="small"
                 onClick={handleClick}

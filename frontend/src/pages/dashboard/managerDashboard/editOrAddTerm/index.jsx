@@ -208,7 +208,7 @@ const EditOrAddTerm = ({ type }) => {
               onClick={(e) => handleClickOpen(e, "students")}
               className={styles.dialogOpener}
             >
-              لیست دانشجویان
+              لیست دانشجویان {`(${editOrAddData.students.length})`}
             </div>
             <div>
               <Button onClick={(e) => handleClickOpen(e, "students", "add")}>
@@ -233,7 +233,7 @@ const EditOrAddTerm = ({ type }) => {
               onClick={(e) => handleClickOpen(e, "professors")}
               className={styles.dialogOpener}
             >
-              لیست اساتید
+              لیست اساتید {`(${editOrAddData.professors.length})`}
             </div>
             <div>
               <Button onClick={(e) => handleClickOpen(e, "professors", "add")}>

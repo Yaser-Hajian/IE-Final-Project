@@ -1,18 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import useTermIdData from "../../../../hooks/useTermId";
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  List,
-  ListItem,
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
@@ -31,10 +23,7 @@ const Registrations = () => {
   const termIdData = useSelector((s) => s.termId);
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { isLoading, isError } = useCourseRegistrationsData(
-    termId,
-    searchQuery
-  );
+  const { isLoading } = useCourseRegistrationsData(termId, searchQuery);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     registrationsData.registrations.length,
     6
@@ -63,7 +52,12 @@ const Registrations = () => {
             termData={termIdData}
           />
           <div dir="rtl" className={styles.top}>
-            <Typography>لیست دروس ثبت نامی</Typography>
+            <div className={styles.topTitle}>
+              <Typography sx={{ m: 0.5 }}>لیست دروس ثبت نامی</Typography>
+              <Typography variant="caption">
+                ({registrationsData.registrations.length})
+              </Typography>
+            </div>
             <SearchBox
               onChange={changeSearchBox}
               startSearch={startSearch}

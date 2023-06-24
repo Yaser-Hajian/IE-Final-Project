@@ -50,7 +50,14 @@ const ManagerStudents = () => {
       ) : (
         <div className={styles.con}>
           <Box borderBottom={1} dir="rtl" className={styles.head}>
-            <Typography variant="h5">لیست دانشجویان</Typography>
+            <div className={styles.headTitle}>
+              <Typography sx={{ m: 0.5 }} variant="h5">
+                لیست دانشجویان
+              </Typography>
+              <Typography variant="caption">
+                ({studentsData.students.length})
+              </Typography>
+            </div>
           </Box>
           <div dir="rtl" className={styles.top}>
             <SearchBox

@@ -93,7 +93,14 @@ const ManagerCoursePreregistrations = () => {
           />
           <div dir="rtl" className={styles.top}>
             <div className={styles.topHead}>
-              <Typography>لیست پیش ثبت نامی های این درس</Typography>
+              <div className={styles.headTitle}>
+                <Typography sx={{ m: 0.5 }}>
+                  لیست پیش ثبت نامی های این درس
+                </Typography>
+                <Typography variant="caption">
+                  ({coursePreregistrations.coursePreregistrations.length})
+                </Typography>
+              </div>
               <Button
                 dir="ltr"
                 startIcon={<FilterAltIcon />}

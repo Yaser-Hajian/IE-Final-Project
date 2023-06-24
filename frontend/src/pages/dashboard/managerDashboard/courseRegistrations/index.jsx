@@ -93,7 +93,14 @@ const ManagerCourseRegistrations = () => {
           />
           <div dir="rtl" className={styles.top}>
             <div className={styles.topHead}>
-              <Typography>لیست ثبت نامی های این درس</Typography>
+              <div className={styles.headTitle}>
+                <Typography sx={{ m: 0.5 }}>
+                  لیست ثبت نامی های این درس
+                </Typography>
+                <Typography variant="caption">
+                  ({courseRegistrations.courseRegistrations.length})
+                </Typography>
+              </div>
               <Button
                 dir="ltr"
                 startIcon={<FilterAltIcon />}

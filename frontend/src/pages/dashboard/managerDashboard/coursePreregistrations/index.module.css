@@ -15,7 +15,11 @@
   align-items: flex-start;
   margin: 2rem 0;
 }
-
+.headTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .items p {
   text-align: center;
 }

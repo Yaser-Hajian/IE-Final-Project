@@ -100,7 +100,14 @@ const ManagerRegistrationCourses = () => {
           <div dir="rtl" className={styles.top}>
             <div>
               <div className={styles.topHead}>
-                <Typography>لیست دروس ارایه شده ثبت نامی</Typography>
+                <div className={styles.headTitle}>
+                  <Typography sx={{ m: 0.5 }}>
+                    لیست دروس ارایه شده ثبت نامی
+                  </Typography>
+                  <Typography variant="caption">
+                    ({registrationCoursesData.registrationCourses.length})
+                  </Typography>
+                </div>
                 <Button
                   dir="ltr"
                   onClick={() => {

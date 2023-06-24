@@ -78,7 +78,14 @@ const AdminProfessor = () => {
       ) : (
         <div dir="rtl" className={styles.con}>
           <Box borderBottom={1} className={styles.head}>
-            <Typography variant="h5">لیست اساتید</Typography>
+            <div className={styles.headTitle}>
+              <Typography variant="h5" sx={{ m: 0.5 }}>
+                لیست اساتید
+              </Typography>
+              <Typography variant="caption">
+                ({professorsData.professors.length})
+              </Typography>
+            </div>
             <Button
               dir="ltr"
               startIcon={<Add />}

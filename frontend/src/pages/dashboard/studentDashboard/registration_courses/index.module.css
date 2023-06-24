@@ -15,6 +15,11 @@
   width: 100%;
   border-bottom: 1px solid;
 }
+.topTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .main {
   width: 100%;

@@ -21,9 +21,14 @@ const Terms = ({ userType }) => {
   return (
     <div className={styles.con}>
       <Box borderBottom={1} dir="rtl" className={styles.head}>
-        <Typography sx={{ m: 1 }} variant="h5">
-          لیست ترم ها
-        </Typography>
+        <div className={styles.headTitle}>
+          <Typography sx={{ m: 1 }} variant="h5">
+            لیست ترم ها
+          </Typography>
+          {!isLoading && (
+            <Typography variant="caption">({terms.terms.length})</Typography>
+          )}
+        </div>
         {userType === "manager" && (
           <Button
             dir="ltr"

@@ -8,6 +8,12 @@
   padding: 32px 158px;
 }
 
+.topTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .head {
   display: flex;
   justify-content: space-between;

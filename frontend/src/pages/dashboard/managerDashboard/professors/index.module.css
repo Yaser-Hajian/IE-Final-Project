@@ -14,6 +14,11 @@
   align-items: center;
   width: 100%;
 }
+.headTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .main {
   width: 100%;
