@@ -2,14 +2,13 @@ import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import usePreregistrationCoursesData from "../../../../hooks/usePreregistrationCourses";
 import Loader from "../../../../components/dashboard/loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import useTermIdData from "../../../../hooks/useTermId";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
-import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
 import CourseCard from "../../../../components/dashboard/manager/courseCard";
 import { toast } from "react-toastify";
 import AddCourse from "../../../../components/dashboard/manager/addCourse";
@@ -25,7 +24,6 @@ const ManagerPreregistrationCourses = () => {
   const preregistrationCoursesData = useSelector(
     (s) => s.preregistrationCourses
   );
-  const dispatch = useDispatch();
   const { termId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortType, setSortType] = useState(null);
@@ -34,11 +32,7 @@ const ManagerPreregistrationCourses = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAddCourseVisible, setIsAddCourseVisible] = useState(false);
-  const { isLoading } = usePreregistrationCoursesData(
-    termId,
-    searchQuery,
-    sortType
-  );
+  const { isLoading } = usePreregistrationCoursesData(termId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     preregistrationCoursesData.preregistrationCourses.length,
     6
@@ -46,22 +40,26 @@ const ManagerPreregistrationCourses = () => {
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);
-    dispatch(
-      updatePreregistrationCoursesData({
-        isDataLoadedBefore: false,
-      })
-    );
   };
 
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updatePreregistrationCoursesData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (regex.test(p.name) || regex.test(p.courseId)) {
+      return true;
+    }
+    return false;
   };
 
+  const sort = (a, b) => {
+    if (sortType == null) return 1;
+    if (sortType == "mostRegister") {
+      return a.occupiedCapacity < b.occupiedCapacity ? 1 : -1;
+    }
+
+    if (sortType == "minimumRegister") {
+      return a.occupiedCapacity > b.occupiedCapacity ? 1 : -1;
+    }
+  };
   const changeSearchBox = (e) => {
     setSearchQuery(e.currentTarget.value);
   };
@@ -130,11 +128,7 @@ const ManagerPreregistrationCourses = () => {
               </Button>
             </div>
             <div className={styles.searchBoxCon}>
-              <SearchBox
-                onChange={changeSearchBox}
-                startSearch={startSearch}
-                value={searchQuery}
-              />
+              <SearchBox onChange={changeSearchBox} value={searchQuery} />
 
               <Button onClick={downloadExcel} sx={{ mt: 2 }} variant="outlined">
                 دانلود اکسل
@@ -146,6 +140,8 @@ const ManagerPreregistrationCourses = () => {
               <Empty />
             ) : (
               preregistrationCoursesData.preregistrationCourses
+                .filter(filter)
+                .sort(sort)
                 .slice(sliceInit, sliceFinish)
                 .map((course, i) => {
                   return (
@@ -178,7 +174,7 @@ const ManagerPreregistrationCourses = () => {
             handleClose={handleClose}
             menuItems={[
               { text: "بیشترین تعداد ثبت نام", sortType: "mostRegister" },
-              { text: "کمترین تعداد ثبت نام", sortType: "logRegister" },
+              { text: "کمترین تعداد ثبت نام", sortType: "minimumRegister" },
             ]}
             settingSortType={settingSortType}
           />

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { Button, Typography } from "@mui/material";
@@ -16,13 +16,11 @@ import CourseDialogData from "../../../../components/dashboard/courseDialogData"
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
 import FilterMenu from "../../../../components/dashboard/filterMenu";
-import { updateCourseRegistrationsData } from "../../../../redux/courseRegistrations";
 import useAddCourseToLastSeen from "../../../../hooks/useAddCourseToLastSeen";
 import downloadAsExcel from "../../../../utils/downloadExcel";
 
 const ManagerCourseRegistrations = () => {
   const courseRegistrations = useSelector((s) => s.courseRegistrations);
-  const dispatch = useDispatch();
   const { courseId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortType, setSortType] = useState(null);
@@ -31,11 +29,7 @@ const ManagerCourseRegistrations = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { isLoading } = useCourseRegistrationsData(
-    courseId,
-    searchQuery,
-    sortType
-  );
+  const { isLoading } = useCourseRegistrationsData(courseId);
 
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     courseRegistrations.courseRegistrations.length,
@@ -45,20 +39,25 @@ const ManagerCourseRegistrations = () => {
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);
-    dispatch(
-      updateCourseRegistrationsData({
-        isDataLoadedBefore: false,
-      })
-    );
   };
 
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateCourseRegistrationsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (regex.test(p.name) || regex.test(p.courseId)) {
+      return true;
+    }
+    return false;
+  };
+
+  const sort = (a, b) => {
+    if (sortType == null) return 1;
+    if (sortType == "new") {
+      return a.date < b.date ? 1 : -1;
+    }
+
+    if (sortType == "old") {
+      return a.date > b.date ? 1 : -1;
+    }
   };
 
   const changeSearchBox = (e) => {
@@ -113,7 +112,6 @@ const ManagerCourseRegistrations = () => {
               <SearchBox
                 placeholder="جست جو بر اساس اسم"
                 onChange={changeSearchBox}
-                startSearch={startSearch}
                 value={searchQuery}
               />
 
@@ -127,13 +125,15 @@ const ManagerCourseRegistrations = () => {
               <Empty />
             ) : (
               courseRegistrations.courseRegistrations
+                .filter(filter)
+                .sort(sort)
                 .slice(sliceInit, sliceFinish)
-                .map((course, i) => {
+                .map((registration, i) => {
                   return (
                     <UserCard
                       isItControlled
                       key={i}
-                      {...course}
+                      {...registration}
                       term={courseData.name}
                     />
                   );

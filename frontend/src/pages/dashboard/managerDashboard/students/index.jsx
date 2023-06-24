@@ -1,20 +1,18 @@
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import useStudentsData from "../../../../hooks/useStudents";
-import { updateStudentsData } from "../../../../redux/students";
 import Pagination from "../../../../components/dashboard/pagination";
 import usePagination from "../../../../hooks/usePagination";
 import downloadAsExcel from "../../../../utils/downloadExcel";
 import UserCard from "../../../../components/dashboard/userCard";
 
 const ManagerStudents = () => {
-  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const studentsData = useSelector((s) => s.students);
   const { isLoading } = useStudentsData(searchQuery);
@@ -22,13 +20,12 @@ const ManagerStudents = () => {
     studentsData.students.length,
     6
   );
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateStudentsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (regex.test(p.name) || regex.test(p.familyName)) {
+      return true;
+    }
+    return false;
   };
 
   const changeSearchBox = (e) => {
@@ -60,11 +57,7 @@ const ManagerStudents = () => {
             </div>
           </Box>
           <div dir="rtl" className={styles.top}>
-            <SearchBox
-              onChange={changeSearchBox}
-              startSearch={startSearch}
-              value={searchQuery}
-            />
+            <SearchBox onChange={changeSearchBox} value={searchQuery} />
 
             <Button onClick={downloadExcel} variant="outlined">
               دانلود اکسل
@@ -75,6 +68,7 @@ const ManagerStudents = () => {
               <Empty />
             ) : (
               studentsData.students
+                .filter(filter)
                 .slice(sliceInit, sliceFinish)
                 .map((professor, i) => {
                   return (

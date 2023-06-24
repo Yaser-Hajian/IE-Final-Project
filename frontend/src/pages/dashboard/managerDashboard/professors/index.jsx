@@ -1,6 +1,6 @@
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Empty from "../../../../components/dashboard/empty/empty";
@@ -8,13 +8,11 @@ import SearchBox from "../../../../components/dashboard/searchBox";
 import { toast } from "react-toastify";
 import UserCard from "../../../../components/dashboard/userCard";
 import useProfessorsData from "../../../../hooks/useProfessors";
-import { updateProfessorsData } from "../../../../redux/professors";
 import Pagination from "../../../../components/dashboard/pagination";
 import usePagination from "../../../../hooks/usePagination";
 import downloadAsExcel from "../../../../utils/downloadExcel";
 
 const ManagerProfessors = () => {
-  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const professorsData = useSelector((s) => s.professors);
   const { isLoading } = useProfessorsData(searchQuery);
@@ -22,15 +20,13 @@ const ManagerProfessors = () => {
     professorsData.professors.length,
     6
   );
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateProfessorsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (regex.test(p.name) || regex.test(p.familyName)) {
+      return true;
+    }
+    return false;
   };
-
   const changeSearchBox = (e) => {
     setSearchQuery(e.currentTarget.value);
   };
@@ -59,11 +55,7 @@ const ManagerProfessors = () => {
             </div>
           </Box>
           <div dir="rtl" className={styles.top}>
-            <SearchBox
-              onChange={changeSearchBox}
-              startSearch={startSearch}
-              value={searchQuery}
-            />
+            <SearchBox onChange={changeSearchBox} value={searchQuery} />
 
             <Button onClick={downloadExcel} variant="outlined">
               دانلود اکسل
@@ -74,6 +66,7 @@ const ManagerProfessors = () => {
               <Empty />
             ) : (
               professorsData.professors
+                .filter(filter)
                 .slice(sliceInit, sliceFinish)
                 .map((professor, i) => {
                   return (

@@ -52,7 +52,6 @@ const ProfessorDashboardTermId = () => {
   const sort = (a, b) => {
     if (sortType == null) return 1;
     if (sortType == "mostRegister") {
-      console.log(a.occupiedCapacity, b.occupiedCapacity);
       return a.occupiedCapacity < b.occupiedCapacity ? 1 : -1;
     }
 

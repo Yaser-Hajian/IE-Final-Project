@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { Button, Typography } from "@mui/material";
@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 import useCoursePreregistrations from "../../../../hooks/useCoursePreregistrations";
 import useCourseData from "../../../../hooks/useCourseData";
 import UserCard from "../../../../components/dashboard/userCard";
-import { updateCoursePreregistrationsData } from "../../../../redux/coursePreregistrations";
 import FilterMenu from "../../../../components/dashboard/filterMenu";
 import CourseHeadInfo from "../../../../components/dashboard/courseHeadInfo";
 import CourseDialogData from "../../../../components/dashboard/courseDialogData";
@@ -22,7 +21,6 @@ import downloadAsExcel from "../../../../utils/downloadExcel";
 
 const ManagerCoursePreregistrations = () => {
   const coursePreregistrations = useSelector((s) => s.coursePreregistrations);
-  const dispatch = useDispatch();
   const { courseId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortType, setSortType] = useState(null);
@@ -30,11 +28,7 @@ const ManagerCoursePreregistrations = () => {
   const courseDataState = useCourseData(courseId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { isLoading } = useCoursePreregistrations(
-    courseId,
-    searchQuery,
-    sortType
-  );
+  const { isLoading } = useCoursePreregistrations(courseId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     coursePreregistrations.coursePreregistrations.length,
     6
@@ -43,22 +37,26 @@ const ManagerCoursePreregistrations = () => {
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);
-    dispatch(
-      updateCoursePreregistrationsData({
-        isDataLoadedBefore: false,
-      })
-    );
   };
 
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateCoursePreregistrationsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (regex.test(p.name) || regex.test(p.courseId)) {
+      return true;
+    }
+    return false;
   };
 
+  const sort = (a, b) => {
+    if (sortType == null) return 1;
+    if (sortType == "new") {
+      return a.date < b.date ? 1 : -1;
+    }
+
+    if (sortType == "old") {
+      return a.date > b.date ? 1 : -1;
+    }
+  };
   const changeSearchBox = (e) => {
     setSearchQuery(e.currentTarget.value);
   };
@@ -113,7 +111,6 @@ const ManagerCoursePreregistrations = () => {
               <SearchBox
                 placeholder="جست جو بر اساس اسم"
                 onChange={changeSearchBox}
-                startSearch={startSearch}
                 value={searchQuery}
               />
 
@@ -127,6 +124,8 @@ const ManagerCoursePreregistrations = () => {
               <Empty />
             ) : (
               coursePreregistrations.coursePreregistrations
+                .filter(filter)
+                .sort(sort)
                 .slice(sliceInit, sliceFinish)
                 .map((course, i) => {
                   return (
