@@ -4,11 +4,13 @@ import {
   Box,
   Divider,
   Fade,
+  FormControlLabel,
   IconButton,
   Menu,
   MenuItem,
   Paper,
   Typography,
+  useTheme,
 } from "@mui/material";
 import styles from "./header.module.css";
 import { useState } from "react";
@@ -17,16 +19,17 @@ import getLoginToken from "../../../utils/getLoginToken";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import userNavigation from "../../../utils/userNavigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useThemeSwitch from "../../../hooks/useThemeSwitch";
+import ThemeSwitch from "../themeSwitch";
 
 const DashboardHeader = ({ userType }) => {
   const loggedStudent = useSelector((s) => s.loggedUser);
   const navigation = useNavigate();
-  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const switchTheme = useThemeSwitch();
+  const theme = useTheme().palette.mode;
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
@@ -62,13 +65,25 @@ const DashboardHeader = ({ userType }) => {
   };
 
   const changeTheme = () => {
-    dispatch(switchTheme());
+    switchTheme();
   };
 
   return (
     <>
       <Paper className={styles.con} variant="outlined">
-        <Typography variant="h6">دانشگاه شریف</Typography>
+        <div className={styles.logo}>
+          <Typography variant="h6">دانشگاه بهشتی</Typography>
+          <FormControlLabel
+            control={
+              <ThemeSwitch
+                className={styles.themeSwitch}
+                sx={{ m: 1 }}
+                checked={theme == "dark"}
+                onChange={changeTheme}
+              />
+            }
+          />
+        </div>
         <Box className={styles.right}>
           <div className={styles.name}>
             <Typography>
@@ -120,8 +135,8 @@ const DashboardHeader = ({ userType }) => {
         })}
 
         <Divider />
-        <MenuItem onClick={changeTheme}>تغییر تم</MenuItem>
-        <Divider />
+        {/* <MenuItem onClick={changeTheme}>تغییر تم</MenuItem>
+        <Divider /> */}
         <MenuItem onClick={signoutProcess}>خروج از اکانت</MenuItem>
       </Menu>
     </>

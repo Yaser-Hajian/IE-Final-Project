@@ -13,6 +13,7 @@
 .imageCon img {
   height: 550px;
   width: auto;
+  border: 1.5px solid gray;
   border-radius: 25px;
 }
 

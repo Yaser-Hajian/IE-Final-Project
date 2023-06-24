@@ -87,7 +87,7 @@ const LoginPage = () => {
     <div className={styles.con}>
       <div className={styles.formCon}>
         <Typography className={styles.formHeader} variant="h3">
-          دانشگاه شریف
+          دانشگاه بهشتی
         </Typography>
         <Typography variant="h6">ورود به داشبورد</Typography>
 
