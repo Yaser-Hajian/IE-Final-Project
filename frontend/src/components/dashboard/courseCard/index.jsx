@@ -7,7 +7,7 @@ import { useState } from "react";
 import preregisterCourse from "../../../utils/dashboard/preregisterCourse";
 import cancelPreregisterCourse from "../../../utils/dashboard/cancelPreregisterCourse";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updatePreregistrationCoursesData } from "../../../redux/preregistrationCourses";
 import { updateTermIdData } from "../../../redux/termId";
 import cancelRegisterCourse from "../../../utils/dashboard/cancelRegisterCourse";
@@ -29,6 +29,8 @@ const CourseCard = ({
   isreg = { is: false },
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const l = useSelector((s) => s.loggedUser);
+  console.log(l);
   const dispatch = useDispatch();
 
   const registerCourseProcess = () => {

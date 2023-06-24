@@ -1,0 +1,43 @@
+post:
+  summary: post student data
+  parameters:
+    - name: authorization
+      in: header
+      required: true
+      schema:
+        type: string
+      description: an jwt token
+  requestBody:
+    require: true
+    content:
+      application/json:
+        schema:
+          $ref: "./models/student.yml#/components/schemas/Student"
+  responses:
+    "201":
+      description: created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object

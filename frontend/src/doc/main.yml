@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: My API
+  version: 1.0.0
+
+paths:
+  /login:
+    post:
+      $ref: "./login.yml#/post"
+  /signout:
+    get:
+      $ref: "./signout.yml#/get"
+
+  /loggedUser:
+    get:
+      $ref: "./loggedUserData.yml#/get"
+
+  /admin/student:
+    post:
+      $ref: "./addStudent.yml#/post"
+
+  /admin/students:
+    get:
+      $ref: "./getStudents.yml#/get"

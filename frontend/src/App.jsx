@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { useRoutes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-
 import { darkTheme, lightTheme } from "./styles/theme";
 import useTheme from "./hooks/useTheme";
 import routes from "./routes";

@@ -9,7 +9,7 @@ const OpenApi = () => {
 
   return (
     <div style={{ backgroundColor: "white", width: "100%", height: "100%" }}>
-      <SwaggerUI url="/src/apis/main.yml" deepLinking />
+      <SwaggerUI url="/src/doc/main.yml" deepLinking />
     </div>
   );
 };

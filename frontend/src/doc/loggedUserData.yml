@@ -1,0 +1,30 @@
+get:
+  summary: get logged user data
+  parameters:
+    - name: authorization
+      in: header
+      required: true
+      schema:
+        type: string
+      description: an jwt token
+  responses:
+    "200":
+      description: Okay
+      content:
+        application/json:
+          schema:
+            $ref: "./models/baseUser.yml#/components/schemas/BaseUser"
+
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
