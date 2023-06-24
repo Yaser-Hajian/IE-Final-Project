@@ -32,13 +32,13 @@ const AdminHomePage = () => {
             <Typography>اضافه کردن دانشجو</Typography>
           </div>
         </Link>
-        <Link to={"professors/add"}>
+        <Link to={"professor/add"}>
           <div className={styles.items}>
             <PersonAdd />
             <Typography>اضافه کردن استاد</Typography>
           </div>
         </Link>
-        <Link to={"mangers/add"}>
+        <Link to={"manager/add"}>
           <div className={styles.items}>
             <PersonAdd />
             <Typography>اضافه کردن مدیر آموزشی</Typography>
