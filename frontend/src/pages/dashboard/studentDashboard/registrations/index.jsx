@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import useTermIdData from "../../../../hooks/useTermId";
 import { Typography } from "@mui/material";
@@ -9,7 +9,6 @@ import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import useCourseRegistrationsData from "../../../../hooks/useRegistrations";
-import { updateRegistrationsData } from "../../../../redux/registrations";
 import TermHeadInfo from "../../../../components/dashboard/termHeadInfo";
 import TermDialogData from "../../../../components/dashboard/termDialogData";
 import Pagination from "../../../../components/dashboard/pagination";
@@ -17,26 +16,23 @@ import usePagination from "../../../../hooks/usePagination";
 
 const Registrations = () => {
   const registrationsData = useSelector((s) => s.registrations);
-  const dispatch = useDispatch();
   const { termId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const termIdData = useSelector((s) => s.termId);
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { isLoading } = useCourseRegistrationsData(termId, searchQuery);
+  const { isLoading } = useCourseRegistrationsData(termId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     registrationsData.registrations.length,
     6
   );
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateRegistrationsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (regex.test(p.name) || regex.test(p.courseId)) {
+      return true;
+    }
+    return false;
   };
-
   const changeSearchBox = (e) => {
     setSearchQuery(e.currentTarget.value);
   };
@@ -58,17 +54,14 @@ const Registrations = () => {
                 ({registrationsData.registrations.length})
               </Typography>
             </div>
-            <SearchBox
-              onChange={changeSearchBox}
-              startSearch={startSearch}
-              value={searchQuery}
-            />
+            <SearchBox onChange={changeSearchBox} value={searchQuery} />
           </div>
           <div dir="rtl" className={styles.items}>
             {registrationsData.registrations.length == 0 ? (
               <Empty />
             ) : (
               registrationsData.registrations
+                .filter(filter)
                 .slice(sliceInit, sliceFinish)
                 .map((term, i) => {
                   return (

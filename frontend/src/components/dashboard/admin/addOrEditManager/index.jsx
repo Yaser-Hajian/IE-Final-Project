@@ -23,6 +23,10 @@ import updateManager from "../../../../utils/dashboard/updateManager";
 import addManager from "../../../../utils/dashboard/addManager";
 import { updateManagersData } from "../../../../redux/managers";
 import { resetManagerData, updateManagerData } from "../../../../redux/manager";
+import RtlInput from "../../rtlInput";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 const AddOrEditManager = ({ open, closeHandle, type, id }) => {
   const managerData = useSelector((s) => s.manager);
@@ -129,120 +133,150 @@ const AddOrEditManager = ({ open, closeHandle, type, id }) => {
         <>
           <div className={styles.formHolder}>
             <Container className={styles.formHolderRight}>
-              <TextField
-                fullWidth
-                label="اسم مدیر"
-                value={managerData.name}
-                onChange={(e) => {
-                  dispatch(updateManagerData({ name: e.currentTarget.value }));
-                }}
-              />
+              <RtlInput label="اسم مدیر">
+                <TextField
+                  fullWidth
+                  placeholder="اسم مدیر را وارد کنید"
+                  value={managerData.name}
+                  onChange={(e) => {
+                    dispatch(
+                      updateManagerData({ name: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
 
-              <TextField
-                fullWidth
-                label="فامیل مدیر"
-                value={managerData.familyName}
-                onChange={(e) => {
-                  dispatch(
-                    updateManagerData({ familyName: e.currentTarget.value })
-                  );
-                }}
-              />
-
-              <TextField
-                fullWidth
-                label="کد ملی"
-                value={managerData.nationId}
-                onChange={(e) => {
-                  dispatch(
-                    updateManagerData({ nationId: e.currentTarget.value })
-                  );
-                }}
-              />
-              <TextField
-                fullWidth
-                label="شماره کارمندی"
-                value={managerData.managerId}
-                onChange={(e) => {
-                  dispatch(
-                    updateManagerData({ managerId: e.currentTarget.value })
-                  );
-                }}
-              />
+              <RtlInput label="فامیل مدیر">
+                <TextField
+                  fullWidth
+                  placeholder="فامیل مدیر را وارد کنید"
+                  value={managerData.familyName}
+                  onChange={(e) => {
+                    dispatch(
+                      updateManagerData({ familyName: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label="کد ملی">
+                <TextField
+                  fullWidth
+                  placeholder="کد ملی مدیر را وارد کنید"
+                  value={managerData.nationId}
+                  onChange={(e) => {
+                    dispatch(
+                      updateManagerData({ nationId: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label={"کد کارمندی"}>
+                <TextField
+                  fullWidth
+                  placeholder="کد کارمندی را وارد کنید"
+                  value={managerData.managerId}
+                  onChange={(e) => {
+                    dispatch(
+                      updateManagerData({ managerId: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
             </Container>
             <Container className={styles.formHolderLeft}>
-              <Autocomplete
-                fullWidth
-                value={managerData.college == "" ? null : managerData.college}
-                onChange={(e, newData) => {
-                  dispatch(
-                    updateManagerData({
-                      college: newData == null ? { name: "" } : newData,
-                      major: null,
-                    })
-                  );
+              <RtlInput label="دانشکده">
+                <Autocomplete
+                  fullWidth
+                  value={managerData.college == "" ? null : managerData.college}
+                  onChange={(e, newData) => {
+                    dispatch(
+                      updateManagerData({
+                        college: newData == null ? { name: "" } : newData,
+                        major: null,
+                      })
+                    );
 
-                  dispatch(
-                    updateMajorsData({
-                      majors: newData == null ? [] : newData.majors,
-                    })
-                  );
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  option.collegeId === value.collegeId
-                }
-                getOptionLabel={(option) => `${option.name}`}
-                options={collegesData.colleges}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="دانشکده"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
-              <Autocomplete
-                fullWidth
-                value={managerData.major == "" ? null : managerData.major}
-                onChange={(e, newData) => {
-                  dispatch(updateManagerData({ major: newData }));
-                }}
-                placeholder="رشته ها"
-                isOptionEqualToValue={(option, value) =>
-                  option.majorId === value.majorId
-                }
-                getOptionLabel={(option) => `${option.name}`}
-                options={majorsData.majors}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="رشته"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
-              <TextField
-                fullWidth
-                label="سال ورود"
-                value={managerData.entryYear}
-                onChange={(e) => {
-                  dispatch(
-                    updateManagerData({ entryYear: e.currentTarget.value })
-                  );
-                }}
-              />
-              <TextField
-                fullWidth
-                label="سطح"
-                value={managerData.level}
-                onChange={(e) => {
-                  dispatch(updateManagerData({ level: e.currentTarget.value }));
-                }}
-              />
+                    dispatch(
+                      updateMajorsData({
+                        majors: newData == null ? [] : newData.majors,
+                      })
+                    );
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    option.collegeId === value.collegeId
+                  }
+                  getOptionLabel={(option) => `${option.name}`}
+                  options={collegesData.colleges}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="دانشکده را انتخاب کنید"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
+                />
+              </RtlInput>
+              <RtlInput label="رشته">
+                <Autocomplete
+                  fullWidth
+                  value={managerData.major == "" ? null : managerData.major}
+                  onChange={(e, newData) => {
+                    dispatch(updateManagerData({ major: newData }));
+                  }}
+                  placeholder="رشته ها"
+                  isOptionEqualToValue={(option, value) =>
+                    option.majorId === value.majorId
+                  }
+                  getOptionLabel={(option) => `${option.name}`}
+                  options={majorsData.majors}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="رشته را انتخاب کنید"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
+                />
+              </RtlInput>
+              <RtlInput label={"سال ورودی"}>
+                <DatePicker
+                  onlyYearPicker
+                  format="YYYY"
+                  render={
+                    <TextField fullWidth placeholder="سال ورودی را وارد کنید" />
+                  }
+                  locale={persian_fa}
+                  calendar={persian}
+                  value={
+                    managerData.entryYear == null
+                      ? new Date()
+                      : new Date(managerData.entryYear)
+                  }
+                  onChange={(e) => {
+                    dispatch(
+                      updateManagerData({
+                        entryYear: e.toJSON(),
+                      })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label="سطح">
+                <TextField
+                  fullWidth
+                  placeholder="سطح را وارد کنید"
+                  value={managerData.level}
+                  onChange={(e) => {
+                    dispatch(
+                      updateManagerData({ level: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
             </Container>
           </div>
           <Container className={styles.buttonCon}>

@@ -23,10 +23,10 @@
   justify-content: center;
   align-items: center;
   margin: 2rem 0;
+  width: 500px;
 }
 .items > * {
   margin-top: 1rem;
-  width: 500px;
 }
 
 @media (max-width: 1200px) {
@@ -49,8 +49,6 @@
   }
   .items {
     grid-template-columns: auto auto;
-  }
-  .items > * {
     width: 100%;
   }
 }

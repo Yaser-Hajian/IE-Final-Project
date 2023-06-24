@@ -29,6 +29,7 @@ import { updateStudentsData } from "../../../../redux/students";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import RtlInput from "../../rtlInput";
 
 const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
   const studentData = useSelector((s) => s.student);
@@ -145,166 +146,195 @@ const AddOrEditStudent = ({ open, closeHandle, type, id }) => {
         <>
           <div className={styles.formHolder}>
             <Container className={styles.formHolderRight}>
-              <TextField
-                fullWidth
-                label="اسم دانشجو"
-                value={studentData.name}
-                onChange={(e) => {
-                  dispatch(updateStudentData({ name: e.currentTarget.value }));
-                }}
-              />
+              <RtlInput label="اسم دانشجو">
+                <TextField
+                  fullWidth
+                  placeholder="اسم دانشجو را وارد کنید"
+                  value={studentData.name}
+                  onChange={(e) => {
+                    dispatch(
+                      updateStudentData({ name: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
 
-              <TextField
-                fullWidth
-                label="فامیل دانشجو"
-                value={studentData.familyName}
-                onChange={(e) => {
-                  dispatch(
-                    updateStudentData({ familyName: e.currentTarget.value })
-                  );
-                }}
-              />
+              <RtlInput label="فامیل دانشجو">
+                <TextField
+                  placeholder="فامیل دانشجو را وارد کنید"
+                  fullWidth
+                  value={studentData.familyName}
+                  onChange={(e) => {
+                    dispatch(
+                      updateStudentData({ familyName: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
 
-              <TextField
-                fullWidth
-                label="کد ملی"
-                value={studentData.nationId}
-                onChange={(e) => {
-                  dispatch(
-                    updateStudentData({ nationId: e.currentTarget.value })
-                  );
-                }}
-              />
-              <TextField
-                fullWidth
-                label="شماره دانشجویی"
-                value={studentData.studentId}
-                onChange={(e) => {
-                  dispatch(
-                    updateStudentData({ studentId: e.currentTarget.value })
-                  );
-                }}
-              />
-              <Autocomplete
-                fullWidth
-                disablePortal
-                value={studentData.passedCourses}
-                onChange={(e, newData) => {
-                  dispatch(updateStudentData({ passedCourses: newData }));
-                }}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                getOptionLabel={(option) => `${option.name}`}
-                options={coursesData.courses}
-                multiple
-                renderInput={(params) => (
-                  <TextField {...params} label="دروس پاس کرده" />
-                )}
-              />
+              <RtlInput label="کد ملی">
+                <TextField
+                  fullWidth
+                  placeholder="کد ملی دانشجو را وارد کنید"
+                  value={studentData.nationId}
+                  onChange={(e) => {
+                    dispatch(
+                      updateStudentData({ nationId: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label="شماره دانشجویی">
+                <TextField
+                  fullWidth
+                  placeholder="شماره دانشجویی را وارد کنید"
+                  value={studentData.studentId}
+                  onChange={(e) => {
+                    dispatch(
+                      updateStudentData({ studentId: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label="دروس پاس کرده">
+                <Autocomplete
+                  fullWidth
+                  disablePortal
+                  value={studentData.passedCourses}
+                  onChange={(e, newData) => {
+                    dispatch(updateStudentData({ passedCourses: newData }));
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
+                  getOptionLabel={(option) => `${option.name}`}
+                  options={coursesData.courses}
+                  multiple
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="دروس پاس کرده را انتخاب کنید"
+                    />
+                  )}
+                />
+              </RtlInput>
             </Container>
             <Container className={styles.formHolderLeft}>
-              <Autocomplete
-                fullWidth
-                value={studentData.college == "" ? null : studentData.college}
-                onChange={(e, newData) => {
-                  dispatch(
-                    updateStudentData({
-                      college: newData == null ? { name: "" } : newData,
-                      major: null,
-                    })
-                  );
+              <RtlInput label="دانشکده">
+                <Autocomplete
+                  fullWidth
+                  value={studentData.college == "" ? null : studentData.college}
+                  onChange={(e, newData) => {
+                    dispatch(
+                      updateStudentData({
+                        college: newData == null ? { name: "" } : newData,
+                        major: null,
+                      })
+                    );
 
-                  dispatch(
-                    updateMajorsData({
-                      majors: newData == null ? [] : newData.majors,
-                    })
-                  );
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  option.collegeId === value.collegeId
-                }
-                getOptionLabel={(option) => `${option.name}`}
-                options={collegesData.colleges}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="دانشکده"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
-              <Autocomplete
-                fullWidth
-                value={studentData.major == "" ? null : studentData.major}
-                onChange={(e, newData) => {
-                  dispatch(updateStudentData({ major: newData }));
-                }}
-                placeholder="رشته ها"
-                isOptionEqualToValue={(option, value) =>
-                  option.majorId === value.majorId
-                }
-                getOptionLabel={(option) => `${option.name}`}
-                options={majorsData.majors}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="رشته"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
-              <DatePicker
-                onlyYearPicker
-                format="YYYY"
-                locale={persian_fa}
-                placeholder="سال ورودی"
-                calendar={persian}
-                inputClass={`${styles.datePickerInput} ${
-                  theme == "dark"
-                    ? styles.datePickerInputDark
-                    : styles.datePickerInputLight
-                }`}
-                containerClassName={styles.datePickerCon}
-                value={
-                  studentData.entryYear == null
-                    ? new Date()
-                    : new Date(studentData.entryYear)
-                }
-                onChange={(e) => {
-                  dispatch(
-                    updateStudentData({
-                      entryYear: e.toJSON(),
-                    })
-                  );
-                }}
-              />
+                    dispatch(
+                      updateMajorsData({
+                        majors: newData == null ? [] : newData.majors,
+                      })
+                    );
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    option.collegeId === value.collegeId
+                  }
+                  getOptionLabel={(option) => `${option.name}`}
+                  options={collegesData.colleges}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="دانشکده را انتخاب کنید"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
+                />
+              </RtlInput>
+              <RtlInput label="رشته">
+                <Autocomplete
+                  fullWidth
+                  value={studentData.major == "" ? null : studentData.major}
+                  onChange={(e, newData) => {
+                    dispatch(updateStudentData({ major: newData }));
+                  }}
+                  placeholder="رشته ها"
+                  isOptionEqualToValue={(option, value) =>
+                    option.majorId === value.majorId
+                  }
+                  getOptionLabel={(option) => `${option.name}`}
+                  options={majorsData.majors}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="رشته را انتخاب کنید"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
+                />
+              </RtlInput>
+              <RtlInput label={"سال ورودی"}>
+                <DatePicker
+                  onlyYearPicker
+                  format="YYYY"
+                  render={
+                    <TextField fullWidth placeholder="سال ورودی را وارد کنید" />
+                  }
+                  locale={persian_fa}
+                  calendar={persian}
+                  inputClass={`${styles.datePickerInput} ${
+                    theme == "dark"
+                      ? styles.datePickerInputDark
+                      : styles.datePickerInputLight
+                  }`}
+                  containerClassName={styles.datePickerCon}
+                  value={
+                    studentData.entryYear == null
+                      ? new Date()
+                      : new Date(studentData.entryYear)
+                  }
+                  onChange={(e) => {
+                    dispatch(
+                      updateStudentData({
+                        entryYear: e.toJSON(),
+                      })
+                    );
+                  }}
+                />
+              </RtlInput>
 
-              <Autocomplete
-                fullWidth
-                value={
-                  studentData.professor == "" ? null : studentData.professor
-                }
-                onChange={(e, newData) => {
-                  dispatch(updateStudentData({ professor: newData }));
-                }}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                getOptionLabel={(option) =>
-                  `${option.name} ${option.familyName}`
-                }
-                options={professorsData.professors}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="استاد"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
+              <RtlInput label="استاد">
+                <Autocomplete
+                  fullWidth
+                  value={
+                    studentData.professor == "" ? null : studentData.professor
+                  }
+                  onChange={(e, newData) => {
+                    dispatch(updateStudentData({ professor: newData }));
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
+                  getOptionLabel={(option) =>
+                    `${option.name} ${option.familyName}`
+                  }
+                  options={professorsData.professors}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="استاد را انتخاب کنید"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
+                />
+              </RtlInput>
             </Container>
           </div>
           <Container className={styles.buttonCon}>

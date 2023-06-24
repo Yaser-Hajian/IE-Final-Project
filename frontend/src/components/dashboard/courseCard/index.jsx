@@ -152,7 +152,7 @@ const CourseCard = ({
             </Typography>
 
             <Typography variant="body2">
-              {capacity} از {occupiedCapacity}
+              {occupiedCapacity} از {capacity}
               <PeopleAltOutlinedIcon />
             </Typography>
           </>

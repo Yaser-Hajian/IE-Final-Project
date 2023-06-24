@@ -2,12 +2,11 @@ import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import useTermIdData from "../../../../hooks/useTermId";
 import Loader from "../../../../components/dashboard/loader/loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Pagination, Typography } from "@mui/material";
 import { useState } from "react";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import useCourseRegistrationsData from "../../../../hooks/useRegistrations";
-import { updateRegistrationsData } from "../../../../redux/registrations";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
@@ -25,11 +24,7 @@ const ProfessorDashboardTermId = () => {
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { isLoading } = useCourseRegistrationsData(
-    termId,
-    searchQuery,
-    sortType
-  );
+  const { isLoading } = useCourseRegistrationsData(termId);
   useAddTermToLastSeen(termId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     registrationData.registrations.length,
@@ -40,26 +35,30 @@ const ProfessorDashboardTermId = () => {
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);
-    dispatch(
-      updateRegistrationsData({
-        isDataLoadedBefore: false,
-      })
-    );
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const dispatch = useDispatch();
+  const filter = (p) => {
+    const regex = new RegExp(`${searchQuery}`);
+    if (regex.test(p.name) || regex.test(p.courseId)) {
+      return true;
+    }
+    return false;
+  };
 
-  const startSearch = () => {
-    if (searchQuery.trim() == "") return;
-    dispatch(
-      updateRegistrationsData({
-        isDataLoadedBefore: false,
-      })
-    );
+  const sort = (a, b) => {
+    if (sortType == null) return 1;
+    if (sortType == "mostRegister") {
+      console.log(a.occupiedCapacity, b.occupiedCapacity);
+      return a.occupiedCapacity < b.occupiedCapacity ? 1 : -1;
+    }
+
+    if (sortType == "minimumRegister") {
+      return a.occupiedCapacity > b.occupiedCapacity ? 1 : -1;
+    }
   };
 
   const changeSearchBox = (e) => {
@@ -95,17 +94,15 @@ const ProfessorDashboardTermId = () => {
                 فیلتر بر اساس
               </Button>
             </div>
-            <SearchBox
-              onChange={changeSearchBox}
-              startSearch={startSearch}
-              value={searchQuery}
-            />
+            <SearchBox onChange={changeSearchBox} value={searchQuery} />
           </div>
           <div dir="rtl" className={styles.items}>
             {registrationData.registrations.length == 0 ? (
               <Empty />
             ) : (
               registrationData.registrations
+                .filter(filter)
+                .sort(sort)
                 .slice(sliceInit, sliceFinish)
                 .map((course, i) => {
                   return (
@@ -137,7 +134,7 @@ const ProfessorDashboardTermId = () => {
             open
             menuItems={[
               { text: "بیشترین ثبت نام", sortType: "mostRegister" },
-              { text: "کمترین ثبت نام", sortType: "minimum Register" },
+              { text: "کمترین ثبت نام", sortType: "minimumRegister" },
             ]}
           />
         </div>

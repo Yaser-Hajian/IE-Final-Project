@@ -1,7 +1,7 @@
 .con {
   padding: 32px 158px;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   margin: 2rem 0rem;
@@ -13,9 +13,12 @@
   width: 50%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 .main > div {
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  width: 100%;
 }
 
 .head {
@@ -34,6 +37,7 @@
   padding: 1rem 0.5rem;
   background-color: transparent;
   width: 100%;
+  display: flex;
 }
 
 .datePickerInputLight {

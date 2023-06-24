@@ -28,6 +28,7 @@ import { toast } from "react-toastify";
 import addCourse from "../../../../utils/dashboard/addCourse";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
 import { updateRegistrationCoursesData } from "../../../../redux/registrationCourses";
+import RtlInput from "../../rtlInput";
 
 const AddCourse = ({ open, closeHandle, type, termId }) => {
   const professorsData = useSelector((s) => s.professors);
@@ -114,86 +115,97 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
       ) : (
         <>
           <Container className={styles.formHolder}>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              onChange={(e, newData) => {
-                dispatch(updateCourseData({ course: newData }));
-              }}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-              getOptionLabel={(option) => `${option.name}`}
-              options={coursesData.courses}
-              renderInput={(params) => <TextField {...params} label="درس" />}
-            />
-            <Autocomplete
-              fullWidth
-              onChange={(e, newData) => {
-                dispatch(updateCourseData({ professor: newData }));
-              }}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-              getOptionLabel={(option) => `${option.name} ${option.familyName}`}
-              options={professorsData.professors}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="استاد"
-                  InputProps={{
-                    ...params.InputProps,
-                  }}
-                />
-              )}
-            />
+            <RtlInput label={"درس"}>
+              <Autocomplete
+                fullWidth
+                disablePortal
+                onChange={(e, newData) => {
+                  dispatch(updateCourseData({ course: newData }));
+                }}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                getOptionLabel={(option) => `${option.name}`}
+                options={coursesData.courses}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </RtlInput>
+
+            <RtlInput label="استاد">
+              <Autocomplete
+                fullWidth
+                onChange={(e, newData) => {
+                  dispatch(updateCourseData({ professor: newData }));
+                }}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                getOptionLabel={(option) =>
+                  `${option.name} ${option.familyName}`
+                }
+                options={professorsData.professors}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    InputProps={{
+                      ...params.InputProps,
+                    }}
+                  />
+                )}
+              />
+            </RtlInput>
           </Container>
           <br />
           <Container className={styles.formHolder}>
-            <TextField
-              onChange={(e) => {
-                dispatch(updateCourseData({ capacity: e.currentTarget.value }));
-              }}
-              type="number"
-              label="ظرفیت"
-              fullWidth
-            />
-            <DatePicker
-              placeholder="تاریخ کلاس ها"
-              inputClass={
-                theme == "dark"
-                  ? styles.datePickerInputDark
-                  : styles.datePickerInputLight
-              }
-              containerClassName={styles.datePickerCon}
-              value={courseData.classTimes.map((d) => new Date(d))}
-              onChange={(e) => {
-                dispatch(
-                  updateCourseData({ classTimes: e.map((d) => d.toJSON()) })
-                );
-              }}
-              format="MM/DD/YYYY HH:mm:ss"
-              plugins={[<TimePicker position="bottom" />]}
-              locale={persian_fa}
-              calendar={persian}
-              multiple
-              name="classTimes"
-            />
+            <RtlInput label="ظرفیت">
+              <TextField
+                onChange={(e) => {
+                  dispatch(
+                    updateCourseData({ capacity: e.currentTarget.value })
+                  );
+                }}
+                type="number"
+                fullWidth
+              />
+            </RtlInput>
+            <RtlInput label={"تاریخ کلاس ها"}>
+              <DatePicker
+                render={<TextField type="reset" fullWidth />}
+                inputClass={
+                  theme == "dark"
+                    ? styles.datePickerInputDark
+                    : styles.datePickerInputLight
+                }
+                containerClassName={styles.datePickerCon}
+                value={courseData.classTimes.map((d) => new Date(d))}
+                onChange={(e) => {
+                  dispatch(
+                    updateCourseData({ classTimes: e.map((d) => d.toJSON()) })
+                  );
+                }}
+                format="MM/DD/YYYY HH:mm:ss"
+                plugins={[<TimePicker position="bottom" />]}
+                locale={persian_fa}
+                calendar={persian}
+                multiple
+              />
+            </RtlInput>
           </Container>
           <Container className={styles.formHolder}>
-            <DatePicker
-              placeholder="تاریخ امتحان"
-              inputClass={
-                theme == "dark"
-                  ? styles.datePickerInputDark
-                  : styles.datePickerInputLight
-              }
-              value={new Date(courseData.examDate)}
-              onChange={(e) => {
-                dispatch(updateCourseData({ examDate: e.toJSON() }));
-              }}
-              format="MM/DD/YYYY HH:mm:ss"
-              plugins={[<TimePicker position="bottom" />]}
-              locale={persian_fa}
-              calendar={persian}
-              name="examDay"
-            />
+            <RtlInput label="تاریخ امتحان">
+              <DatePicker
+                inputClass={
+                  theme == "dark"
+                    ? styles.datePickerInputDark
+                    : styles.datePickerInputLight
+                }
+                value={new Date(courseData.examDate)}
+                onChange={(e) => {
+                  dispatch(updateCourseData({ examDate: e.toJSON() }));
+                }}
+                format="MM/DD/YYYY HH:mm:ss"
+                plugins={[<TimePicker position="bottom" />]}
+                locale={persian_fa}
+                calendar={persian}
+                name="examDay"
+              />
+            </RtlInput>
           </Container>
 
           <Container sx={{ mt: 2 }}>

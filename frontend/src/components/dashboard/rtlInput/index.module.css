@@ -1,0 +1,10 @@
+.con {
+  width: 100%;
+}
+.con > * {
+  width: 100%;
+}
+
+.con p:first-child {
+  margin-bottom: 0.5rem;
+}

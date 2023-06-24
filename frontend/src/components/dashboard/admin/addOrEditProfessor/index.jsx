@@ -26,6 +26,10 @@ import {
 import updateProfessor from "../../../../utils/dashboard/updateProfessor";
 import addProfessor from "../../../../utils/dashboard/addProfessor";
 import { updateProfessorsData } from "../../../../redux/professors";
+import RtlInput from "../../rtlInput";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import DatePicker from "react-multi-date-picker";
 
 const AddOrEditProfessor = ({ open, closeHandle, type, id }) => {
   const professorData = useSelector((s) => s.professor);
@@ -134,126 +138,154 @@ const AddOrEditProfessor = ({ open, closeHandle, type, id }) => {
         <>
           <div className={styles.formHolder}>
             <Container className={styles.formHolderRight}>
-              <TextField
-                fullWidth
-                label="اسم استاد"
-                value={professorData.name}
-                onChange={(e) => {
-                  dispatch(
-                    updateProfessorData({ name: e.currentTarget.value })
-                  );
-                }}
-              />
+              <RtlInput label="اسم استاد">
+                <TextField
+                  fullWidth
+                  placeholder="اسم استاد را وارد کنید"
+                  value={professorData.name}
+                  onChange={(e) => {
+                    dispatch(
+                      updateProfessorData({ name: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
 
-              <TextField
-                fullWidth
-                label="فامیل استاد"
-                value={professorData.familyName}
-                onChange={(e) => {
-                  dispatch(
-                    updateProfessorData({ familyName: e.currentTarget.value })
-                  );
-                }}
-              />
-
-              <TextField
-                fullWidth
-                label="کد ملی"
-                value={professorData.nationId}
-                onChange={(e) => {
-                  dispatch(
-                    updateProfessorData({ nationId: e.currentTarget.value })
-                  );
-                }}
-              />
-              <TextField
-                fullWidth
-                label="شماره کارمندی"
-                value={professorData.professorId}
-                onChange={(e) => {
-                  dispatch(
-                    updateProfessorData({ professorId: e.currentTarget.value })
-                  );
-                }}
-              />
+              <RtlInput label="فامیل استاد">
+                <TextField
+                  fullWidth
+                  placeholder="فامیل استاد را وارد کنید"
+                  value={professorData.familyName}
+                  onChange={(e) => {
+                    dispatch(
+                      updateProfessorData({ familyName: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label="کد ملی">
+                <TextField
+                  fullWidth
+                  placeholder="کد ملی استاد را وارد کنید"
+                  value={professorData.nationId}
+                  onChange={(e) => {
+                    dispatch(
+                      updateProfessorData({ nationId: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label="شماره کارمندی">
+                <TextField
+                  fullWidth
+                  placeholder="شماره کارمندی را وارد کنید"
+                  value={professorData.professorId}
+                  onChange={(e) => {
+                    dispatch(
+                      updateProfessorData({
+                        professorId: e.currentTarget.value,
+                      })
+                    );
+                  }}
+                />
+              </RtlInput>
             </Container>
             <Container className={styles.formHolderLeft}>
-              <Autocomplete
-                fullWidth
-                value={
-                  professorData.college == "" ? null : professorData.college
-                }
-                onChange={(e, newData) => {
-                  dispatch(
-                    updateProfessorData({
-                      college: newData == null ? { name: "" } : newData,
-                      major: null,
-                    })
-                  );
+              <RtlInput label="دانشکده">
+                <Autocomplete
+                  fullWidth
+                  value={
+                    professorData.college == "" ? null : professorData.college
+                  }
+                  onChange={(e, newData) => {
+                    dispatch(
+                      updateProfessorData({
+                        college: newData == null ? { name: "" } : newData,
+                        major: null,
+                      })
+                    );
 
-                  dispatch(
-                    updateMajorsData({
-                      majors: newData == null ? [] : newData.majors,
-                    })
-                  );
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  option.collegeId === value.collegeId
-                }
-                getOptionLabel={(option) => `${option.name}`}
-                options={collegesData.colleges}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="دانشکده"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
-              <Autocomplete
-                fullWidth
-                value={professorData.major == "" ? null : professorData.major}
-                onChange={(e, newData) => {
-                  dispatch(updateProfessorData({ major: newData }));
-                }}
-                placeholder="رشته ها"
-                isOptionEqualToValue={(option, value) =>
-                  option.majorId === value.majorId
-                }
-                getOptionLabel={(option) => `${option.name}`}
-                options={majorsData.majors}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="رشته"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
-              <TextField
-                fullWidth
-                label="سال ورود"
-                value={professorData.entryYear}
-                onChange={(e) => {
-                  dispatch(
-                    updateProfessorData({ entryYear: e.currentTarget.value })
-                  );
-                }}
-              />
-              <TextField
-                fullWidth
-                label="سطح"
-                value={professorData.level}
-                onChange={(e) => {
-                  dispatch(
-                    updateProfessorData({ level: e.currentTarget.value })
-                  );
-                }}
-              />
+                    dispatch(
+                      updateMajorsData({
+                        majors: newData == null ? [] : newData.majors,
+                      })
+                    );
+                  }}
+                  isOptionEqualToValue={(option, value) =>
+                    option.collegeId === value.collegeId
+                  }
+                  getOptionLabel={(option) => `${option.name}`}
+                  options={collegesData.colleges}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="دانشکده را انتخاب کنید"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
+                />
+              </RtlInput>
+              <RtlInput label="رشته">
+                <Autocomplete
+                  fullWidth
+                  value={professorData.major == "" ? null : professorData.major}
+                  onChange={(e, newData) => {
+                    dispatch(updateProfessorData({ major: newData }));
+                  }}
+                  placeholder="رشته ها"
+                  isOptionEqualToValue={(option, value) =>
+                    option.majorId === value.majorId
+                  }
+                  getOptionLabel={(option) => `${option.name}`}
+                  options={majorsData.majors}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="رشته را انتخاب کنید"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
+                />
+              </RtlInput>
+              <RtlInput label={"سال ورودی"}>
+                <DatePicker
+                  onlyYearPicker
+                  format="YYYY"
+                  render={
+                    <TextField fullWidth placeholder="سال ورودی را وارد کنید" />
+                  }
+                  locale={persian_fa}
+                  calendar={persian}
+                  value={
+                    professorData.entryYear == null
+                      ? new Date()
+                      : new Date(professorData.entryYear)
+                  }
+                  onChange={(e) => {
+                    dispatch(
+                      updateProfessorData({
+                        entryYear: e.toJSON(),
+                      })
+                    );
+                  }}
+                />
+              </RtlInput>
+              <RtlInput label="سطح">
+                <TextField
+                  fullWidth
+                  placeholder="سطح استاد را وارد کنید"
+                  value={professorData.level}
+                  onChange={(e) => {
+                    dispatch(
+                      updateProfessorData({ level: e.currentTarget.value })
+                    );
+                  }}
+                />
+              </RtlInput>
             </Container>
           </div>
           <Container className={styles.buttonCon}>

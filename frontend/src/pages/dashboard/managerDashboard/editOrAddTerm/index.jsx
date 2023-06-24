@@ -30,6 +30,7 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import readExcel from "../../../../utils/readExcel";
+import RtlInput from "../../../../components/dashboard/rtlInput";
 
 const EditOrAddTerm = ({ type }) => {
   const editOrAddData = useSelector((s) => s.editOrAddTerm);
@@ -57,11 +58,6 @@ const EditOrAddTerm = ({ type }) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleInputsChange = (e) => {
-    const { name, value } = e.currentTarget;
-    dispatch(updateEditOrAddTermData({ [name]: value }));
   };
 
   const addPersonProcess = (dialogType, personId) => {
@@ -152,23 +148,28 @@ const EditOrAddTerm = ({ type }) => {
         <Loader />
       ) : (
         <div dir="rtl" className={styles.main}>
-          <TextField
-            dir="rtl"
-            value={name}
-            label={"نام ترم"}
-            onChange={handleInputsChange}
-            name="name"
-          />
-          <div className={styles.datePickerCon}>
-            <Typography>تاریخ شروع ترم</Typography>
+          <RtlInput label="نام ترم">
+            <TextField
+              dir="rtl"
+              value={name}
+              onChange={(e) => {
+                dispatch(
+                  updateEditOrAddTermData({ name: e.currentTarget.value })
+                );
+              }}
+            />
+          </RtlInput>
+
+          <RtlInput label={"تاریخ شروع ترم"}>
             <DatePicker
+              render={<TextField type="reset" fullWidth />}
               locale={persian_fa}
               calendar={persian}
               value={startDate == null ? new Date() : new Date(startDate)}
               onChange={(e) => {
                 dispatch(
                   updateEditOrAddTermData({
-                    startDate: e.toJSON(),
+                    startDate: e.toJSON() ?? new Date().getTime(),
                   })
                 );
               }}
@@ -179,11 +180,11 @@ const EditOrAddTerm = ({ type }) => {
                   : styles.datePickerInputLight
               }`}
             />
-          </div>
+          </RtlInput>
 
-          <div className={styles.datePickerCon}>
-            <Typography>تاریخ پایان ترم</Typography>
+          <RtlInput label={"تاریخ پایان ترم"}>
             <DatePicker
+              render={<TextField type="reset" fullWidth />}
               locale={persian_fa}
               calendar={persian}
               value={endDate == null ? new Date() : new Date(endDate)}
@@ -201,15 +202,17 @@ const EditOrAddTerm = ({ type }) => {
                   : styles.datePickerInputLight
               }`}
             />
-          </div>
+          </RtlInput>
 
           <div>
-            <div
-              onClick={(e) => handleClickOpen(e, "students")}
-              className={styles.dialogOpener}
-            >
-              لیست دانشجویان {`(${editOrAddData.students.length})`}
-            </div>
+            <RtlInput label={"لیست دانشجویان"}>
+              <TextField
+                fullWidth
+                onClick={(e) => handleClickOpen(e, "students")}
+                value={`${editOrAddData.students.length} دانشجو`}
+              />
+            </RtlInput>
+
             <div>
               <Button onClick={(e) => handleClickOpen(e, "students", "add")}>
                 اضافه کردن دانشجو
@@ -229,12 +232,13 @@ const EditOrAddTerm = ({ type }) => {
           </div>
 
           <div>
-            <div
-              onClick={(e) => handleClickOpen(e, "professors")}
-              className={styles.dialogOpener}
-            >
-              لیست اساتید {`(${editOrAddData.professors.length})`}
-            </div>
+            <RtlInput label={"لیست اساتید"}>
+              <TextField
+                onClick={(e) => handleClickOpen(e, "professors")}
+                value={`${editOrAddData.professors.length} استاد`}
+              />
+            </RtlInput>
+
             <div>
               <Button onClick={(e) => handleClickOpen(e, "professors", "add")}>
                 اضافه کردن استاد
@@ -253,6 +257,7 @@ const EditOrAddTerm = ({ type }) => {
             </div>
           </div>
           <Button
+            fullWidth
             variant="contained"
             onClick={type == "edit" ? updateTermProcess : AddTermProcess}
           >

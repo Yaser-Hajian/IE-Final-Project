@@ -6,6 +6,7 @@ import useMajors from "../../../../hooks/useMajors";
 import { resetCollegeData, updateCollegeData } from "../../../../redux/college";
 import { toast } from "react-toastify";
 import addCollege from "../../../../utils/dashboard/addCollege";
+import RtlInput from "../../../../components/dashboard/rtlInput";
 
 const AdminAddCollege = () => {
   const dispatch = useDispatch();
@@ -50,36 +51,39 @@ const AdminAddCollege = () => {
           </div>
 
           <div className={styles.items}>
-            <TextField
-              value={collegeData.name}
-              onChange={(e) => {
-                dispatch(updateCollegeData({ name: e.currentTarget.value }));
-              }}
-              label="نام دانشکده"
-            />
-            <Autocomplete
-              multiple
-              value={collegeData.majors == "" ? [] : collegeData.majors}
-              onChange={(e, newData) => {
-                dispatch(updateCollegeData({ majors: newData }));
-              }}
-              placeholder="رشته ها"
-              isOptionEqualToValue={(option, value) =>
-                option.majorId === value.majorId
-              }
-              getOptionLabel={(option) => `${option.name}`}
-              options={majorsData.majors}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label=" رشته ها"
-                  InputProps={{
-                    ...params.InputProps,
-                  }}
-                />
-              )}
-            />
-            <Button onClick={addCollegeProcess} variant="contained">
+            <RtlInput label="نام دانشکده">
+              <TextField
+                fullWidth
+                value={collegeData.name}
+                onChange={(e) => {
+                  dispatch(updateCollegeData({ name: e.currentTarget.value }));
+                }}
+              />
+            </RtlInput>
+            <RtlInput label=" رشته ها">
+              <Autocomplete
+                multiple
+                value={collegeData.majors == "" ? [] : collegeData.majors}
+                onChange={(e, newData) => {
+                  dispatch(updateCollegeData({ majors: newData }));
+                }}
+                placeholder="رشته ها"
+                isOptionEqualToValue={(option, value) =>
+                  option.majorId === value.majorId
+                }
+                getOptionLabel={(option) => `${option.name}`}
+                options={majorsData.majors}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    InputProps={{
+                      ...params.InputProps,
+                    }}
+                  />
+                )}
+              />
+            </RtlInput>
+            <Button fullWidth onClick={addCollegeProcess} variant="contained">
               ثبت دانشکده
             </Button>
           </div>
