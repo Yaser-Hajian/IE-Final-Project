@@ -1,6 +1,7 @@
 import AdminDashboard from "..";
 import { CheckAuthentication } from "../../../../components/checkAuthentication";
 import AdminAddCollege from "../addCollege";
+import AdminHomePage from "../home";
 import AdminManager from "../managers";
 import AdminProfessor from "../professors";
 import AdminStudent from "../students";
@@ -14,6 +15,7 @@ const adminRoutes = [
       </CheckAuthentication>
     ),
     children: [
+      { path: "", element: <AdminHomePage /> },
       { path: "students", element: <AdminStudent /> },
       { path: "professors", element: <AdminProfessor /> },
       { path: "managers", element: <AdminManager /> },
