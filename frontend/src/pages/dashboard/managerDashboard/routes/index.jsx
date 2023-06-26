@@ -3,6 +3,7 @@ import { CheckAuthentication } from "../../../../components/checkAuthentication"
 import Home from "../../../../components/dashboard/home";
 import Terms from "../../../../components/dashboard/terms/terms";
 import TermId from "../../../../components/dashboard/terms[Id]";
+import AddCourse from "../addCourse";
 import ManagerCoursePreregistrations from "../coursePreregistrations";
 import ManagerCourseRegistrations from "../courseRegistrations";
 import EditOrAddTerm from "../editOrAddTerm";
@@ -35,6 +36,14 @@ const managerRoutes = [
       {
         path: "terms/:termId/registration_courses",
         element: <ManagerRegistrationCourses />,
+      },
+      {
+        path: "terms/:termId/preregistration_courses/add",
+        element: <AddCourse type="preregistration" />,
+      },
+      {
+        path: "terms/:termId/registration_courses/add",
+        element: <AddCourse type="registration" />,
       },
       {
         path: "course/:courseId/registrations",

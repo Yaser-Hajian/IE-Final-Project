@@ -1,36 +1,24 @@
-/* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import {
-  AppBar,
   Autocomplete,
+  Box,
   Button,
   Chip,
-  Container,
-  Dialog,
-  IconButton,
   MenuItem,
   Select,
   TextField,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import styles from "./index.module.css";
-import { Close } from "@mui/icons-material";
 import useProfessorsData from "../../../../hooks/useProfessors";
 import { useDispatch, useSelector } from "react-redux";
 import useCoursesData from "../../../../hooks/useCourses";
-import Loader from "../../loader/loader";
 import { resetCourseData, updateCourseData } from "../../../../redux/course";
-import { updateProfessorsData } from "../../../../redux/professors";
-import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
+
 import { toast } from "react-toastify";
 import addCourse from "../../../../utils/dashboard/addCourse";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
 import { updateRegistrationCoursesData } from "../../../../redux/registrationCourses";
-import RtlInput from "../../rtlInput";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -40,8 +28,16 @@ import dayjs from "dayjs";
 import getDayName from "../../../../utils/getDayName";
 import formatTime from "../../../../utils/formatTime";
 import { v4 as uuid } from "uuid";
+import { useParams } from "react-router-dom";
+import Loader from "../../../../components/dashboard/loader/loader";
+import RtlInput from "../../../../components/dashboard/rtlInput";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
-const AddCourse = ({ open, closeHandle, type, termId }) => {
+const AddCourse = ({ type }) => {
+  const { termId } = useParams();
   const professorsData = useSelector((s) => s.professors);
   const coursesData = useSelector((s) => s.courses);
   const coursesDataState = useCoursesData();
@@ -51,6 +47,7 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
     time: new Date().toISOString(),
     day: 0,
   });
+
   const dispatch = useDispatch();
 
   const removeClassTime = (time) => {
@@ -94,12 +91,12 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
     if (!checkInputs()) return;
     toast.promise(
       addCourse(type, termId, courseData).then(() => {
-        closeHandle();
         dispatch(resetCourseData());
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
+        history.go(-1);
       }),
       {
         pending: "لطفا منتظر بمانید",
@@ -110,33 +107,17 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
   };
 
   return (
-    <Dialog dir="rtl" fullScreen open={open} onClose={closeHandle}>
-      <AppBar sx={{ position: "relative" }}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={() => {
-              dispatch(updateCourseData({ isDataLoadedBefore: false }));
-              dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
-              dispatch(resetCourseData());
-              closeHandle();
-            }}
-            aria-label="close"
-          >
-            <Close />
-          </IconButton>
-          <Typography sx={{ mr: 2, flex: 1 }} variant="h6" component="div">
-            اضافه کردن درس
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <br />
+    <div className={styles.con}>
+      <Box borderBottom={1} dir="rtl" className={styles.head}>
+        <Typography sx={{ m: 1 }} variant="h5">
+          {type === "edit" ? "ویرایش دانشجو" : "افزودن دانشجو"}
+        </Typography>
+      </Box>
       {isLoading || coursesDataState.isLoading ? (
         <Loader />
       ) : (
         <>
-          <Container className={styles.formHolder}>
+          <div className={styles.formHolder}>
             <RtlInput label={"درس"}>
               <Autocomplete
                 fullWidth
@@ -150,7 +131,6 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </RtlInput>
-
             <RtlInput label="استاد">
               <Autocomplete
                 fullWidth
@@ -172,9 +152,6 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                 )}
               />
             </RtlInput>
-          </Container>
-          <br />
-          <Container className={styles.formHolder}>
             <RtlInput label="ظرفیت">
               <TextField
                 onChange={(e) => {
@@ -257,8 +234,6 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                 </div>
               </div>
             </RtlInput>
-          </Container>
-          <Container className={styles.formHolder}>
             <RtlInput label="تاریخ امتحان">
               <DatePicker
                 render={<TextField fullWidth />}
@@ -267,22 +242,23 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                   dispatch(updateCourseData({ examDate: e.toJSON() }));
                 }}
                 format=" HH:mm YYYY/MM/DD"
-                plugins={[<TimePicker position="bottom" />]}
+                plugins={[<TimePicker key={1} position="bottom" />]}
                 locale={persian_fa}
                 calendar={persian}
                 name="examDay"
               />
             </RtlInput>
-          </Container>
-
-          <Container sx={{ mt: 2 }}>
-            <Button onClick={addCourseProcess} variant="contained">
+            <Button
+              sx={{ mt: 2 }}
+              onClick={addCourseProcess}
+              variant="contained"
+            >
               ثبت درس
             </Button>
-          </Container>
+          </div>
         </>
       )}
-    </Dialog>
+    </div>
   );
 };
 

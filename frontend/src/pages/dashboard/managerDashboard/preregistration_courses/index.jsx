@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import usePreregistrationCoursesData from "../../../../hooks/usePreregistrationCourses";
 import Loader from "../../../../components/dashboard/loader/loader";
@@ -11,7 +11,6 @@ import Empty from "../../../../components/dashboard/empty/empty";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import CourseCard from "../../../../components/dashboard/manager/courseCard";
 import { toast } from "react-toastify";
-import AddCourse from "../../../../components/dashboard/manager/addCourse";
 import TermHeadInfo from "../../../../components/dashboard/termHeadInfo";
 import TermDialogData from "../../../../components/dashboard/termDialogData";
 import FilterMenu from "../../../../components/dashboard/filterMenu";
@@ -31,12 +30,12 @@ const ManagerPreregistrationCourses = () => {
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isAddCourseVisible, setIsAddCourseVisible] = useState(false);
   const { isLoading } = usePreregistrationCoursesData(termId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     preregistrationCoursesData.preregistrationCourses.length,
     6
   );
+  const navigate = useNavigate();
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);
@@ -83,10 +82,6 @@ const ManagerPreregistrationCourses = () => {
     );
   };
 
-  const closeHandle = () => {
-    setIsAddCourseVisible(false);
-  };
-
   return (
     <>
       {termIdState.isLoading || isLoading ? (
@@ -112,7 +107,7 @@ const ManagerPreregistrationCourses = () => {
                 <Button
                   dir="ltr"
                   onClick={() => {
-                    setIsAddCourseVisible(true);
+                    navigate("add");
                   }}
                   startIcon={<Add />}
                 >
@@ -156,14 +151,7 @@ const ManagerPreregistrationCourses = () => {
             )}
           </div>
           <Pagination count={count} page={page} setPage={setPage} />
-          {isAddCourseVisible && (
-            <AddCourse
-              type={"preregistration"}
-              termId={termId}
-              open={isAddCourseVisible}
-              closeHandle={closeHandle}
-            />
-          )}
+
           <TermDialogData
             isDialogOpen={isDialogOpen}
             setIsDialogOpen={setIsDialogOpen}

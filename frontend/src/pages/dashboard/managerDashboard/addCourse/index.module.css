@@ -1,0 +1,77 @@
+.con {
+  padding: 32px 158px;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0rem;
+  align-items: center;
+}
+
+.formHolder {
+  margin-top: 2rem;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 500px;
+}
+
+.formHolder > * {
+  margin-bottom: 1rem;
+}
+
+.buttonCon {
+  margin-bottom: 2rem;
+}
+.chooseClassTimesCon {
+  width: 100%;
+}
+
+.chooseClassTimesSelect {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.chooseClassTimesSelect > * {
+  width: 100%;
+}
+
+.head {
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .con {
+    padding: 32px 64px;
+  }
+}
+
+@media (max-width: 800px) {
+  .con {
+    padding: 32px 32px;
+  }
+  .formHolder {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .chooseClassTimesSelect {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .chooseClassTimesSelect > * {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .con {
+    padding: 16px 16px;
+  }
+}

@@ -31,7 +31,7 @@
 
 .themeSwitch {
   position: absolute;
-  left: 4rem;
+  left: 168px;
   bottom: -1.7rem;
 }
 
@@ -43,13 +43,16 @@
   .con {
     padding: 16px 64px;
   }
+  .themeSwitch {
+    left: 64px;
+  }
 }
 @media (max-width: 800px) {
   .con {
     padding: 16px 32px;
   }
   .themeSwitch {
-    left: 2rem;
+    left: 32px;
   }
 }
 
@@ -63,6 +66,6 @@
     overflow: hidden;
   }
   .themeSwitch {
-    left: 1rem;
+    left: 16px;
   }
 }
