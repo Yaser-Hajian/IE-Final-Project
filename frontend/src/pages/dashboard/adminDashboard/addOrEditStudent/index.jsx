@@ -21,7 +21,7 @@ import { updateStudentsData } from "../../../../redux/students";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../../../components/dashboard/loader/loader";
 import RtlInput from "../../../../components/dashboard/rtlInput";
 
@@ -36,6 +36,7 @@ const AddOrEditStudent = ({ type }) => {
   const majorsData = useSelector((s) => s.majors);
   const professorsData = useSelector((s) => s.professors);
   const professorsDataState = useProfessorsData();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const checkInputs = () => {
     if (studentData.name == "") {
@@ -79,9 +80,8 @@ const AddOrEditStudent = ({ type }) => {
     toast.promise(
       addStudent(studentData).then(() => {
         dispatch(updateStudentsData({ isDataLoadedBefore: false }));
-        setTimeout(() => {
-          dispatch(resetStudentData());
-        }, 50);
+        dispatch(resetStudentData());
+        navigate("/dashboard/admin/students");
       }),
       {
         pending: "لطفا منتظر بمانید",
@@ -94,11 +94,10 @@ const AddOrEditStudent = ({ type }) => {
   const updateStudentProcess = () => {
     if (!checkInputs()) return;
     toast.promise(
-      updateStudent(studentData).then(() => {
+      updateStudent(studentId, studentData).then(() => {
         dispatch(updateStudentsData({ isDataLoadedBefore: false }));
-        setTimeout(() => {
-          dispatch(resetStudentData());
-        }, 50);
+        dispatch(resetStudentData());
+        navigate("/dashboard/admin/students");
       }),
       {
         pending: "لطفا منتظر بمانید",
@@ -232,7 +231,7 @@ const AddOrEditStudent = ({ type }) => {
                 onChange={(e, newData) => {
                   dispatch(updateStudentData({ major: newData }));
                 }}
-                placeholder="رشته ها"
+                placeholder="رشته "
                 isOptionEqualToValue={(option, value) =>
                   option.majorId === value.majorId
                 }

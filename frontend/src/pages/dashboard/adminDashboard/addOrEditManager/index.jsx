@@ -14,7 +14,7 @@ import { updateMajorsData } from "../../../../redux/majors";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../../../components/dashboard/loader/loader";
 import RtlInput from "../../../../components/dashboard/rtlInput";
 import useManagerData from "../../../../hooks/useManager";
@@ -31,6 +31,7 @@ const AddOrEditManager = ({ type }) => {
   const collegesDataState = useCollegesData();
   const majorsData = useSelector((s) => s.majors);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const checkInputs = () => {
     if (managerData.name == "") {
       toast.error("اسم مدیر را وارد کنید");
@@ -72,9 +73,8 @@ const AddOrEditManager = ({ type }) => {
     toast.promise(
       addManager(managerData).then(() => {
         dispatch(updateManagersData({ isDataLoadedBefore: false }));
-        setTimeout(() => {
-          dispatch(resetManagerData());
-        }, 50);
+        dispatch(resetManagerData());
+        navigate("/dashboard/admin/managers");
       }),
       {
         pending: "لطفا منتظر بمانید",
@@ -89,9 +89,8 @@ const AddOrEditManager = ({ type }) => {
     toast.promise(
       updateManager(managerData).then(() => {
         dispatch(updateManagersData({ isDataLoadedBefore: false }));
-        setTimeout(() => {
-          dispatch(resetManagerData());
-        }, 50);
+        dispatch(resetManagerData());
+        navigate("/dashboard/admin/managers");
       }),
       {
         pending: "لطفا منتظر بمانید",

@@ -16,7 +16,7 @@ import { updateMajorsData } from "../../../../redux/majors";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../../../components/dashboard/loader/loader";
 import RtlInput from "../../../../components/dashboard/rtlInput";
 import updateProfessor from "../../../../utils/dashboard/updateProfessor";
@@ -37,6 +37,7 @@ const AddOrEditProfessor = ({ type }) => {
   const coursesDataState = useCoursesData();
   const majorsData = useSelector((s) => s.majors);
   const professorsDataState = useProfessorsData();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const checkInputs = () => {
     if (professorData.name == "") {
@@ -80,9 +81,8 @@ const AddOrEditProfessor = ({ type }) => {
     toast.promise(
       addProfessor(professorData).then(() => {
         dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
-        setTimeout(() => {
-          dispatch(resetProfessorData());
-        }, 50);
+        dispatch(resetProfessorData());
+        navigate("/dashboard/admin/professors");
       }),
       {
         pending: "لطفا منتظر بمانید",
@@ -97,9 +97,8 @@ const AddOrEditProfessor = ({ type }) => {
     toast.promise(
       updateProfessor(professorData).then(() => {
         dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
-        setTimeout(() => {
-          dispatch(resetProfessorData());
-        }, 50);
+        dispatch(resetProfessorData());
+        navigate("/dashboard/admin/professors");
       }),
       {
         pending: "لطفا منتظر بمانید",
