@@ -7,7 +7,7 @@ import { useState } from "react";
 import preregisterCourse from "../../../utils/dashboard/preregisterCourse";
 import cancelPreregisterCourse from "../../../utils/dashboard/cancelPreregisterCourse";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updatePreregistrationCoursesData } from "../../../redux/preregistrationCourses";
 import { updateTermIdData } from "../../../redux/termId";
 import cancelRegisterCourse from "../../../utils/dashboard/cancelRegisterCourse";
@@ -32,11 +32,10 @@ const CourseCard = ({
   isreg = { is: false },
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const loggedUser = useSelector((s) => s.me);
   const dispatch = useDispatch();
   const registerCourseProcess = () => {
     toast.promise(
-      registerCourse(id, loggedUser.id).then(() => {
+      registerCourse(id).then(() => {
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
         dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
@@ -51,7 +50,7 @@ const CourseCard = ({
 
   const cancelCourseRegistrationProcess = () => {
     toast.promise(
-      cancelRegisterCourse(id, loggedUser.id).then(() => {
+      cancelRegisterCourse(id).then(() => {
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
         dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
@@ -65,7 +64,7 @@ const CourseCard = ({
   };
   const preregisterCourseProcess = () => {
     toast.promise(
-      preregisterCourse(id, loggedUser.id).then(() => {
+      preregisterCourse(id).then(() => {
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
@@ -82,7 +81,7 @@ const CourseCard = ({
 
   const cancelCoursePreregistrationProcess = () => {
     toast.promise(
-      cancelPreregisterCourse(id, loggedUser.id).then(() => {
+      cancelPreregisterCourse(id).then(() => {
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );

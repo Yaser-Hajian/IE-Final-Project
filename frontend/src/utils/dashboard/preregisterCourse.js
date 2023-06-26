@@ -1,13 +1,13 @@
 import { apiBaseUrl } from "../../config";
 import generateHeaders from "../generateHeaders";
 
-const preregisterCourse = async (courseId, studentId) => {
+const preregisterCourse = async (courseId) => {
   try {
     const response = await fetch(
       apiBaseUrl + `/course/preregister/${courseId}`,
       {
         method: "POST",
-        body: JSON.stringify({ studentId }),
+        body: JSON.stringify({}),
         headers: { "Content-Type": "application/json", ...generateHeaders() },
       }
     );

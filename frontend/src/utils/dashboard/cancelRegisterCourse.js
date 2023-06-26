@@ -1,11 +1,11 @@
 import { apiBaseUrl } from "../../config";
 import generateHeaders from "../generateHeaders";
 
-const cancelRegisterCourse = async (courseId, studentId) => {
+const cancelRegisterCourse = async (courseId) => {
   try {
     const response = await fetch(apiBaseUrl + `/course/register/${courseId}`, {
       method: "DELETE",
-      body: JSON.stringify({ studentId }),
+      body: JSON.stringify({}),
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
