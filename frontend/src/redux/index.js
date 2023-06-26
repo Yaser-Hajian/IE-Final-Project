@@ -1,5 +1,5 @@
 import { combineReducers, configureStore, createSlice } from "@reduxjs/toolkit";
-import { loggedUserSlice } from "./loggedUser";
+import { meSlice } from "./me";
 import { homeSlice } from "./home";
 import { termsSlice } from "./terms";
 import { termIdSlice } from "./termId";
@@ -44,7 +44,7 @@ const globalSlice = createSlice({
 });
 
 const rootReducer = combineReducers({
-  loggedUser: loggedUserSlice.reducer,
+  me: meSlice.reducer,
   global: globalSlice.reducer,
   home: homeSlice.reducer,
   terms: termsSlice.reducer,

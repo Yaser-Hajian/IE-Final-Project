@@ -1,9 +1,9 @@
 import { apiBaseUrl } from "../../config";
 import generateHeaders from "../generateHeaders";
 
-const getLoggedUserData = async () => {
+const getMe = async () => {
   try {
-    const response = await fetch(apiBaseUrl + "/loggedUser", {
+    const response = await fetch(apiBaseUrl + "/me", {
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
@@ -14,4 +14,4 @@ const getLoggedUserData = async () => {
   }
 };
 
-export default getLoggedUserData;
+export default getMe;

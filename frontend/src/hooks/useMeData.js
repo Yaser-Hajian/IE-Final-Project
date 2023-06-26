@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getLoggedUserData from "../utils/dashboard/getLoggedUserData";
+import getMe from "../utils/dashboard/getMe";
 import getLoginToken from "../utils/getLoginToken";
-import { updateLoggedUserData } from "../redux/loggedUser";
+import { updateMeData } from "../redux/me";
 
-const useLoggedUserInfo = () => {
-  const { isDataLoadedBefore } = useSelector((s) => s.loggedUser);
+const useMeData = () => {
+  const { isDataLoadedBefore } = useSelector((s) => s.me);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   useEffect(() => {
     const token = getLoginToken();
     const fetchData = async () => {
-      const loggedUserData = await getLoggedUserData(token);
+      const loggedUserData = await getMe(token);
       if (loggedUserData.error) {
         setIsError(true);
       }
 
       dispatch(
-        updateLoggedUserData({
+        updateMeData({
           ...loggedUserData.data,
           isDataLoadedBefore: true,
         })
@@ -33,4 +33,4 @@ const useLoggedUserInfo = () => {
   return { isLoading, isError };
 };
 
-export default useLoggedUserInfo;
+export default useMeData;

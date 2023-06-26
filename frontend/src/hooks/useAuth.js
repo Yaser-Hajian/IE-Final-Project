@@ -1,6 +1,6 @@
 const useAuth = () => {
-  const isAuthenticate = localStorage.getItem("token");
-  return isAuthenticate != null;
+  const isAuthenticate = JSON.parse(localStorage.getItem("token"));
+  return isAuthenticate != null && isAuthenticate.token != null;
 };
 
 export { useAuth };

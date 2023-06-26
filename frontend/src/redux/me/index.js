@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const loggedUserSlice = createSlice({
-  name: "loggedUser",
+const meSlice = createSlice({
+  name: "me",
   initialState: {
     name: "",
     familyName: "",
@@ -17,13 +17,12 @@ const loggedUserSlice = createSlice({
     isDataLoadedBefore: false,
   },
   reducers: {
-    updateLoggedUserData(preState, action) {
+    updateMeData(preState, action) {
       return { ...preState, ...action.payload };
     },
   },
 });
 
-export const updateLoggedUserData =
-  loggedUserSlice.actions.updateLoggedUserData;
+export const updateMeData = meSlice.actions.updateMeData;
 
-export { loggedUserSlice };
+export { meSlice };

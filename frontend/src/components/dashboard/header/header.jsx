@@ -23,7 +23,7 @@ import useThemeSwitch from "../../../hooks/useThemeSwitch";
 import ThemeSwitch from "../themeSwitch";
 
 const DashboardHeader = ({ userType }) => {
-  const loggedStudent = useSelector((s) => s.loggedUser);
+  const loggedStudent = useSelector((s) => s.me);
   const navigation = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
