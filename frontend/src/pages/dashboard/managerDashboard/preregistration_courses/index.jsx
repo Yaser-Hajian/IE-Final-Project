@@ -145,6 +145,7 @@ const ManagerPreregistrationCourses = () => {
                       key={i}
                       {...course}
                       term={termIdData.name}
+                      isPreregistration={true}
                     />
                   );
                 })

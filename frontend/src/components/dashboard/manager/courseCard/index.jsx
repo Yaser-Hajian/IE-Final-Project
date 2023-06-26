@@ -17,9 +17,10 @@ import { MoreVert } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { updatePreregistrationCoursesData } from "../../../../redux/preregistrationCourses";
 import { useDispatch } from "react-redux";
-import removePreregistrationCourse from "../../../../utils/dashboard/removePreregistrationCourse";
+import removeRegistrationCourse from "../../../../utils/dashboard/removeRegistrationCourse";
 import CourseDialogData from "../../courseDialogData";
 import { updateRegistrationCoursesData } from "../../../../redux/registrationCourses";
+import removePreregistrationCourse from "../../../../utils/dashboard/removePreregistrationCourse copy";
 
 const CourseCard = ({
   name,
@@ -32,6 +33,7 @@ const CourseCard = ({
   examTime,
   courseId,
   url = null,
+  isPreregistration,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch();
@@ -45,18 +47,29 @@ const CourseCard = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const deleteCourseProcess = async () => {
+  const deletePreregistrationCourseProcess = async () => {
     toast.promise(
       removePreregistrationCourse(termId, id).then(() => {
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
+      }),
+      {
+        pending: "لطفا منتظر بمانید",
+        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
+        success: "با موفقیت درس پیش ثبت نامی مورد نظر حذف شد",
+      }
+    );
+  };
+  const deleteRegistrationCourseProcess = async () => {
+    toast.promise(
+      removeRegistrationCourse(termId, id).then(() => {
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
       }),
       {
         pending: "لطفا منتظر بمانید",
         error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
-        success: "با موفقیت درس مورد نظر حذف شد",
+        success: "با موفقیت درس ثبت نامی مورد نظر حذف شد",
       }
     );
   };
@@ -113,7 +126,15 @@ const CourseCard = ({
         >
           اطلاعات کامل
         </MenuItem>
-        <MenuItem onClick={deleteCourseProcess}>حذف درس</MenuItem>
+        <MenuItem
+          onClick={
+            isPreregistration
+              ? deletePreregistrationCourseProcess
+              : deleteRegistrationCourseProcess
+          }
+        >
+          حذف درس
+        </MenuItem>
       </Menu>
 
       <CourseDialogData
