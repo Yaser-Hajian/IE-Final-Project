@@ -18,7 +18,7 @@ const PreregistrationCourses = () => {
   const preregistrationCoursesData = useSelector(
     (s) => s.preregistrationCourses
   );
-  const loggedUser = useSelector((s) => s.loggedUser);
+  const loggedUser = useSelector((s) => s.me);
   const { termId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const termIdData = useSelector((s) => s.termId);

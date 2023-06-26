@@ -87,7 +87,7 @@ const AddOrEditManager = ({ type }) => {
   const updateManagerProcess = () => {
     if (!checkInputs()) return;
     toast.promise(
-      updateManager(managerData).then(() => {
+      updateManager(managerId, managerData).then(() => {
         dispatch(updateManagersData({ isDataLoadedBefore: false }));
         dispatch(resetManagerData());
         navigate("/dashboard/admin/managers");
@@ -176,9 +176,7 @@ const AddOrEditManager = ({ type }) => {
                     })
                   );
                 }}
-                isOptionEqualToValue={(option, value) =>
-                  option.collegeId === value.collegeId
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => `${option.name}`}
                 options={collegesData.colleges}
                 renderInput={(params) => (
@@ -200,9 +198,7 @@ const AddOrEditManager = ({ type }) => {
                   dispatch(updateManagerData({ major: newData }));
                 }}
                 placeholder="رشته ها"
-                isOptionEqualToValue={(option, value) =>
-                  option.majorId === value.majorId
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => `${option.name}`}
                 options={majorsData.majors}
                 renderInput={(params) => (
@@ -252,10 +248,12 @@ const AddOrEditManager = ({ type }) => {
             <Button
               sx={{ mt: 2 }}
               fullWidth
-              onClick={type ? updateManagerProcess : addManagerProcess}
+              onClick={
+                type == "edit" ? updateManagerProcess : addManagerProcess
+              }
               variant="contained"
             >
-              {type ? "ثبت تغییرات" : "ثبت دانشجو"}
+              {type == "edit" ? "ثبت تغییرات" : "ثبت دانشجو"}
             </Button>
           </div>
         </>

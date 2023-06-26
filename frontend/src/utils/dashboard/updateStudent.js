@@ -3,7 +3,6 @@ import generateHeaders from "../generateHeaders";
 
 const updateStudent = async (studentId, studentData) => {
   try {
-    console.log(studentData);
     const response = await fetch(apiBaseUrl + `/admin/student/${studentId}`, {
       method: "PUT",
       body: JSON.stringify({ ...studentData }),

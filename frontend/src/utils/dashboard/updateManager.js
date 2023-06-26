@@ -3,6 +3,7 @@ import generateHeaders from "../generateHeaders";
 
 const updateManager = async (managerId, managerData) => {
   try {
+    console.log(managerData);
     const response = await fetch(apiBaseUrl + `/admin/manager/${managerId}`, {
       method: "PUT",
       body: JSON.stringify({ ...managerData }),

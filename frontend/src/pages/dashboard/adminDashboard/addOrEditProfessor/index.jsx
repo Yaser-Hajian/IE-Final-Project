@@ -95,7 +95,7 @@ const AddOrEditProfessor = ({ type }) => {
   const updateProfessorProcess = () => {
     if (!checkInputs()) return;
     toast.promise(
-      updateProfessor(professorData).then(() => {
+      updateProfessor(professorId, professorData).then(() => {
         dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
         dispatch(resetProfessorData());
         navigate("/dashboard/admin/professors");
@@ -194,9 +194,7 @@ const AddOrEditProfessor = ({ type }) => {
                     })
                   );
                 }}
-                isOptionEqualToValue={(option, value) =>
-                  option.collegeId === value.collegeId
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => `${option.name}`}
                 options={collegesData.colleges}
                 renderInput={(params) => (
@@ -218,9 +216,7 @@ const AddOrEditProfessor = ({ type }) => {
                   dispatch(updateProfessorData({ major: newData }));
                 }}
                 placeholder="رشته ها"
-                isOptionEqualToValue={(option, value) =>
-                  option.majorId === value.majorId
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => `${option.name}`}
                 options={majorsData.majors}
                 renderInput={(params) => (
@@ -272,10 +268,12 @@ const AddOrEditProfessor = ({ type }) => {
             <Button
               sx={{ mt: 2 }}
               fullWidth
-              onClick={type ? updateProfessorProcess : addProfessorProcess}
+              onClick={
+                type == "edit" ? updateProfessorProcess : addProfessorProcess
+              }
               variant="contained"
             >
-              {type ? "ثبت تغییرات" : "ثبت دانشجو"}
+              {type == "edit" ? "ثبت تغییرات" : "ثبت دانشجو"}
             </Button>
           </div>
         </>

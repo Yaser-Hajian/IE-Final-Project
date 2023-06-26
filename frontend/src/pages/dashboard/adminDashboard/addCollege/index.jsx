@@ -65,12 +65,11 @@ const AdminAddCollege = () => {
                 multiple
                 value={collegeData.majors == "" ? [] : collegeData.majors}
                 onChange={(e, newData) => {
+                  console.log(newData);
                   dispatch(updateCollegeData({ majors: newData }));
                 }}
                 placeholder="رشته ها"
-                isOptionEqualToValue={(option, value) =>
-                  option.majorId === value.majorId
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => `${option.name}`}
                 options={majorsData.majors}
                 renderInput={(params) => (

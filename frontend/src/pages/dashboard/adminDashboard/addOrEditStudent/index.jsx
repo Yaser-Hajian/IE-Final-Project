@@ -208,9 +208,7 @@ const AddOrEditStudent = ({ type }) => {
                     })
                   );
                 }}
-                isOptionEqualToValue={(option, value) =>
-                  option.collegeId === value.collegeId
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => `${option.name}`}
                 options={collegesData.colleges}
                 renderInput={(params) => (
@@ -232,9 +230,7 @@ const AddOrEditStudent = ({ type }) => {
                   dispatch(updateStudentData({ major: newData }));
                 }}
                 placeholder="رشته "
-                isOptionEqualToValue={(option, value) =>
-                  option.majorId === value.majorId
-                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 getOptionLabel={(option) => `${option.name}`}
                 options={majorsData.majors}
                 renderInput={(params) => (
@@ -300,10 +296,12 @@ const AddOrEditStudent = ({ type }) => {
             <Button
               sx={{ mt: 2 }}
               fullWidth
-              onClick={type ? updateStudentProcess : addStudentProcess}
+              onClick={
+                type == "edit" ? updateStudentProcess : addStudentProcess
+              }
               variant="contained"
             >
-              {type ? "ثبت تغییرات" : "ثبت دانشجو"}
+              {type == "edit" ? "ثبت تغییرات" : "ثبت دانشجو"}
             </Button>
           </div>
         </>

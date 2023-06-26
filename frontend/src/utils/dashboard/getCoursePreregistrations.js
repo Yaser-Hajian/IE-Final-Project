@@ -1,13 +1,10 @@
 import { apiBaseUrl } from "../../config";
 import generateHeaders from "../generateHeaders";
 
-const getCoursePreregistrations = async (id, searchQ, sortType) => {
+const getCoursePreregistrations = async (id) => {
   try {
-    const queries = new URLSearchParams();
-    searchQ != "" && queries.append("search", searchQ);
-    sortType != "" && queries.append("sort", sortType);
     const response = await fetch(
-      apiBaseUrl + `/course/${id}/preregistrations?${queries.toString()}`,
+      apiBaseUrl + `/course/${id}/preregistrations`,
       {
         headers: { "Content-Type": "application/json", ...generateHeaders() },
       }

@@ -5,7 +5,7 @@ const addManagers = async (managers) => {
   try {
     const response = await fetch(apiBaseUrl + `/admin/managers`, {
       method: "POST",
-      body: JSON.stringify({ professors: managers }),
+      body: JSON.stringify({ managers }),
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();

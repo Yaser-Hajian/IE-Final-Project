@@ -3,8 +3,9 @@ import generateHeaders from "../generateHeaders";
 
 const getTerms = async (termsId = []) => {
   try {
-    const query = termsId.length == 0 ? "" : `?search=${termsId.join(",")}`;
-    const response = await fetch(apiBaseUrl + `/terms${query}`, {
+    const queries = new URLSearchParams();
+    termsId.length != 0 && queries.append("search", termsId.join(","));
+    const response = await fetch(apiBaseUrl + `/terms?${queries.toString()}`, {
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();

@@ -16,7 +16,7 @@ import Pagination from "../../../../components/dashboard/pagination";
 
 const RegistrationCourses = () => {
   const registrationCoursesData = useSelector((s) => s.registrationCourses);
-  const loggedUser = useSelector((s) => s.loggedUser);
+  const loggedUser = useSelector((s) => s.me);
   const { termId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const termIdData = useSelector((s) => s.termId);
@@ -69,14 +69,14 @@ const RegistrationCourses = () => {
                 registrationCoursesData.registrationCourses
                   .filter(filter)
                   .slice(sliceInit, sliceFinish)
-                  .map((term, i) => {
+                  .map((course, i) => {
                     const isRegistered = loggedUser.registrations.filter(
-                      (id) => id == term.id
+                      (id) => id == course.id
                     );
                     return (
                       <CourseCard
                         key={i}
-                        {...term}
+                        {...course}
                         term={termIdData.name}
                         isreg={{
                           is: true,

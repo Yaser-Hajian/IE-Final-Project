@@ -13,7 +13,6 @@ import {
   TextField,
   Toolbar,
   Typography,
-  useTheme,
 } from "@mui/material";
 import styles from "./index.module.css";
 import { Close } from "@mui/icons-material";
@@ -48,7 +47,6 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
   const coursesDataState = useCoursesData();
   const { isLoading } = useProfessorsData();
   const courseData = useSelector((s) => s.course);
-  const theme = useTheme().palette.mode;
   const [classTime, setClassTime] = useState({
     time: new Date().toISOString(),
     day: 0,
@@ -228,7 +226,11 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
                       updateCourseData({
                         classTimes: [
                           ...courseData.classTimes,
-                          { ...classTime, id: uuid() },
+                          {
+                            ...classTime,
+                            time: new Date(classTime.time).getTime(),
+                            id: uuid(),
+                          },
                         ],
                       })
                     );
@@ -259,11 +261,6 @@ const AddCourse = ({ open, closeHandle, type, termId }) => {
           <Container className={styles.formHolder}>
             <RtlInput label="تاریخ امتحان">
               <DatePicker
-                inputClass={
-                  theme == "dark"
-                    ? styles.datePickerInputDark
-                    : styles.datePickerInputLight
-                }
                 render={<TextField fullWidth />}
                 value={new Date(courseData.examDate)}
                 onChange={(e) => {

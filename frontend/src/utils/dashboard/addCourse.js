@@ -3,10 +3,10 @@ import generateHeaders from "../generateHeaders";
 
 const addCourse = async (type, termId, courseData) => {
   try {
-    const url =
-      type == "preregistration"
-        ? `/term/${termId}/preregistration`
-        : `/term/${termId}/registration`;
+    const url = `/term/${termId}/${
+      type == "preregistration" ? "preregistration" : "registration"
+    }`;
+
     const response = await fetch(apiBaseUrl + url, {
       method: "POST",
       body: JSON.stringify({ ...courseData }),
