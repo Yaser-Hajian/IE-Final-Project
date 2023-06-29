@@ -11,27 +11,32 @@ router.post(
 );
 
 router.post(
-  "/Professor",
+  "/professor",
   adminValidator.createProfessorValidator(),
   adminController.validate,
   adminController.createProfessor.bind(adminController)
 );
+
+router.post(
+  "/professors",
+  adminController.createMultipleProfessor.bind(adminController)
+);
 router.get(
-  "/Professors",
+  "/professors",
   adminController.findAllProfessors.bind(adminController)
 );
 
 router.get(
-  "/Professor/:id",
+  "/professor/:id",
   adminController.findProfessorById.bind(adminController)
 );
 
 router.delete(
-  "/Professor/:id",
+  "/professor/:id",
   adminController.deleteProfessorById.bind(adminController)
 );
 router.put(
-  "/Professor/:id",
+  "/professor/:id",
   adminValidator.updateProfessorValidator(),
   adminController.validate,
   adminController.updateProfessorById.bind(adminController)
@@ -43,6 +48,8 @@ router.post(
   adminController.validate,
   adminController.createStudent.bind(adminController)
 );
+
+router.post("/students",adminController.createMultipleStudents.bind(adminController))
 
 router.get("/students", adminController.findAllStudents.bind(adminController));
 
@@ -69,6 +76,8 @@ router.post(
   adminController.validate,
   adminController.createManager.bind(adminController)
 );
+
+router.post("/managers",adminController.createMultipleManagers.bind(adminController))
 
 router.get("/managers", adminController.getAllManagers.bind(adminController));
 
