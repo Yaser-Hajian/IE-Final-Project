@@ -8,76 +8,88 @@ const educationManagerRouter = require("./education-manager/educationManager.rou
 const checkRole = require("../middleware/checkRole");
 const educationManagerController = require("./../routers/education-manager/educationManager.controller");
 const studentController = require("./student/student.controller");
-const studentRouter = require("./../routers/student/student.router")
-const professorRouter = require("./../routers/professor/professor.router")
+const studentRouter = require("./../routers/student/student.router");
+const professorRouter = require("./../routers/professor/professor.router");
 
 router.use("/auth", authRouter);
 router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);
+
+router.use(
+  "/edu-manager",
+  authGuard,
+  roleGuard("EducationManager"),
+  educationManagerRouter
+);
+
 router.use("/course", authGuard, checkRole, (req, res, next) => {
   if (req.isEducationManager) {
     return educationManagerRouter(req, res, next);
   }
   if (req.isStudent) {
   }
-  return res.status(401).json({ error: 'Unauthorized' });
+  return res.status(401).json({ error: "Unauthorized" });
 });
 router.use("/courses", authGuard, checkRole, (req, res, next) => {
   if (req.isEducationManager) {
     return educationManagerRouter(req, res, next);
   }
   if (req.isStudent) {
-    return studentRouter(req,res,next)
+    return studentRouter(req, res, next);
   }
   if (req.isProfessor) {
-    return professorRouter(reg,res,next)
+    return professorRouter(reg, res, next);
   }
-  return res.status(401).json({ error: 'Unauthorized' });
+  return res.status(401).json({ error: "Unauthorized" });
 });
 router.use("/course", authGuard, checkRole, (req, res, next) => {
   if (req.isEducationManager) {
     return educationManagerRouter(req, res, next);
   }
   if (req.isStudent) {
-    return studentRouter(req,res,next)
+    return studentRouter(req, res, next);
   }
   if (req.isProfessor) {
-    return professorRouter(reg,res,next)
+    return professorRouter(reg, res, next);
   }
-  return res.status(401).json({ error: 'Unauthorized' });
+  return res.status(401).json({ error: "Unauthorized" });
 });
-router.get("/students" , authGuard, checkRole ,(req,res) => {
+router.get("/students", authGuard, checkRole, (req, res) => {
   if (req.isEducationManager) {
-    return educationManagerController.getStudents(req,res);
+    return educationManagerController.getStudents(req, res);
   }
-  return res.status(401).json({ error: 'Unauthorized' });
-})
+  return res.status(401).json({ error: "Unauthorized" });
+});
 
-router.get("/student/:id" , authGuard, checkRole ,(req,res) => {
+router.get("/student/:id", authGuard, checkRole, (req, res) => {
   if (req.isEducationManager) {
-    return educationManagerController.getStudentById(req,res);
+    return educationManagerController.getStudentById(req, res);
   }
-  return res.status(401).json({ error: 'Unauthorized' });
-})
+  return res.status(401).json({ error: "Unauthorized" });
+});
 
-router.get("/Professors" , authGuard, checkRole ,(req,res) => {
+router.get("/Professors", authGuard, checkRole, (req, res) => {
   if (req.isEducationManager) {
-    return educationManagerController.getProfessors(req,res);
+    return educationManagerController.getProfessors(req, res);
   }
-  return res.status(401).json({ error: 'Unauthorized' });
-})
+  return res.status(401).json({ error: "Unauthorized" });
+});
 
-router.get("/Professor/:id" , authGuard, checkRole ,(req,res) => {
+router.get("/Professor/:id", authGuard, checkRole, (req, res) => {
   if (req.isEducationManager) {
-    return educationManagerController.getProfessorById(req,res);
+    return educationManagerController.getProfessorById(req, res);
   }
-  return res.status(401).json({ error: 'Unauthorized' });
-})
+  return res.status(401).json({ error: "Unauthorized" });
+});
 
-router.put("/student/:id" , authGuard, checkRole ,(req,res) => {
+router.put("/student/:id", authGuard, checkRole, (req, res) => {
   if (req.isStudent) {
-    return studentController.updateStudentById(req,res);
+    return studentController.updateStudentById(req, res);
   }
-  return res.status(401).json({ error: 'Unauthorized' });
-})
+  return res.status(401).json({ error: "Unauthorized" });
+});
 
+router.get("/me", authGuard, (req, res) => {
+  const user = req.user;
+  res.send({ error: false, message: "successful", data: user });
+});
 module.exports = router;
