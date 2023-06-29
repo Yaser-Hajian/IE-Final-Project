@@ -1,21 +1,35 @@
-const jwt = require('jsonwebtoken');
-const User = require('./../models/user');
+const User = require("./../models/user");
+const redisAuthService = require("../redis/index");
 
 const authGuard = async (req, res, next) => {
-  const token = req.header('Authorization')?.split(" ")[1];
+  const token = req.headers.authorization;
+  if (token == null) {
+    if (req.url === "/login") {
+      return next();
+    }
+    return res
+      .status(401)
+      .json({ error: true, message: "Unauthorized.", data: null })
+      .end();
+  }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findOne({ _id: decoded.id });
-    if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+    if (req.url === "/login") {
+      return res
+        .status(400)
+        .json({ error: true, message: "Bad Request.", data: null })
+        .end();
     }
-
+    const id = await redisAuthService.getIdFromRefreshToken(token);
+    const user = await User.findOne({ username: id });
     req.user = user;
-
-    next();
-  } catch (error) {
-    return res.status(401).json({ error : true , message : 'Unauthorized' , data: null});
+    return next();
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(401)
+      .json({ error: true, message: "Unauthorized.", data: null })
+      .end();
   }
 };
 

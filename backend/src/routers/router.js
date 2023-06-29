@@ -10,6 +10,54 @@ const educationManagerController = require("./../routers/education-manager/educa
 const studentController = require("./student/student.controller");
 const studentRouter = require("./../routers/student/student.router");
 const professorRouter = require("./../routers/professor/professor.router");
+const redisAuthService = require("../redis/index");
+const User = require("../models/user");
+
+router.use("/", authGuard, roleGuard());
+
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ username, password });
+    if (user) {
+      const token = redisAuthService.signJWT({ id: username });
+      const refreshToken = redisAuthService.createRefreshToken();
+      await redisAuthService.addToken(username, refreshToken, token);
+      return res
+        .status(200)
+        .json({ error: false, data: { token: refreshToken } });
+    } else {
+      return res
+        .status(401)
+        .json({ error: true, message: "Unauthorized." })
+        .end();
+    }
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ error: true, message: "InternalError" })
+      .end();
+  }
+});
+
+router.get("/signout", async (req, res) => {
+  const refreshToken = req.headers.authorization;
+  const id = req.user.username;
+  try {
+    await redisAuthService.clearToken(id, refreshToken);
+    return res.status(200).json({ error: false }).end();
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: true, message: "InternalError" })
+      .end();
+  }
+});
+
+router.get("/mee", (req, res) => {
+  res.status(200).end();
+});
 
 router.use("/auth", authRouter);
 router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);

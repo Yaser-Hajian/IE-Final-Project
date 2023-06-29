@@ -1,32 +1,22 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+const rolesAndAccess = require("./rolesAndAccess");
 
-const roleGuard = (allowedRoles) => async (req, res, next) => {
-  const token = req.header("Authorization")?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
+const roleGuard = () => async (req, res, next) => {
+  if (req.url == "/login") return next();
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await User.findOne({ _id: decoded.id });
-
-    if (!user) {
-      return res.status(401).json({ error: "Unauthorized" });
+    const { userType } = req.user;
+    const { url } = req;
+    const isUserHasAccess =
+      rolesAndAccess[userType].filter((u) => new RegExp(u).test(url)).length !=
+      0;
+    if (isUserHasAccess) {
+      return next();
     }
-
-    if (!allowedRoles.includes(req.user.userType)) {
-      return res.status(403).json({ error: "Forbidden" });
-    }
-
-    req.user = user;
-
-    next();
-  } catch (error) {
-    console.error(error);
-    return res.status(401).json({ error: "Unauthorized" });
+    res.status(403).json({ error: true, message: "Forbidden." }).end();
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: true, message: "Server Internal Error." })
+      .end();
   }
 };
 
