@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateRegistrationsData } from "../redux/registrations";
 import getRegistrations from "../utils/dashboard/getRegistrations";
 
-const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
+const useCourseRegistrationsData = (termId) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -17,11 +17,7 @@ const useCourseRegistrationsData = (termId, searchQuery, sortType) => {
       }
       setIsLoading(true);
       try {
-        const registerData = await getRegistrations(
-          termId,
-          searchQuery,
-          sortType
-        );
+        const registerData = await getRegistrations(termId);
         if (registerData.error) {
           setIsError(true);
         }

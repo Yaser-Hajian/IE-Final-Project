@@ -110,7 +110,7 @@ const AddCourse = ({ type }) => {
     <div className={styles.con}>
       <Box borderBottom={1} dir="rtl" className={styles.head}>
         <Typography sx={{ m: 1 }} variant="h5">
-          {type === "edit" ? "ویرایش دانشجو" : "افزودن دانشجو"}
+          {type === "edit" ? "ویرایش درس" : "افزودن درس"}
         </Typography>
       </Box>
       {isLoading || coursesDataState.isLoading ? (

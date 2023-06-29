@@ -3,7 +3,7 @@ import generateHeaders from "../generateHeaders";
 
 const getRegistrations = async (id) => {
   try {
-    const response = await fetch(apiBaseUrl + `/term/${id}/registrations}`, {
+    const response = await fetch(apiBaseUrl + `/term/${id}/registrations`, {
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();

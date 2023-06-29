@@ -174,6 +174,19 @@ const AddOrEditProfessor = ({ type }) => {
                 }}
               />
             </RtlInput>
+
+            <RtlInput label={"پسورد حساب"}>
+              <TextField
+                fullWidth
+                placeholder="پسورد حساب را وارد کنید"
+                value={professorData.password}
+                onChange={(e) => {
+                  dispatch(
+                    updateProfessorData({ password: e.currentTarget.value })
+                  );
+                }}
+              />
+            </RtlInput>
             <RtlInput label="دانشکده">
               <Autocomplete
                 fullWidth

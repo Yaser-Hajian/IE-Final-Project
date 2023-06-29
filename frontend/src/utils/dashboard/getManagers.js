@@ -3,7 +3,7 @@ import generateHeaders from "../generateHeaders";
 
 const getManagers = async () => {
   try {
-    const response = await fetch(apiBaseUrl + `/admin/managers}`, {
+    const response = await fetch(apiBaseUrl + `/admin/managers`, {
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();

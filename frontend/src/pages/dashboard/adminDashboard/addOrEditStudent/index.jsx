@@ -170,6 +170,18 @@ const AddOrEditStudent = ({ type }) => {
                 }}
               />
             </RtlInput>
+            <RtlInput label={"پسورد حساب"}>
+              <TextField
+                fullWidth
+                placeholder="پسورد حساب را وارد کنید"
+                value={studentData.password}
+                onChange={(e) => {
+                  dispatch(
+                    updateStudentData({ password: e.currentTarget.value })
+                  );
+                }}
+              />
+            </RtlInput>
             <RtlInput label="دروس پاس کرده">
               <Autocomplete
                 fullWidth

@@ -3,7 +3,7 @@ import generateHeaders from "../generateHeaders";
 
 const getColleges = async () => {
   try {
-    const response = await fetch(apiBaseUrl + `/admin/colleges`, {
+    const response = await fetch(apiBaseUrl + `/admin/faculties`, {
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();

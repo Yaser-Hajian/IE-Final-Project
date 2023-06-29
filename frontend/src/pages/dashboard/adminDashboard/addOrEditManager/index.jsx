@@ -158,6 +158,18 @@ const AddOrEditManager = ({ type }) => {
                 }}
               />
             </RtlInput>
+            <RtlInput label={"پسورد حساب"}>
+              <TextField
+                fullWidth
+                placeholder="پسورد حساب را وارد کنید"
+                value={managerData.password}
+                onChange={(e) => {
+                  dispatch(
+                    updateManagerData({ password: e.currentTarget.value })
+                  );
+                }}
+              />
+            </RtlInput>
             <RtlInput label="دانشکده">
               <Autocomplete
                 fullWidth
