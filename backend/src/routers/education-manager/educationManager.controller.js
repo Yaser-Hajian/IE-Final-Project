@@ -277,8 +277,9 @@ module.exports = new (class extends controller {
     try {
       const students = await Student.find().populate().select("-password");
       res.json({
+        error: false,
         count: students.length,
-        data: students,
+        data: { students },
         message: "successful",
       });
     } catch (error) {
@@ -293,7 +294,9 @@ module.exports = new (class extends controller {
         .status(400)
         .json({ error: true, message: "ID must be a number", data: null });
     }
-    const student = await Student.findOne({ student_ID }).select("-password");
+    const student = await Student.findOne({ student_ID })
+      .select("-password")
+      .populate("supervisor");
     if (!student) {
       res.status(404).json({
         message: "we do not have this id",
@@ -311,8 +314,9 @@ module.exports = new (class extends controller {
     try {
       const professors = await Professor.find().populate().select("-password");
       res.json({
+        error: false,
         count: professors.length,
-        data: professors,
+        data: { professors },
         message: "successful",
       });
     } catch (error) {
@@ -323,19 +327,23 @@ module.exports = new (class extends controller {
   async getProfessorById(req, res) {
     const id = req.params.id;
     if (isNaN(id)) {
-      return res.status(400).send("ID must be a number");
+      return res
+        .status(400)
+        .json({ error: true, message: "ID must be a number", data: null });
     }
     const professor = await Professor.findOne({ professor_ID: id }).select(
       "-password"
     );
     if (!professor) {
       res.status(404).json({
+        error: true,
         message: "we do not have this id",
         data: null,
       });
       return;
     }
     res.status(200).json({
+      error: false,
       data: professor,
       message: "successful",
     });
@@ -382,13 +390,13 @@ module.exports = new (class extends controller {
     try {
       const { name, term_id, students, professors } = req.body;
       const new_term = Term(name, term_id);
-      for (const student in students) {
+      for (const student of students) {
         const wanted_student = await Student.findOne({
           student_ID: student.id,
         });
         new_term.students.push(wanted_student._id);
       }
-      for (const professor in professors) {
+      for (const professor of professors) {
         const wanted_professor = await Professor.findOne({
           professor_ID: professor.id,
         });
@@ -418,13 +426,13 @@ module.exports = new (class extends controller {
 
       let new_students = [];
       let new_professors = [];
-      for (const student in students) {
+      for (const student of students) {
         const wanted_student = await Student.findOne({
           student_ID: student.id,
         });
         new_students.push(wanted_student._id);
       }
-      for (const professor in professors) {
+      for (const professor of professors) {
         const wanted_professor = await Professor.findOne({
           professor_ID: professor.id,
         });
@@ -466,4 +474,6 @@ module.exports = new (class extends controller {
       data: deleted_term,
     });
   }
+
+  async createPreRegistration(req, res) {}
 })();
