@@ -3,8 +3,9 @@ const { SemesterCourse } = require("../../models/semester_course");
 const Student = require("../../models/student");
 const controller = require("./../controller");
 const bcrypt = require("bcrypt");
-const {Professor} = require("./../../models/professor");
-
+const { Professor } = require("./../../models/professor");
+const Term = require("../../models/term");
+const e = require("express");
 module.exports = new (class extends controller {
   //TODO: need validator
   async createCourse(req, res) {
@@ -288,7 +289,9 @@ module.exports = new (class extends controller {
   async getStudentById(req, res) {
     const student_ID = req.params.id;
     if (isNaN(student_ID)) {
-      return res.status(400).send("ID must be a number");
+      return res
+        .status(400)
+        .json({ error: true, message: "ID must be a number", data: null });
     }
     const student = await Student.findOne({ student_ID }).select("-password");
     if (!student) {
@@ -307,7 +310,11 @@ module.exports = new (class extends controller {
   async getProfessors(req, res) {
     try {
       const professors = await Professor.find().populate().select("-password");
-      res.json({ count : professors.length ,  data: professors, message: "successful" });
+      res.json({
+        count: professors.length,
+        data: professors,
+        message: "successful",
+      });
     } catch (error) {
       res.status(500).send("Error");
     }
@@ -331,6 +338,132 @@ module.exports = new (class extends controller {
     res.status(200).json({
       data: professor,
       message: "successful",
+    });
+  }
+
+  async getTerms(req, res) {
+    try {
+      const search = req.query.search;
+      if (!search) {
+        const terms = await Term.find().populate();
+        res.status(200).json({ error: false, message: "", data: terms });
+      }
+      const IDs = search.split(",");
+      let terms = [];
+      for (let i = 0; index < IDs.length; i++) {
+        const id = IDs[i];
+        const term = await Term.findOne({ term_id: id }).populate();
+        terms.push(term);
+      }
+      res.status(200).json({ error: false, message: "done", data: { terms } });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
+  }
+
+  async getTermById(req, res) {
+    try {
+      const term_id = req.params.id;
+      if (isNaN(term_id)) {
+        return res
+          .status(400)
+          .json({ error: true, message: "ID must be a number", data: null });
+      }
+      const term = await Term.findOne({ term_id }).populate();
+      res.status(200).json({ error: false, message: "done", data: term });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
+  }
+
+  async createTerm(req, res) {
+    try {
+      const { name, term_id, students, professors } = req.body;
+      const new_term = Term(name, term_id);
+      for (const student in students) {
+        const wanted_student = await Student.findOne({
+          student_ID: student.id,
+        });
+        new_term.students.push(wanted_student._id);
+      }
+      for (const professor in professors) {
+        const wanted_professor = await Professor.findOne({
+          professor_ID: professor.id,
+        });
+        new_term.students.push(wanted_professor._id);
+      }
+      await new_term.save();
+      res.status(200).json({
+        error: false,
+        message: "new term created successfully",
+        data: new_term,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
+  }
+
+  async updateTermById(req, res) {
+    try {
+      const { name, term_id, students, professors } = req.body;
+      const term = await Term.findOne({ term_id });
+      if (!term) {
+        res
+          .status(400)
+          .json({ error: true, message: "term not found", data: null });
+      }
+
+      let new_students = [];
+      let new_professors = [];
+      for (const student in students) {
+        const wanted_student = await Student.findOne({
+          student_ID: student.id,
+        });
+        new_students.push(wanted_student._id);
+      }
+      for (const professor in professors) {
+        const wanted_professor = await Professor.findOne({
+          professor_ID: professor.id,
+        });
+        new_students.push(wanted_professor._id);
+      }
+
+      const updated_Term = await findOneAndUpdate(
+        { term_id },
+        { name, students: new_students, professors: new_professors },
+        { new: true }
+      );
+      res.status(200).send({
+        error: false,
+        message: "edited successfully",
+        data: updated_Term,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
+  }
+
+  async deleteTermById(req, res) {
+    const term_id = req.params.id;
+    if (isNaN(term_id)) {
+      return res
+        .status(400)
+        .json({ error: true, message: "ID must be a number", data: null });
+    }
+    const deleted_term = await Term.findOneAndDelete({ term_id });
+    if (!deleted_term) {
+      return res
+        .status(404)
+        .json({ error: true, message: "term not found", data: null });
+    }
+    res.status(200).json({
+      error: false,
+      message: "deleted successfully",
+      data: deleted_term,
     });
   }
 })();
