@@ -6,7 +6,7 @@ const { EducationManager } = require("./../../models/education_manager");
 const { ItManager } = require("./../../models/it_manager");
 module.exports = new (class extends controller {
   async createITManager(req, res) {
-    let { first_name, last_name, password, phone_number, email, employee_ID } =
+    let { first_name, last_name, username, password, phone_number, email, employee_ID } =
       req.body;
 
     const salt = await bcrypt.genSalt(10);
@@ -15,6 +15,7 @@ module.exports = new (class extends controller {
     const new_ITMan = new ItManager({
       first_name,
       last_name,
+      username,
       password,
       phone_number,
       email,
@@ -32,6 +33,7 @@ module.exports = new (class extends controller {
     let {
       first_name,
       last_name,
+      username,
       password,
       phone_number,
       email,
@@ -47,6 +49,7 @@ module.exports = new (class extends controller {
     const new_prof = new Professor({
       first_name,
       last_name,
+      username,
       password,
       phone_number,
       major,
@@ -122,6 +125,7 @@ module.exports = new (class extends controller {
       major,
       phone_number,
       email,
+      username,
       password,
       first_name,
       last_name,
@@ -139,6 +143,7 @@ module.exports = new (class extends controller {
           major,
           phone_number,
           email,
+          username,
           password,
           first_name,
           last_name,
@@ -158,6 +163,7 @@ module.exports = new (class extends controller {
     let {
       first_name,
       last_name,
+      username,
       password,
       phone_number,
       email,
@@ -176,6 +182,7 @@ module.exports = new (class extends controller {
       const new_student = new Student({
         first_name,
         last_name,
+        username,
         password,
         phone_number,
         email,
@@ -257,6 +264,7 @@ module.exports = new (class extends controller {
       major,
       phone_number,
       email,
+      username,
       password,
       first_name,
       last_name,
@@ -276,6 +284,7 @@ module.exports = new (class extends controller {
           major,
           phone_number,
           email,
+          username,
           password,
           first_name,
           last_name,
@@ -299,6 +308,7 @@ module.exports = new (class extends controller {
     let {
       first_name,
       last_name,
+      username,
       password,
       phone_number,
       email,
@@ -313,6 +323,7 @@ module.exports = new (class extends controller {
       const new_manager = new EducationManager({
         first_name,
         last_name,
+        username,
         password,
         phone_number,
         email,
@@ -389,7 +400,7 @@ module.exports = new (class extends controller {
     if (isNaN(employee_ID)) {
       return res.status(400).send("ID must be a number");
     }
-    let { faculty, phone_number, email, password, first_name, last_name } =
+    let { faculty, phone_number, email,username, password, first_name, last_name } =
       req.body;
 
     const salt = await bcrypt.genSalt(10);
@@ -402,6 +413,7 @@ module.exports = new (class extends controller {
           faculty,
           phone_number,
           email,
+          username,
           password,
           first_name,
           last_name,
