@@ -12,7 +12,11 @@ app.use(express.json());
 mongoose
   .connect(process.env.mongoURl)
   .then(() => console.log("connected to database"))
-  .catch((error) => console.log("could not connect to database"));
+  .catch((error) => {
+    console.log("could not connect to database");
+    console.log(process.env.mongoURl);
+    console.log(error);
+  });
 
 const specs = yaml.load("./swagger.yml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));

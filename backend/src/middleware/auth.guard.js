@@ -15,7 +15,7 @@ const authGuard = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error : true , message : 'Unauthorized' , data: null});
   }
 };
 
