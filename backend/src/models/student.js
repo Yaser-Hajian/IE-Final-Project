@@ -1,7 +1,7 @@
 const User = require("./user");
 const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamp");
-
+const { Professor } = require("./professor");
 const studentSchema = mongoose.Schema({
   education_level: {
     type: String,
@@ -11,11 +11,7 @@ const studentSchema = mongoose.Schema({
   student_ID: {
     type: Number,
     required: true,
-    unique : true
-  },
-  entrance_year: {
-    type: Number,
-    required: true,
+    unique: true,
   },
   entrance_semester: {
     type: Number,
@@ -23,20 +19,26 @@ const studentSchema = mongoose.Schema({
   },
   average_score: {
     type: Number,
-    default: null
+    default: null,
     // required: true,
   },
-  major: {
-    type: String,
+  faculty: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Faculty",
     required: true,
   },
-  faculty: {
-    type: String,
+  major: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Major",
     required: true,
+  },
+  supervisor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Professor",
   },
 });
 
 studentSchema.plugin(timestamps);
-const Student = User.discriminator("Student", studentSchema)
+const Student = User.discriminator("Student", studentSchema);
 
 module.exports = Student;

@@ -8,12 +8,14 @@ const professorSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  major: {
-    type: String,
+  faculty: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Faculty",
     required: true,
   },
-  faculty: {
-    type: String,
+  major: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Major",
     required: true,
   },
   level: {
@@ -27,7 +29,7 @@ const Professor = User.discriminator("Professor", professorSchema);
 
 module.exports = {
   professorSchema,
-  Professor
-}
+  Professor,
+};
 
 // module.exports = Professor;

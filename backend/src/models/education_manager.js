@@ -9,9 +9,15 @@ const educationManagerSchema = mongoose.Schema({
     unique : true
   },
   faculty: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Faculty",
     required: true,
   },
+  major:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Major",
+    required: true,
+  }
 });
 educationManagerSchema.plugin(timestamps);
 
