@@ -30,6 +30,14 @@ const userSchema = mongoose.Schema(
       required: true,
       length: 11,
     },
+    national_ID:{
+      type:String,
+      unique: true,
+    },
+    entrance_year: {
+      type: Number,
+      required: true,
+    },
   },
   {
     discriminatorKey: "userType",
