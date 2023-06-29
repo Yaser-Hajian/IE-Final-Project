@@ -4,8 +4,8 @@ const Student = require("./student");
 const { Professor } = require("./professor");
 const { SemesterCourse } = require("./semester_course");
 
-const semesterSchema = mongoose.Schema({
-  semester_id: {
+const termSchema = mongoose.Schema({
+  term_id: {
     type : Number,
     required: true,
     unique: true,
@@ -31,7 +31,7 @@ const semesterSchema = mongoose.Schema({
   },
 });
 
-semesterSchema.plugin(timestamps);
-const Semester = mongoose.model("Semester", semesterSchema);
+termSchema.plugin(timestamps);
+const Term = mongoose.model("Term", termSchema);
 
-module.exports = Semester;
+module.exports = Term;
