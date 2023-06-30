@@ -29,6 +29,8 @@ const getMeController = require("./term/getMeController");
 const getProfessorsController = require("./term/getProfessorsConroller");
 const getStudentsController = require("./term/getStudentsConroller");
 const acceptOrRejectRegistrationController = require("./term/acceptOrRejectRegistrationController");
+const adminGetStudentsController = require("./admin/adminGetStudentsController");
+const adminGetStudentController = require("./admin/adminGetStudentController");
 
 router.use("/", authGuard, roleGuard());
 
@@ -75,7 +77,7 @@ router.get("/signout", async (req, res) => {
 router.get("/me", getMeController);
 
 router.use("/auth", authRouter);
-router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);
+// router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);
 
 router.get("/terms", getTermsController);
 router.get("/term/:termId", getTermByIdController);
@@ -119,6 +121,9 @@ router.put(
   "/registration/:registrationId",
   acceptOrRejectRegistrationController
 );
+
+router.get("/admin/students", adminGetStudentsController);
+router.get("/admin/student/:studentId", adminGetStudentController);
 
 router.use(
   "/edu-manager",

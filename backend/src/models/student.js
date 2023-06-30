@@ -3,24 +3,14 @@ const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamp");
 const { Professor } = require("./professor");
 const studentSchema = mongoose.Schema({
-  education_level: {
-    type: String,
-    enum: ["Bachelor", "Master", "PhD"],
-    required: true,
-  },
   student_ID: {
     type: Number,
     required: true,
     unique: true,
   },
-  entrance_semester: {
+  entrance_year: {
     type: Number,
     required: true,
-  },
-  average_score: {
-    type: Number,
-    default: null,
-    // required: true,
   },
   faculty: {
     type: mongoose.Schema.Types.ObjectId,

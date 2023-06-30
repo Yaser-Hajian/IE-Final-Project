@@ -1,12 +1,16 @@
 class StudentMapper {
-  static toDto(studentMapper) {
+  static toDto(student) {
     return {
-      name: studentMapper.first_name,
-      familyName: studentMapper.last_name,
-      userType: studentMapper.userType,
-      nationId: studentMapper.national_ID,
-      id: studentMapper._id,
-      studentId: studentMapper._id,
+      name: student.first_name,
+      familyName: student.last_name,
+      userType: student.userType,
+      nationId: student.national_ID,
+      id: student._id,
+      studentId: student._id,
+      entryYear: student.entrance_year,
+      college: student.faculty,
+      major: student.major,
+      professor: student.supervisor,
     };
   }
   static toDtoBulk(students) {
@@ -18,6 +22,10 @@ class StudentMapper {
       last_name: student.familyName,
       userType: student.userType,
       national_ID: student.nationId,
+      entrance_year: student.entryYear,
+      faculty: student.college,
+      major: student.major,
+      supervisor: student.professor,
     };
   }
   static toPersistenceBulk(terms) {
