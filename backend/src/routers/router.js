@@ -15,6 +15,7 @@ const User = require("../models/user");
 const getTerms = require("./term/getTermsController");
 const getTermById = require("./term/getTermByIdController");
 const postTermController = require("./term/postTermController");
+const deleteTermController = require("./term/deleteTermController");
 
 router.use("/", authGuard, roleGuard());
 
@@ -68,6 +69,7 @@ router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);
 router.get("/terms", getTerms);
 router.get("/term/:termId", getTermById);
 router.post("/term", postTermController);
+router.delete("/term/:termId", deleteTermController);
 
 router.use(
   "/edu-manager",
