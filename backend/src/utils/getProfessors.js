@@ -1,11 +1,11 @@
-const User = require("../models/user");
+const { Professor } = require("../models/professor");
 
 const getProfessors = async (professorsId) => {
   if (professorsId == null) {
-    const professors = await User.find({ userType: "professor" }).exec();
+    const professors = await Professor.find({ userType: "professor" }).exec();
     return professors;
   }
-  const professors = await User.find({
+  const professors = await Professor.find({
     professor_ID: { $in: professorsId },
   }).exec();
   return professors;

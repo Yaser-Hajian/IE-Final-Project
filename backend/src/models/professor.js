@@ -9,13 +9,11 @@ const professorSchema = mongoose.Schema({
     unique: true,
   },
   faculty: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Faculty",
+    type: Object,
     required: true,
   },
   major: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Major",
+    type: Object,
     required: true,
   },
   level: {

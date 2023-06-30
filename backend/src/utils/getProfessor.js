@@ -1,7 +1,7 @@
-const User = require("../models/user");
+const { Professor } = require("../models/professor");
 
 const getProfessor = async (professorId) => {
-  const professor = await User.findOne({ professor_ID: professorId });
+  const professor = await Professor.findById(professorId);
   return professor;
 };
 

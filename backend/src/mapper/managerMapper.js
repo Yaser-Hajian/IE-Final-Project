@@ -10,7 +10,7 @@ class ManagerMapper {
       college: manager.faculty,
       major: manager.major,
       userType: "manager",
-      skill: manager.skill,
+      level: manager.skill,
     };
   }
   static toDtoBulk(managers) {
@@ -28,6 +28,7 @@ class ManagerMapper {
       username: manager.managerId,
       password: manager.password,
       employee_ID: manager.managerId ?? manager.id,
+      level: manager.level,
     };
   }
   static toPersistenceBulk(managers) {

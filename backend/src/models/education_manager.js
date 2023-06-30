@@ -16,7 +16,7 @@ const educationManagerSchema = mongoose.Schema({
     type: Object,
     required: true,
   },
-  skill: {
+  level: {
     type: String,
   },
 });

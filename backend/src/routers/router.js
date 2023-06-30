@@ -41,6 +41,12 @@ const adminGetManagersController = require("./admin/adminGetManagersController")
 const adminGetManagerController = require("./admin/adminGetManagerController");
 const adminDeleteManagerController = require("./admin/adminDeleteManagerController");
 const adminUpdateManagerController = require("./admin/adminUpdateManagerController");
+const adminPostProfessorController = require("./admin/adminPostProfessorController");
+const adminPostProfessorsController = require("./admin/adminPostProfessorsController");
+const adminGetProfessorsController = require("./admin/adminGetProfessorsController");
+const adminGetProfessorController = require("./admin/adminGetProfessorController");
+const adminDeleteProfessorController = require("./admin/adminDeleteProfessorController");
+const adminUpdateProfessorController = require("./admin/adminUpdateProfessorController");
 
 router.use("/", authGuard, roleGuard());
 
@@ -145,6 +151,13 @@ router.post("/admin/managers", adminPostManagersController);
 router.post("/admin/manager", adminPostManagerController);
 router.delete("/admin/manager/:managerId", adminDeleteManagerController);
 router.put("/admin/manager/:managerId", adminUpdateManagerController);
+
+router.get("/admin/professors", adminGetProfessorsController);
+router.get("/admin/professor/:professorId", adminGetProfessorController);
+router.post("/admin/professors", adminPostProfessorsController);
+router.post("/admin/professor", adminPostProfessorController);
+router.delete("/admin/professor/:professorId", adminDeleteProfessorController);
+router.put("/admin/professor/:professorId", adminUpdateProfessorController);
 
 router.use(
   "/edu-manager",

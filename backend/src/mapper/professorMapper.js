@@ -1,16 +1,20 @@
-class professorMapper {
+class ProfessorMapper {
   static toDto(professor) {
     return {
       name: professor.first_name,
       familyName: professor.last_name,
-      userType: professor.userType,
       nationId: professor.national_ID,
       id: professor._id,
       professorId: professor._id,
+      entryYear: professor.entrance_year,
+      college: professor.faculty,
+      major: professor.major,
+      userType: "professor",
+      level: professor.level,
     };
   }
-  static toDtoBulk(professors) {
-    return professors.map(professorMapper.toDto);
+  static toDtoBulk(professor) {
+    return professor.map(ProfessorMapper.toDto);
   }
   static toPersistence(professor) {
     return {
@@ -18,11 +22,18 @@ class professorMapper {
       last_name: professor.familyName,
       userType: professor.userType,
       national_ID: professor.nationId,
+      entrance_year: professor.entryYear,
+      faculty: professor.college,
+      major: professor.major,
+      username: professor.professorId,
+      password: professor.password,
+      professor_ID: professor.professorId ?? professor.id,
+      level: professor.level,
     };
   }
-  static toPersistenceBulk(terms) {
-    return {};
+  static toPersistenceBulk(managers) {
+    return managers.map(ProfessorMapper.toPersistence);
   }
 }
 
-module.exports = professorMapper;
+module.exports = ProfessorMapper;
