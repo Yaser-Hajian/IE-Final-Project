@@ -6,18 +6,19 @@ const educationManagerSchema = mongoose.Schema({
   employee_ID: {
     type: Number,
     required: true,
-    unique : true
+    unique: true,
   },
   faculty: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Faculty",
+    type: Object,
     required: true,
   },
-  major:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Major",
+  major: {
+    type: Object,
     required: true,
-  }
+  },
+  skill: {
+    type: String,
+  },
 });
 educationManagerSchema.plugin(timestamps);
 

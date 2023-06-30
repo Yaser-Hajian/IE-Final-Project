@@ -3,7 +3,6 @@ class StudentMapper {
     return {
       name: student.first_name,
       familyName: student.last_name,
-      userType: student.userType,
       nationId: student.national_ID,
       id: student._id,
       studentId: student._id,
