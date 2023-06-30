@@ -2,23 +2,18 @@ const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamp");
 
 const preRegistrationSchema = mongoose.Schema({
+  courseId: {
+    type: String,
+  },
   studentId: {
-    type: Number,
+    type: String,
   },
   termId: {
-    type: Number,
+    type: String,
   },
-  courseId: {
-    type: Number,
+  isAccepted: {
+    type: String,
   },
-  // semester_course: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "SemesterCourse",
-  // },
-  // term: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Term",
-  // },
 });
 
 preRegistrationSchema.plugin(timestamps);

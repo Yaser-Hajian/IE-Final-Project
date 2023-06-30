@@ -2,12 +2,11 @@ class SemCourseMapper {
   static toDto(course) {
     return {
       name: course.course_name,
-      term: course.term.name,
       professor: course.professor,
       registrations: course.registrations,
       capacity: course.capacity,
       occupiedCapacity: course.registrations.length,
-      id: course.course_id,
+      id: course._id,
       classTimes: course.class_times,
       examTime: course.exam_time,
       courseId: course.course_id,

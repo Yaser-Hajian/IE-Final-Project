@@ -5,7 +5,7 @@ const updateTerm = require("../../../utils/updateTerm");
 
 const updateTermController = async (req, res) => {
   try {
-    const termId = req.body.id;
+    const { termId } = req.params;
     const students = await getStudents(req.body.students.map((s) => s.id));
     const professors = await getProfessors(
       req.body.professors.map((s) => s.id)

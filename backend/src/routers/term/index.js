@@ -15,38 +15,35 @@ const express = require("express");
 
 const termRouter = express.Router();
 
-termRouter.get("/term/:termId", getTermByIdController);
-termRouter.post("/term", postTermController);
-termRouter.delete("/term/:termId", deleteTermController);
-termRouter.put("/term/:termId", updateTermController);
+termRouter.get("/:termId", getTermByIdController);
+termRouter.post("", postTermController);
+termRouter.delete("/:termId", deleteTermController);
+termRouter.put("/:termId", updateTermController);
 termRouter.get(
-  "/term/:termId/registration_courses",
+  "/:termId/registration_courses",
   getTermRegistrationCoursesController
 );
 
 termRouter.get(
-  "/term/:termId/preregistration_courses",
+  "/:termId/preregistration_courses",
   getTermPreregistrationCoursesController
 );
 
-termRouter.get("/term/:termId/preregistrations", getPreregistrationsController);
+termRouter.get("/:termId/preregistrations", getPreregistrationsController);
 
-termRouter.get("/term/:termId/registrations", getRegistrationsController);
+termRouter.get("/:termId/registrations", getRegistrationsController);
 
-termRouter.post("/term/:termId/registration", postRegistrationCourseController);
+termRouter.post("/:termId/registration", postRegistrationCourseController);
 
-termRouter.delete(
-  "/term/:termId/registration",
-  deleteRegistrationCourseController
-);
+termRouter.delete("/:termId/registration", deleteRegistrationCourseController);
 
 termRouter.post(
-  "/term/:termId/preregistration",
+  "/:termId/preregistration",
   postPreregistrationCourseController
 );
 
 termRouter.delete(
-  "/term/:termId/preregistration",
+  "/:termId/preregistration",
   deletePreregistrationCourseController
 );
 

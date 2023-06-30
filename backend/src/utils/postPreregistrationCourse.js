@@ -1,9 +1,14 @@
+const { SemesterCourse } = require("../models/semester_course");
 const Term = require("../models/term");
 
 const postPreregistrationCourse = async (termId, courseData) => {
+  const course = await new SemesterCourse({
+    ...courseData,
+    term: termId,
+  }).save();
   await Term.findOneAndUpdate(
-    { term_id: termId },
-    { $push: { preregistration_courses: courseData } }
+    { _id: termId },
+    { $push: { preregistration_courses: course._id } }
   );
 };
 

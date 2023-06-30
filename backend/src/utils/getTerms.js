@@ -7,7 +7,7 @@ const getTerms = async (search) => {
     return terms;
   }
   const termIDs = search.split(",");
-  terms = await Term.find({ term_id: { $in: termIDs } }).exec();
+  terms = await Term.find({ _id: { $in: termIDs } }).exec();
 
   return terms;
 };

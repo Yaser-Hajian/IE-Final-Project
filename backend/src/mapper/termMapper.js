@@ -1,17 +1,20 @@
+const ProfessorMapper = require("./professorMapper");
+const StudentMapper = require("./studentMapper");
+
 class TermMapper {
   static toDto(term) {
     return {
       name: term.name,
       termId: term.term_id,
-      students: term.students,
-      professors: term.professors,
+      students: StudentMapper.toDtoBulk(term.students),
+      professors: ProfessorMapper.toDtoBulk(term.professors),
       preregistrationCourses: term.preregistration_courses,
       registrationCourses: term.registration_courses,
       courseNum: term.registration_courses.length,
       studentNum: term.students.length,
       startDate: term.start_date,
       endDate: term.end_date,
-      id: term.term_id,
+      id: term._id,
     };
   }
   static toDtoBulk(terms) {

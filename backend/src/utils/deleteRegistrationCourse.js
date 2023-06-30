@@ -1,9 +1,11 @@
+const { SemesterCourse } = require("../models/semester_course");
 const Term = require("../models/term");
 
 const deleteRegistrationCourse = async (termId, courseId) => {
+  await SemesterCourse.findByIdAndDelete(courseId);
   await Term.findOneAndUpdate(
-    { term_id: termId },
-    { $pull: { registration_courses: { course_id: courseId } } }
+    { _id: termId },
+    { $pull: { registration_courses: courseId } }
   );
 };
 

@@ -4,7 +4,7 @@ const deletePreregistrationCourseController = async (req, res) => {
   try {
     const { termId } = req.params;
     const { courseId } = req.body;
-    deletePreregistrationCourse(Number(termId), courseId);
+    await deletePreregistrationCourse(termId, courseId);
     res
       .status(200)
       .json({

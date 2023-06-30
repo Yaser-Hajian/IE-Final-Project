@@ -6,7 +6,7 @@ const getStudents = async (studentsId) => {
     return students;
   }
   const students = await User.find({
-    student_ID: { $in: studentsId },
+    _id: { $in: studentsId },
   }).exec();
   return students;
 };

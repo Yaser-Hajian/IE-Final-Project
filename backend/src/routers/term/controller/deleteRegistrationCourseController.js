@@ -3,7 +3,7 @@ const deleteRegistrationCourseController = async (req, res) => {
   try {
     const { termId } = req.params;
     const { courseId } = req.body;
-    deleteRegistrationCourse(Number(termId), courseId);
+    await deleteRegistrationCourse(termId, courseId);
     res
       .status(200)
       .json({

@@ -1,10 +1,15 @@
 const TermMapper = require("../../../mapper/termMapper");
+const getStudents = require("../../../utils/getStudents");
 const getTerm = require("../../../utils/getTerm");
 
 const getTermByIdController = async (req, res) => {
   try {
     const { termId } = req.params;
     const term = await getTerm(termId);
+    const students = await getStudents(term.students);
+    const professors = await getStudents(term.professors);
+    term.students = students;
+    term.professors = professors;
     res
       .status(200)
       .json({ error: false, data: TermMapper.toDto(term) })

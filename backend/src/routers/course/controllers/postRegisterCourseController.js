@@ -1,10 +1,10 @@
-const postRegister = require("../../../utils/postRegisterCourse");
+const postRegisterCourse = require("../../../utils/postRegisterCourse");
 
 const postRegisterCourseController = async (req, res) => {
   try {
     const { courseId } = req.params;
     const studentId = req.user._id.toString();
-    await postRegister(courseId, studentId);
+    await postRegisterCourse(courseId, studentId);
     res
       .status(200)
       .json({
@@ -13,7 +13,7 @@ const postRegisterCourseController = async (req, res) => {
       .end();
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: true, msg: "Internal Error." }).end();
+    res.status(500).json({ error: true, msg: error.message }).end();
   }
 };
 

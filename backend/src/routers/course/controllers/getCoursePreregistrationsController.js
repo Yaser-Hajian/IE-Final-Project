@@ -1,16 +1,18 @@
-const SemCourseMapper = require("../../../mapper/semCourseMapper");
-const getCourseRegistrations = require("../../../utils/getCourseRegistrations");
+const PreregistrationMapper = require("../../../mapper/preregistrationMapper");
+const getCoursePreregistrations = require("../../../utils/getCoursePreregistrations");
 
 const getCoursePreregistrationsController = async (req, res) => {
   try {
     const { courseId } = req.params;
 
-    const preregistrations = await getCourseRegistrations(courseId);
+    const preregistrations = await getCoursePreregistrations(courseId);
     res
       .status(200)
       .json({
         error: false,
-        data: { preregistrations: SemCourseMapper.toDto(preregistrations) },
+        data: {
+          preregistrations: PreregistrationMapper.toDtoBulk(preregistrations),
+        },
       })
       .end();
   } catch (error) {

@@ -1,12 +1,12 @@
+const PreregistrationMapper = require("../../../mapper/preregistrationMapper");
 const getPreregistrations = require("../../../utils/getPreregistrations");
 
 const getPreregistrationsController = async (req, res) => {
   try {
-    const studentId = req.user.student_ID;
+    const studentId = req.user._id;
     const { termId } = req.params;
-    const preregistrations = await getPreregistrations(
-      Number(termId),
-      studentId
+    const preregistrations = PreregistrationMapper.toDtoBulk(
+      await getPreregistrations(termId, studentId)
     );
     res.status(200).json({ error: false, data: { preregistrations } }).end();
   } catch (error) {

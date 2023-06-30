@@ -5,7 +5,6 @@ const termSchema = mongoose.Schema({
   term_id: {
     type: Number,
     required: true,
-    unique: true,
   },
   name: {
     type: String,
@@ -33,12 +32,13 @@ const termSchema = mongoose.Schema({
   ],
   preregistration_courses: [
     {
-      type: Object,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SemesterCourse",
     },
   ],
   registration_courses: [
     {
-      type: Object,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "SemesterCourse",
     },
   ],

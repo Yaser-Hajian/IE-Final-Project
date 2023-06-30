@@ -3,10 +3,7 @@ const getTermRegistrationCourses = require("../../../utils/getTermRegistrationCo
 const getTermRegistrationCoursesController = async (req, res) => {
   try {
     const { termId } = req.params;
-
-    const registrationCourses = await getTermRegistrationCourses(
-      Number(termId)
-    );
+    const registrationCourses = await getTermRegistrationCourses(termId);
     res.status(200).json({ error: false, data: { registrationCourses } });
   } catch (error) {
     console.log(error);

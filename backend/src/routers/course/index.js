@@ -5,6 +5,7 @@ const postRegisterCourse = require("./controllers/postRegisterCourseController")
 const deleteRegisterCourse = require("./controllers/deleteRegisterCourseController");
 const postPreregisterCourseController = require("./controllers/postPreregisterCourseController");
 const deletePreregisterCourseController = require("./controllers/deletePreregisterCourseController");
+const getCoursePreregistrationsController = require("./controllers/getCoursePreregistrationsController");
 
 const courseRouter = express.Router();
 
@@ -13,7 +14,7 @@ courseRouter.get("/:courseId", getCourseController);
 courseRouter.get("/:courseId/registrations", getCourseRegistrationsController);
 courseRouter.get(
   "/:courseId/preregistrations",
-  getCourseRegistrationsController
+  getCoursePreregistrationsController
 );
 
 courseRouter.post("/register/:courseId", postRegisterCourse);

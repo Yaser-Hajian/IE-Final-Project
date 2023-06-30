@@ -13,7 +13,7 @@ const postPreregisterCourseController = async (req, res) => {
       .end();
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: true, msg: "Internal Error." }).end();
+    res.status(500).json({ error: true, msg: error.message }).end();
   }
 };
 

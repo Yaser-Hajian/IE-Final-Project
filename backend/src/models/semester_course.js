@@ -1,22 +1,15 @@
 const mongoose = require("mongoose");
-const { officialCourse } = require("./official_course");
 const timestamps = require("mongoose-timestamp");
-const { Professor } = require("./professor");
 
 const semesterCourseSchema = mongoose.Schema({
   course_id: {
-    type: Number,
+    type: String,
     required: true,
-    unique: true,
   },
   course_name: {
     type: String,
     required: true,
   },
-  // major: {
-  //   type: String,
-  //   required: true,
-  // },
 
   class_times: {
     type: Array,
@@ -43,8 +36,7 @@ const semesterCourseSchema = mongoose.Schema({
     },
   ],
   term: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Term",
+    type: String,
   },
 });
 

@@ -4,9 +4,7 @@ const getTermPreregistrationCoursesController = async (req, res) => {
   try {
     const { termId } = req.params;
 
-    const preregistrationCourses = await getTermPreregistrationCourses(
-      Number(termId)
-    );
+    const preregistrationCourses = await getTermPreregistrationCourses(termId);
     res.status(200).json({
       error: false,
       data: { preregistrationCourses },
