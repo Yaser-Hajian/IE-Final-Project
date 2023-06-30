@@ -17,7 +17,12 @@ class TermMapper {
     return terms.map(TermMapper.toDto);
   }
   static toPersistence(term) {
-    return {};
+    return {
+      ...term,
+      start_date: term.startDate,
+      end_date: term.endDate,
+      term_id: term.termId,
+    };
   }
   static toPersistenceBulk(terms) {
     return {};
