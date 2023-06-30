@@ -17,10 +17,16 @@ class SemCourseMapper {
     return courses.map(SemCourseMapper.toDto);
   }
   static toPersistence(course) {
+    const registrations = {
+      registrations: [],
+    };
+    if (course.registrations != null) {
+      // use registration mapper
+    }
     return {
       course_name: course.name,
       professor: course.professor,
-      registrations: course.registrations,
+      ...registrations,
       capacity: course.capacity,
       class_times: course.classTimes,
       exam_time: course.examTime,

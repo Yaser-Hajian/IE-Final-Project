@@ -33,13 +33,12 @@ const termSchema = mongoose.Schema({
   ],
   preregistration_courses: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "SemesterCourse",
+      type: Object,
     },
   ],
   registration_courses: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Object,
       ref: "SemesterCourse",
     },
   ],
