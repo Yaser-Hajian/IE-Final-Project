@@ -21,7 +21,7 @@ const authGuard = async (req, res, next) => {
         .end();
     }
     const id = await redisAuthService.getIdFromRefreshToken(token);
-    const user = await User.findOne({ username: id });
+    const user = await User.findOne({ username: id }).exec();
     req.user = user;
     return next();
   } catch (err) {

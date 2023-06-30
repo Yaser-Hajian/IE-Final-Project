@@ -25,6 +25,7 @@ const postRegistrationCourseController = require("./term/postRegistrationCourseC
 const deleteRegistrationCourseController = require("./term/deleteRegistrationCourseController");
 const postPreregistrationCourseController = require("./term/postPreregistrationCourseController");
 const deletePreregistrationCourseController = require("./term/deletePreregistrationCourseController");
+const getMeController = require("./term/getMeController");
 
 router.use("/", authGuard, roleGuard());
 
@@ -68,9 +69,7 @@ router.get("/signout", async (req, res) => {
   }
 });
 
-router.get("/mee", (req, res) => {
-  res.status(200).end();
-});
+router.get("/me", getMeController);
 
 router.use("/auth", authRouter);
 router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);
