@@ -20,7 +20,7 @@ const addCourseToLastSeen = (courseId) => {
     courses.unshift(courseId);
     localStorage.setItem(
       "lastSeen",
-      JSON.stringify({ ...lastSeen, terms: courses.slice(0, 3) })
+      JSON.stringify({ ...lastSeen, courses: courses.slice(0, 3) })
     );
   }
 };

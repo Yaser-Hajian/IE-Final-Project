@@ -13,8 +13,10 @@ import { Close } from "@mui/icons-material";
 import msToFullDate from "../../../utils/msToFullDate";
 import getDayName from "../../../utils/getDayName";
 import msToTime from "../../../utils/msToTime";
+import useAddCourseToLastSeen from "../../../hooks/useAddCourseToLastSeen";
 
 const CourseDialogData = ({ isDialogOpen, setIsDialogOpen, courseData }) => {
+  useAddCourseToLastSeen(courseData.courseId);
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
@@ -58,7 +60,13 @@ const CourseDialogData = ({ isDialogOpen, setIsDialogOpen, courseData }) => {
         <ListItem>
           <div className={styles.dialogItems}>
             <Typography>
-              {msToFullDate(new Date(courseData.examTime).getTime())}
+              {msToFullDate(
+                new Date(
+                  isNaN(Number(courseData.examTime))
+                    ? courseData.examTime
+                    : Number(courseData.examTime)
+                ).getTime()
+              )}
             </Typography>
             <Typography>تاریخ امتحان</Typography>
           </div>

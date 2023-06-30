@@ -16,6 +16,7 @@ import { updateRegistrationCoursesData } from "../../../redux/registrationCourse
 import { updateRegistrationsData } from "../../../redux/registrations";
 import { updatePreregistrationsData } from "../../../redux/preregistrations";
 import CourseDialogData from "../courseDialogData";
+import { updateMeData } from "../../../redux/me";
 
 const CourseCard = ({
   name,
@@ -39,6 +40,7 @@ const CourseCard = ({
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
         dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
+        dispatch(updateMeData({ isDataLoadedBefore: false }));
       }),
       {
         pending: "لطفا منتظر بمانید",
@@ -54,6 +56,7 @@ const CourseCard = ({
         dispatch(updateRegistrationCoursesData({ isDataLoadedBefore: false }));
         dispatch(updateRegistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
+        dispatch(updateMeData({ isDataLoadedBefore: false }));
       }),
       {
         pending: "لطفا منتظر بمانید",
@@ -68,6 +71,7 @@ const CourseCard = ({
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
+        dispatch(updateMeData({ isDataLoadedBefore: false }));
         dispatch(updatePreregistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
       }),
@@ -85,6 +89,7 @@ const CourseCard = ({
         dispatch(
           updatePreregistrationCoursesData({ isDataLoadedBefore: false })
         );
+        dispatch(updateMeData({ isDataLoadedBefore: false }));
         dispatch(updatePreregistrationsData({ isDataLoadedBefore: false }));
         dispatch(updateTermIdData({ isDataLoadedBefore: false }));
       }),
@@ -171,6 +176,7 @@ const CourseCard = ({
           name,
           classTimes,
           examTime,
+          courseId,
         }}
       />
     </Paper>

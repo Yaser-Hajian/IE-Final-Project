@@ -18,6 +18,7 @@ import { updateTermsData } from "../../../redux/terms";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import deleteTerm from "../../../utils/dashboard/deleteTerm";
+import msToDate from "../../../utils/msToDate";
 
 const TermCard = ({
   name,
@@ -62,7 +63,7 @@ const TermCard = ({
             {name}
           </Link>
           <Typography variant="caption" sx={{ lineHeight: "5px" }}>
-            {endDate}-{startDate}
+            {msToDate(endDate)} - {msToDate(startDate)}
           </Typography>
         </div>
         {userType == "manager" && (

@@ -29,7 +29,6 @@ const PreregistrationCourses = () => {
     preregistrationCoursesData.preregistrationCourses.length,
     6
   );
-
   const changeSearchBox = (e) => {
     setSearchQuery(e.currentTarget.value);
   };
@@ -70,14 +69,15 @@ const PreregistrationCourses = () => {
               preregistrationCoursesData.preregistrationCourses
                 .filter(filter)
                 .slice(sliceInit, sliceFinish)
-                .map((term, i) => {
+                .map((preregistration, i) => {
                   const isPreregistered = loggedUser.preregistrations.filter(
-                    (id) => id == term.id
+                    (id) => id.courseId == preregistration.id
                   );
+
                   return (
                     <CourseCard
                       key={i}
-                      {...term}
+                      {...preregistration}
                       term={termIdData.name}
                       ispre={{
                         is: true,

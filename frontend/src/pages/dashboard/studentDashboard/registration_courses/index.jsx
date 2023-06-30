@@ -71,7 +71,7 @@ const RegistrationCourses = () => {
                   .slice(sliceInit, sliceFinish)
                   .map((course, i) => {
                     const isRegistered = loggedUser.registrations.filter(
-                      (id) => id == course.id
+                      (id) => id.courseId == course.id
                     );
                     return (
                       <CourseCard
