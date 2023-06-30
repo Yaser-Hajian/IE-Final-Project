@@ -7,8 +7,7 @@ const facultySchema = mongoose.Schema({
   },
   majors: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Major",
+      type: Object,
     },
   ],
 });
