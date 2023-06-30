@@ -18,10 +18,13 @@ class TermMapper {
   }
   static toPersistence(term) {
     return {
-      ...term,
+      semester_courses: term.courses,
+      professors: term.professors,
+      students: term.students,
+      name: term.name,
       start_date: term.startDate,
       end_date: term.endDate,
-      term_id: term.termId,
+      term_id: term.id ?? term.termId,
     };
   }
   static toPersistenceBulk(terms) {

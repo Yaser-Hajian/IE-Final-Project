@@ -12,10 +12,11 @@ const studentRouter = require("./../routers/student/student.router");
 const professorRouter = require("./../routers/professor/professor.router");
 const redisAuthService = require("../redis/index");
 const User = require("../models/user");
-const getTerms = require("./term/getTermsController");
-const getTermById = require("./term/getTermByIdController");
+const getTermsController = require("./term/getTermsController");
+const getTermByIdController = require("./term/getTermByIdController");
 const postTermController = require("./term/postTermController");
 const deleteTermController = require("./term/deleteTermController");
+const updateTermController = require("./term/updateTermController");
 
 router.use("/", authGuard, roleGuard());
 
@@ -66,10 +67,11 @@ router.get("/mee", (req, res) => {
 router.use("/auth", authRouter);
 router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);
 
-router.get("/terms", getTerms);
-router.get("/term/:termId", getTermById);
+router.get("/terms", getTermsController);
+router.get("/term/:termId", getTermByIdController);
 router.post("/term", postTermController);
 router.delete("/term/:termId", deleteTermController);
+router.put("/term/:termId", updateTermController);
 
 router.use(
   "/edu-manager",
