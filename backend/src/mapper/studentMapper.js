@@ -1,6 +1,5 @@
 class StudentMapper {
   static toDto(student) {
-    console.log(student.supervisor);
     return {
       name: student.first_name,
       familyName: student.last_name,
@@ -11,6 +10,7 @@ class StudentMapper {
       college: student.faculty,
       major: student.major,
       professor: student.supervisor,
+      passedCourses: student.passed_courses,
       userType: "student",
     };
   }

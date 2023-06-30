@@ -1,8 +1,8 @@
 class FacultyMapper {
   static toDto(faculty) {
     return {
-      name: faculty.first_name,
-      id: faculty._id,
+      name: faculty.name,
+      id: faculty._id ?? faculty.id,
       majors: faculty.majors,
     };
   }

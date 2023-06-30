@@ -14,6 +14,9 @@ const preRegistrationSchema = mongoose.Schema({
   isAccepted: {
     type: String,
   },
+  date: {
+    type: Number,
+  },
 });
 
 preRegistrationSchema.plugin(timestamps);

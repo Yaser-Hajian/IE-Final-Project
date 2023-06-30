@@ -28,7 +28,7 @@ class SemCourseMapper {
       ...registrations,
       capacity: course.capacity,
       class_times: course.classTimes,
-      exam_time: course.examTime,
+      exam_time: course.examDate,
       course_id: course.courseId ?? course.id,
     };
   }

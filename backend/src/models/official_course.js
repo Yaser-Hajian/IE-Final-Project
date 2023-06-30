@@ -3,7 +3,7 @@ const timestamps = require("mongoose-timestamp");
 
 const officialCourseSchema = mongoose.Schema({
   course_id: {
-    type: Number,
+    type: String,
     required: true,
   },
   course_name: {

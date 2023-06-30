@@ -10,7 +10,9 @@ const getCourseRegistrationsController = async (req, res) => {
       .status(200)
       .json({
         error: false,
-        data: { registrations: PreregistrationMapper.toDtoBulk(registrations) },
+        data: {
+          courseRegistrations: PreregistrationMapper.toDtoBulk(registrations),
+        },
       })
       .end();
   } catch (error) {

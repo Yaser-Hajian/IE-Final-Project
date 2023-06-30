@@ -3,9 +3,12 @@ const getMajors = require("../../../utils/getMajors");
 
 const adminGetMajorsController = async (req, res) => {
   try {
-    const majors = MajorMapper.toDto(await getMajors());
+    const majors = MajorMapper.toDtoBulk(await getMajors());
 
-    res.status(200).json({ error: false, data: { majors } }).end();
+    res
+      .status(200)
+      .json({ error: false, data: { majors: majors } })
+      .end();
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: true, message: "Internal Error." }).end();

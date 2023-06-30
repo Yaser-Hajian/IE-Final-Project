@@ -1,8 +1,8 @@
 class MajorMapper {
   static toDto(major) {
     return {
-      name: major.first_name,
-      id: major._id,
+      name: major.name,
+      id: major._id ?? major.id,
     };
   }
   static toDtoBulk(majors) {

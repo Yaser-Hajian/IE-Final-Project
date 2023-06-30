@@ -5,9 +5,11 @@ const router = require("./src/routers/router");
 const swaggerUi = require("swagger-ui-express");
 const yaml = require("yamljs");
 const app = express();
+const cors = require("cors");
 
 dotenv.config();
 app.use(express.json());
+app.use(cors({ origin: "*" }));
 
 mongoose
   .connect(process.env.mongoURl)

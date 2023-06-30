@@ -11,6 +11,7 @@ const postRegisterCourse = async (courseId, studentId) => {
     studentId,
     termId: semester.term,
     isAccepted: null,
+    date: new Date().getTime(),
   }).save();
   await SemesterCourse.findByIdAndUpdate(courseId, {
     $push: { registrations: registration._id },

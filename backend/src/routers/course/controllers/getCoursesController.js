@@ -7,7 +7,7 @@ const getCoursesController = async (req, res) => {
   try {
     const search = req.query.search;
     let courses = [];
-    if (search == null) {
+    if (search == null || search == "") {
       courses = OffCourseMapper.toDtoBulk(await getOffCourses());
     } else {
       courses = SemCourseMapper.toDtoBulk(await getCourses(search));

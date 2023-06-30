@@ -3,9 +3,10 @@ class PreregistrationMapper {
     return {
       name: preregistration.name,
       familyName: preregistration.familyName,
-      id: preregistration.id,
+      id: preregistration._id,
       date: preregistration.date,
       isPass: preregistration.isAccepted,
+      courseId: preregistration.courseId,
     };
   }
   static toDtoBulk(preregistrations) {

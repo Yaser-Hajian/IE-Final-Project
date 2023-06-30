@@ -14,6 +14,9 @@ const registrationSchema = mongoose.Schema({
   isAccepted: {
     type: String,
   },
+  date: {
+    type: Number,
+  },
 });
 
 registrationSchema.plugin(timestamps);

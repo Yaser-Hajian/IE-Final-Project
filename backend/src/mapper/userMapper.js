@@ -3,7 +3,7 @@ class UserMapper {
     return {
       name: user.first_name,
       familyName: user.last_name,
-      userType: user.userType,
+      userType: user.userType.toLowerCase(),
       nationId: user.national_ID,
     };
   }

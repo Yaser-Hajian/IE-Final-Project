@@ -7,14 +7,13 @@ const postRegistrationCourseController = async (req, res) => {
   try {
     const { termId } = req.params;
     const courseData = req.body;
-    const course = await getOfficialCourse(courseData.course.id);
     const professor = await getProfessor(courseData.professor.id);
     await postRegistrationCourse(
       termId,
       SemCourseMapper.toPersistence({
         ...courseData,
-        name: course.course_name,
-        courseId: course._id,
+        name: courseData.course.name,
+        courseId: courseData.course.id,
         professor: `${professor.first_name} ${professor.last_name}`,
       })
     );
