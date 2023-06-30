@@ -64,7 +64,6 @@ router.get("/professors", getProfessorsController);
 router.get("/students", getStudentsController);
 
 router.put(
-  // ! MUST TEST THIS
   "/registration/:registrationId",
   acceptOrRejectRegistrationController
 );
