@@ -5,13 +5,15 @@ const facultySchema = mongoose.Schema({
   name: {
     type: String,
   },
-  majors:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Major",
-  }
+  majors: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Major",
+    },
+  ],
 });
 
 facultySchema.plugin(timestamps);
-const Faculty = mongoose.model("Faculty",facultySchema)
+const Faculty = mongoose.model("Faculty", facultySchema);
 
 module.exports = Faculty;

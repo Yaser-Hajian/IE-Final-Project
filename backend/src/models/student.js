@@ -13,17 +13,17 @@ const studentSchema = mongoose.Schema({
     required: true,
   },
   faculty: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Faculty",
-    required: true,
+    type: Object,
   },
   major: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Major",
-    required: true,
+    type: Object,
+  },
+  passed_courses: {
+    type: Object,
+    ref: "OfficialCourse",
   },
   supervisor: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Object,
     ref: "Professor",
   },
 });

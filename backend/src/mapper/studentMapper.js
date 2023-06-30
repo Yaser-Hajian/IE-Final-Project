@@ -11,6 +11,7 @@ class StudentMapper {
       college: student.faculty,
       major: student.major,
       professor: student.supervisor,
+      userType: "student",
     };
   }
   static toDtoBulk(students) {
@@ -26,10 +27,14 @@ class StudentMapper {
       faculty: student.college,
       major: student.major,
       supervisor: student.professor,
+      passed_courses: student.passedCourses,
+      username: student.studentId,
+      password: student.password,
+      student_ID: student.studentId ?? student.id,
     };
   }
-  static toPersistenceBulk(terms) {
-    return {};
+  static toPersistenceBulk(students) {
+    return students.map(StudentMapper.toPersistence);
   }
 }
 
