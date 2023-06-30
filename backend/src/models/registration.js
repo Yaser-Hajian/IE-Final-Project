@@ -2,15 +2,17 @@ const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamp");
 
 const registrationSchema = mongoose.Schema({
-  semester_course: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "SemesterCourse",
-    },
-  ],
-  term: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Term",
+  courseId: {
+    type: String,
+  },
+  studentId: {
+    type: String,
+  },
+  termId: {
+    type: String,
+  },
+  isAccepted: {
+    type: String,
   },
 });
 
