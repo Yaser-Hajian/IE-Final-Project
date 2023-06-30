@@ -33,7 +33,8 @@ const adminGetStudentsController = require("./admin/adminGetStudentsController")
 const adminGetStudentController = require("./admin/adminGetStudentController");
 const adminPostStudentsController = require("./admin/adminPostStudentsController");
 const adminPostStudentController = require("./admin/adminPostStudentController");
-const adminUpdateStudentController = require("./admin/adminUpdateStudentController copy");
+const adminUpdateStudentController = require("./admin/adminDeleteStudentController copy");
+const adminDeleteStudentController = require("./admin/adminDeleteStudentController copy");
 
 router.use("/", authGuard, roleGuard());
 
@@ -130,7 +131,7 @@ router.get("/admin/student/:studentId", adminGetStudentController);
 router.post("/admin/students", adminPostStudentsController);
 router.post("/admin/student", adminPostStudentController);
 router.put("/admin/student/:studentId", adminUpdateStudentController);
-// router.delete("/admin/student/:studentId", adminPostStudentController);
+router.delete("/admin/student/:studentId", adminDeleteStudentController);
 
 router.use(
   "/edu-manager",
