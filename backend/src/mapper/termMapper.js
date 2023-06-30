@@ -5,8 +5,9 @@ class TermMapper {
       termId: term.term_id,
       students: term.students,
       professors: term.professors,
-      courses: term.semester_courses,
-      courseNum: term.semester_courses.length,
+      preregistrationCourses: term.preregistration_courses,
+      registrationCourses: term.registration_courses,
+      courseNum: term.registration_courses.length,
       studentNum: term.students.length,
       startDate: term.start_date,
       endDate: term.end_date,
@@ -17,8 +18,15 @@ class TermMapper {
     return terms.map(TermMapper.toDto);
   }
   static toPersistence(term) {
+    const courses = {};
+    if (term.preregistrationCourses != null) {
+      courses["preregistration_courses"] = term.preregistrationCourses;
+    }
+    if (term.registrationCourses != null) {
+      courses["registration_courses"] = term.registrationCourses;
+    }
     return {
-      semester_courses: term.courses,
+      ...courses,
       professors: term.professors,
       students: term.students,
       name: term.name,

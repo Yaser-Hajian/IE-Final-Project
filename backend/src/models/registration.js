@@ -1,19 +1,20 @@
 const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamp");
 
-
 const registrationSchema = mongoose.Schema({
-  student: {
+  semester_course: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SemesterCourse",
+    },
+  ],
+  term: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
-  },
-  semester_course: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "SemesterCourse",
+    ref: "Term",
   },
 });
 
 registrationSchema.plugin(timestamps);
-const Registration = mongoose.model("Registration",registrationSchema)
+const Registration = mongoose.model("Registration", registrationSchema);
 
 module.exports = Registration;

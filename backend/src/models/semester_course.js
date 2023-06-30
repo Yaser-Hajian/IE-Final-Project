@@ -1,59 +1,30 @@
 const mongoose = require("mongoose");
-const {officialCourse} = require("./official_course");
+const { officialCourse } = require("./official_course");
 const timestamps = require("mongoose-timestamp");
 const { Professor } = require("./professor");
 
 const semesterCourseSchema = mongoose.Schema({
-  course_id:{
+  course_id: {
     type: Number,
     required: true,
-    unique:true
+    unique: true,
   },
   course_name: {
     type: String,
     required: true,
   },
-  major: {
-    type: String,
-    required: true,
-  },
-  course_prerequisites: [
-    {
-      type: String,
-      default: []
-    },
-  ],
-  course_requirements: [
-    {
-      type: String,
-      default: []
-    },
-  ],
-  credit: {
-    type: Number,
-    required: true,
-  },
+  // major: {
+  //   type: String,
+  //   required: true,
+  // },
+
   class_times: {
     type: Array,
     items: {
-      type: String,
-    },
-  },
-  class_dates: {
-    type: Array,
-    items: {
-      type: String,
+      type: Object,
     },
   },
   exam_time: {
-    type: String,
-    required: true,
-  },
-  exam_date: {
-    type: Date,
-    required: true,
-  },
-  exam_place: {
     type: String,
     required: true,
   },
@@ -65,9 +36,15 @@ const semesterCourseSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  semester: {
-    type: Number,
-    required: true,
+  registrations: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+    },
+  ],
+  term: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Term",
   },
 });
 
