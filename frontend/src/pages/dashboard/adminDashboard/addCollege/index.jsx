@@ -13,7 +13,6 @@ const AdminAddCollege = () => {
   const majorsData = useSelector((s) => s.majors);
   const collegeData = useSelector((s) => s.college);
   const majorsDataState = useMajors();
-
   const checkInputs = () => {
     if (collegeData.name.trim() == "") {
       toast.error("اسم دانشکده را وارد کنید", { position: "top-left" });

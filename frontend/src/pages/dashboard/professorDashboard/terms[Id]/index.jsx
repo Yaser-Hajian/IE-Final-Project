@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { Button, Pagination, Typography } from "@mui/material";
 import { useState } from "react";
 import SearchBox from "../../../../components/dashboard/searchBox";
-import useCourseRegistrationsData from "../../../../hooks/useRegistrations";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CourseCard from "../../../../components/dashboard/courseCard";
 import Empty from "../../../../components/dashboard/empty/empty";
@@ -15,23 +14,24 @@ import TermDialogData from "../../../../components/dashboard/termDialogData";
 import FilterMenu from "../../../../components/dashboard/filterMenu";
 import usePagination from "../../../../hooks/usePagination";
 import useAddTermToLastSeen from "../../../../hooks/useAddTermToLastSeen";
+import useRegistrationCoursesData from "../../../../hooks/useRegistrationCourses";
 
 const ProfessorDashboardTermId = () => {
   const { termId } = useParams();
-  const registrationData = useSelector((s) => s.registrations);
+  const registrationData = useSelector((s) => s.registrationCourses);
   const [sortType, setSortType] = useState(null);
   const termIdData = useSelector((s) => s.termId);
   const termIdState = useTermIdData(termId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { isLoading } = useCourseRegistrationsData(termId);
+  const { isLoading } = useRegistrationCoursesData(termId);
   useAddTermToLastSeen(termId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
-    registrationData.registrations.length,
+    registrationData.registrationCourses.length,
     6
   );
+  console.log(registrationData.registrationCourses);
   const [anchorEl, setAnchorEl] = useState(null);
-
   const settingSortType = (type) => {
     if (type == null) return;
     setSortType(type);
@@ -81,7 +81,7 @@ const ProfessorDashboardTermId = () => {
               <div className={styles.topTitle}>
                 <Typography sx={{ m: 0.5 }}>لیست دروس این ترم</Typography>
                 <Typography variant="caption">
-                  ({registrationData.registrations.length})
+                  ({registrationData.registrationCourses.length})
                 </Typography>
               </div>
               <Button
@@ -96,10 +96,10 @@ const ProfessorDashboardTermId = () => {
             <SearchBox onChange={changeSearchBox} value={searchQuery} />
           </div>
           <div dir="rtl" className={styles.items}>
-            {registrationData.registrations.length == 0 ? (
+            {registrationData.registrationCourses.length == 0 ? (
               <Empty />
             ) : (
-              registrationData.registrations
+              registrationData.registrationCourses
                 .filter(filter)
                 .sort(sort)
                 .slice(sliceInit, sliceFinish)

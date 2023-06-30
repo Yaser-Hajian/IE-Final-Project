@@ -7,6 +7,7 @@ const getRegistrations = async (id) => {
       headers: { "Content-Type": "application/json", ...generateHeaders() },
     });
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (err) {
     console.error(err);

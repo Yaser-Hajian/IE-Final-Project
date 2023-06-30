@@ -7,16 +7,18 @@ import { useState } from "react";
 import SearchBox from "../../../../components/dashboard/searchBox";
 import Empty from "../../../../components/dashboard/empty/empty";
 import useCourseRegistrationsData from "../../../../hooks/useCourseRegistrations";
-
 import usePagination from "../../../../hooks/usePagination";
 import Pagination from "../../../../components/dashboard/pagination";
 import useAddCourseToLastSeen from "../../../../hooks/useAddCourseToLastSeen";
 import UserCard from "../../../../components/dashboard/userCard";
+import useCourseData from "../../../../hooks/useCourseData";
 
 const ProfessorDashboardCourseId = () => {
   const { courseId } = useParams();
   const courseRegistrationData = useSelector((s) => s.courseRegistrations);
   const [searchQuery, setSearchQuery] = useState("");
+  const courseDataState = useCourseData(courseId);
+  const courseData = useSelector((s) => s.course);
   const { isLoading } = useCourseRegistrationsData(courseId);
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     courseRegistrationData.courseRegistrations.length,
@@ -42,19 +44,17 @@ const ProfessorDashboardCourseId = () => {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || courseDataState.isLoading ? (
         <Loader />
       ) : (
         <div dir="" className={styles.con}>
           <Box borderBottom={1} className={styles.head}>
             <div>
-              <Typography variant="h5">
-                {courseRegistrationData.name}
-              </Typography>
+              <Typography variant="h5">{courseData.name}</Typography>
             </div>
 
             <Typography>
-              {courseRegistrationData.occupiedCapacity}نفر ثبت نام کرده اند
+              {courseData.occupiedCapacity}نفر ثبت نام کرده اند
             </Typography>
           </Box>
           <div className={styles.searchBoxHolder}>
