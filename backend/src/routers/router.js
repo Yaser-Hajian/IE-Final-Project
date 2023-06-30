@@ -26,6 +26,7 @@ const deleteRegistrationCourseController = require("./term/deleteRegistrationCou
 const postPreregistrationCourseController = require("./term/postPreregistrationCourseController");
 const deletePreregistrationCourseController = require("./term/deletePreregistrationCourseController");
 const getMeController = require("./term/getMeController");
+const getProfessorsController = require("./term/getProfessorsConroller");
 
 router.use("/", authGuard, roleGuard());
 
@@ -106,6 +107,8 @@ router.delete(
   "/term/:termId/preregistration",
   deletePreregistrationCourseController
 );
+
+router.get("/professors", getProfessorsController);
 
 router.use(
   "/edu-manager",
