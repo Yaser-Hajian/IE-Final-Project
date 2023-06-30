@@ -13,6 +13,7 @@ const roleGuard = () => async (req, res, next) => {
     }
     res.status(403).json({ error: true, message: "Forbidden." }).end();
   } catch (err) {
+    console.log(err);
     res
       .status(500)
       .json({ error: true, message: "Server Internal Error." })

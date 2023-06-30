@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamp");
-const Student = require("./student");
-const { Professor } = require("./professor");
-const { SemesterCourse } = require("./semester_course");
 
 const termSchema = mongoose.Schema({
   term_id: {
-    type : Number,
+    type: Number,
     required: true,
     unique: true,
   },
@@ -14,21 +11,32 @@ const termSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  students: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
-    default: []
+  start_date: {
+    type: Number,
+    required: true,
   },
-  professors: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Professor",
-    default:[]
+  end_date: {
+    type: Number,
+    required: true,
   },
-  semester_courses: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "SemesterCourse",
-    default : []
-  },
+  students: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+    },
+  ],
+  professors: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Professor",
+    },
+  ],
+  semester_courses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SemesterCourse",
+    },
+  ],
 });
 
 termSchema.plugin(timestamps);

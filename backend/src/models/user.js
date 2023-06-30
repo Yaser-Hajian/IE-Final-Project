@@ -15,23 +15,21 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    username:{
+    username: {
       type: String,
       required: true,
       unique: true,
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
     },
     phone_number: {
       type: String,
-      required: true,
       length: 11,
     },
-    national_ID:{
-      type:String,
+    national_ID: {
+      type: String,
+      require: true,
       unique: true,
     },
     entrance_year: {

@@ -12,6 +12,8 @@ const studentRouter = require("./../routers/student/student.router");
 const professorRouter = require("./../routers/professor/professor.router");
 const redisAuthService = require("../redis/index");
 const User = require("../models/user");
+const getTerms = require("./term/getTermsController");
+const getTermById = require("./term/getTermByIdController");
 
 router.use("/", authGuard, roleGuard());
 
@@ -61,6 +63,9 @@ router.get("/mee", (req, res) => {
 
 router.use("/auth", authRouter);
 router.use("/admin", authGuard, roleGuard("ItManager"), adminRouter);
+
+router.get("/terms", getTerms);
+router.get("/term/:termId", getTermById);
 
 router.use(
   "/edu-manager",
