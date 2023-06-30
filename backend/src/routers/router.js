@@ -11,6 +11,8 @@ const acceptOrRejectRegistrationController = require("./term/controller/acceptOr
 const adminRouter = require("./admin");
 const getTermsController = require("./term/controller/getTermsController");
 const termRouter = require("./term");
+const courseRouter = require("./course");
+const getCoursesController = require("./course/controllers/getCoursesController");
 
 router.use("/", authGuard, roleGuard());
 
@@ -69,4 +71,7 @@ router.put(
 
 router.use("/admin", adminRouter);
 
+router.get("/courses", getCoursesController);
+
+router.use("/course", courseRouter);
 module.exports = router;
