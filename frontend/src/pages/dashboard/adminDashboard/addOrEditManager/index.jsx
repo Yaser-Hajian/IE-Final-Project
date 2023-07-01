@@ -14,14 +14,14 @@ import { updateMajorsData } from "../../../../redux/majors";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loader from "../../../../components/dashboard/loader/loader";
 import RtlInput from "../../../../components/dashboard/rtlInput";
 import useManagerData from "../../../../hooks/useManager";
-import { resetManagerData, updateManagerData } from "../../../../redux/manager";
-import { updateManagersData } from "../../../../redux/managers";
-import updateManager from "../../../../utils/dashboard/updateManager";
-import addManager from "../../../../utils/dashboard/addManager";
+import { updateManagerData } from "../../../../redux/manager";
+
+import useAddManager from "../../../../hooks/useAddManager";
+import useUpdateManager from "../../../../hooks/useUpdateManager";
 
 const AddOrEditManager = ({ type }) => {
   const { managerId } = useParams();
@@ -31,7 +31,6 @@ const AddOrEditManager = ({ type }) => {
   const collegesDataState = useCollegesData();
   const majorsData = useSelector((s) => s.majors);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const checkInputs = () => {
     if (managerData.name == "") {
       toast.error("اسم مدیر را وارد کنید");
@@ -68,37 +67,10 @@ const AddOrEditManager = ({ type }) => {
     }
     return true;
   };
-  const addManagerProcess = () => {
-    if (!checkInputs()) return;
-    toast.promise(
-      addManager(managerData).then(() => {
-        dispatch(updateManagersData({ isDataLoadedBefore: false }));
-        dispatch(resetManagerData());
-        navigate("/dashboard/admin/managers");
-      }),
-      {
-        pending: "لطفا منتظر بمانید",
-        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
-        success: "با موفقیت استاد اضافه شد",
-      }
-    );
-  };
 
-  const updateManagerProcess = () => {
-    if (!checkInputs()) return;
-    toast.promise(
-      updateManager(managerId, managerData).then(() => {
-        dispatch(updateManagersData({ isDataLoadedBefore: false }));
-        dispatch(resetManagerData());
-        navigate("/dashboard/admin/managers");
-      }),
-      {
-        pending: "لطفا منتظر بمانید",
-        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
-        success: "با موفقیت اطلاعات استاد آپدیت شد",
-      }
-    );
-  };
+  const addManagerProcess = useAddManager(checkInputs);
+  const updateManagerProcess = useUpdateManager(checkInputs, managerId);
+
   return (
     <div className={styles.con}>
       <Box borderBottom={1} dir="rtl" className={styles.head}>
@@ -173,6 +145,7 @@ const AddOrEditManager = ({ type }) => {
             <RtlInput label="دانشکده">
               <Autocomplete
                 fullWidth
+                disablePortal
                 value={managerData.college == "" ? null : managerData.college}
                 onChange={(e, newData) => {
                   dispatch(
@@ -204,6 +177,7 @@ const AddOrEditManager = ({ type }) => {
             </RtlInput>
             <RtlInput label="رشته">
               <Autocomplete
+                disablePortal
                 fullWidth
                 value={managerData.major == "" ? null : managerData.major}
                 onChange={(e, newData) => {
@@ -265,7 +239,7 @@ const AddOrEditManager = ({ type }) => {
               }
               variant="contained"
             >
-              {type == "edit" ? "ثبت تغییرات" : "ثبت دانشجو"}
+              {type == "edit" ? "ثبت تغییرات" : "ثبت مدیر"}
             </Button>
           </div>
         </>

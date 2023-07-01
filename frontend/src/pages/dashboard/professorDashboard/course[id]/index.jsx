@@ -24,6 +24,8 @@ const ProfessorDashboardCourseId = () => {
     courseRegistrationData.courseRegistrations.length,
     6
   );
+  const me = useSelector((s) => s.me);
+
   useAddCourseToLastSeen(courseId);
 
   const filter = (p) => {
@@ -72,7 +74,17 @@ const ProfessorDashboardCourseId = () => {
                 .filter(filter)
                 .slice(sliceInit, sliceFinish)
                 .map((reg, i) => {
-                  return <UserCard isItControlled key={i} {...reg} />;
+                  return (
+                    <UserCard
+                      isPass={reg.isPass}
+                      isPreregistrationCard={
+                        !(`${me.name} ${me.familyName}` == courseData.professor)
+                      }
+                      isItControlled
+                      key={i}
+                      {...reg}
+                    />
+                  );
                 })
             )}
           </div>

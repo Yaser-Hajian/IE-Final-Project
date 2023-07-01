@@ -3,16 +3,18 @@ import Loader from "../../../../components/dashboard/loader/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import useMajors from "../../../../hooks/useMajors";
-import { resetCollegeData, updateCollegeData } from "../../../../redux/college";
+import { updateCollegeData } from "../../../../redux/college";
 import { toast } from "react-toastify";
 import addCollege from "../../../../utils/dashboard/addCollege";
 import RtlInput from "../../../../components/dashboard/rtlInput";
+import { useNavigate } from "react-router-dom";
 
 const AdminAddCollege = () => {
   const dispatch = useDispatch();
   const majorsData = useSelector((s) => s.majors);
   const collegeData = useSelector((s) => s.college);
   const majorsDataState = useMajors();
+  const navigate = useNavigate();
   const checkInputs = () => {
     if (collegeData.name.trim() == "") {
       toast.error("اسم دانشکده را وارد کنید", { position: "top-left" });
@@ -30,7 +32,9 @@ const AdminAddCollege = () => {
   const addCollegeProcess = async () => {
     if (!checkInputs()) return;
     toast.promise(
-      addCollege(collegeData).then(() => dispatch(resetCollegeData())),
+      addCollege(collegeData).then(() => {
+        navigate(0);
+      }),
       {
         error: "یه مشکلی پیش اومده لطفا مجددا تلاش کنید",
         pending: "لطفا منتظر بمانید",
@@ -61,10 +65,10 @@ const AdminAddCollege = () => {
             </RtlInput>
             <RtlInput label=" رشته ها">
               <Autocomplete
+                disablePortal
                 multiple
                 value={collegeData.majors == "" ? [] : collegeData.majors}
                 onChange={(e, newData) => {
-                  console.log(newData);
                   dispatch(updateCollegeData({ majors: newData }));
                 }}
                 placeholder="رشته ها"

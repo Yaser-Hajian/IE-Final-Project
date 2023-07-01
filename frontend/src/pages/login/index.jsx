@@ -58,8 +58,7 @@ const LoginPage = () => {
     const data = await login(formData.username.value, formData.password.value);
     if (data.error === true) {
       toast.update(loadingToast, {
-        render:
-          data.errorMessage ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
+        render: data.message ?? "یه مشکلی پیش اومده ، لطفا دوباره امتحان کنید",
         autoClose: true,
         position: "top-left",
         isLoading: false,

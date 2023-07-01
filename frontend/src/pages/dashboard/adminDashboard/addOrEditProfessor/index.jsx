@@ -16,17 +16,13 @@ import { updateMajorsData } from "../../../../redux/majors";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loader from "../../../../components/dashboard/loader/loader";
 import RtlInput from "../../../../components/dashboard/rtlInput";
-import updateProfessor from "../../../../utils/dashboard/updateProfessor";
-import { updateProfessorsData } from "../../../../redux/professors";
-import {
-  resetProfessorData,
-  updateProfessorData,
-} from "../../../../redux/professor";
-import addProfessor from "../../../../utils/dashboard/addProfessor";
+import { updateProfessorData } from "../../../../redux/professor";
 import useProfessorData from "../../../../hooks/useProfessor";
+import useAddProfessor from "../../../../hooks/useAddProfessor";
+import useUpdateProfessor from "../../../../hooks/useUpdateProfessor";
 
 const AddOrEditProfessor = ({ type }) => {
   const { professorId } = useParams();
@@ -37,7 +33,6 @@ const AddOrEditProfessor = ({ type }) => {
   const coursesDataState = useCoursesData();
   const majorsData = useSelector((s) => s.majors);
   const professorsDataState = useProfessorsData();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const checkInputs = () => {
     if (professorData.name == "") {
@@ -76,38 +71,8 @@ const AddOrEditProfessor = ({ type }) => {
     return true;
   };
 
-  const addProfessorProcess = () => {
-    if (!checkInputs()) return;
-    toast.promise(
-      addProfessor(professorData).then(() => {
-        dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
-        dispatch(resetProfessorData());
-        navigate("/dashboard/admin/professors");
-      }),
-      {
-        pending: "لطفا منتظر بمانید",
-        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
-        success: "با موفقیت استاد اضافه شد",
-      }
-    );
-  };
-
-  const updateProfessorProcess = () => {
-    if (!checkInputs()) return;
-    toast.promise(
-      updateProfessor(professorId, professorData).then(() => {
-        dispatch(updateProfessorsData({ isDataLoadedBefore: false }));
-        dispatch(resetProfessorData());
-        navigate("/dashboard/admin/professors");
-      }),
-      {
-        pending: "لطفا منتظر بمانید",
-        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
-        success: "با موفقیت اطلاعات استاد آپدیت شد",
-      }
-    );
-  };
-
+  const addProfessorProcess = useAddProfessor(checkInputs);
+  const updateProfessorProcess = useUpdateProfessor(checkInputs, professorId);
   return (
     <div className={styles.con}>
       <Box borderBottom={1} dir="rtl" className={styles.head}>
@@ -190,6 +155,7 @@ const AddOrEditProfessor = ({ type }) => {
             <RtlInput label="دانشکده">
               <Autocomplete
                 fullWidth
+                disablePortal
                 value={
                   professorData.college == "" ? null : professorData.college
                 }
@@ -223,6 +189,7 @@ const AddOrEditProfessor = ({ type }) => {
             </RtlInput>
             <RtlInput label="رشته">
               <Autocomplete
+                disablePortal
                 fullWidth
                 value={professorData.major == "" ? null : professorData.major}
                 onChange={(e, newData) => {
@@ -286,7 +253,7 @@ const AddOrEditProfessor = ({ type }) => {
               }
               variant="contained"
             >
-              {type == "edit" ? "ثبت تغییرات" : "ثبت دانشجو"}
+              {type == "edit" ? "ثبت تغییرات" : "ثبت استاد"}
             </Button>
           </div>
         </>

@@ -31,6 +31,7 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import readExcel from "../../../../utils/readExcel";
 import RtlInput from "../../../../components/dashboard/rtlInput";
+import useProfessorsData from "../../../../hooks/useProfessors";
 
 const EditOrAddTerm = ({ type }) => {
   const editOrAddData = useSelector((s) => s.editOrAddTerm);
@@ -38,11 +39,14 @@ const EditOrAddTerm = ({ type }) => {
   const { name, startDate, endDate } = useSelector((s) => s.editOrAddTerm);
   const { students } = useSelector((s) => s.students);
   const getStudentsState = useStudentsData();
+  const getProfessorsState = useProfessorsData();
+  const { professors } = useSelector((s) => s.professors);
   const { isLoading } = useEditOrAddData(termId);
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogType, setDialogType] = useState("students");
   const [isAddingPerson, setIsAddingPerson] = useState(false);
   const theme = useTheme().palette.mode;
+  // console.log(professors);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -61,7 +65,9 @@ const EditOrAddTerm = ({ type }) => {
   };
 
   const addPersonProcess = (dialogType, personId) => {
-    const item = students.filter((i) => i.id == personId)[0];
+    const item = (dialogType == "students" ? students : professors).filter(
+      (i) => i.id == personId
+    )[0];
     const newList = [...editOrAddData[dialogType]];
     newList.push(item);
     dispatch(updateEditOrAddTermData({ [dialogType]: newList }));
@@ -144,7 +150,9 @@ const EditOrAddTerm = ({ type }) => {
           {type === "edit" ? "ویرایش ترم" : "افزودن ترم"}
         </Typography>
       </Box>
-      {getStudentsState.isLoading || isLoading ? (
+      {getStudentsState.isLoading ||
+      isLoading ||
+      getProfessorsState.isLoading ? (
         <Loader />
       ) : (
         <div dir="rtl" className={styles.main}>
@@ -280,39 +288,39 @@ const EditOrAddTerm = ({ type }) => {
             </DialogTitle>
             <DialogContent dividers>
               <List>
-                {(!isAddingPerson ? editOrAddData[dialogType] : students).map(
-                  (d, i) => {
-                    if (isAddingPerson) {
-                      for (let item of editOrAddData[dialogType]) {
-                        if (item.id === d.id) return;
-                      }
+                {(!isAddingPerson
+                  ? editOrAddData[dialogType]
+                  : dialogType == "students"
+                  ? students
+                  : professors
+                ).map((d, i) => {
+                  console.log(d.id);
+                  if (isAddingPerson) {
+                    for (let item of editOrAddData[dialogType]) {
+                      if (item.id === d.id) return;
                     }
-                    return (
-                      <ListItem
-                        key={i}
-                        className={styles.dialogListItems}
-                        dir=""
-                      >
-                        <IconButton
-                          onClick={() => {
-                            !isAddingPerson
-                              ? removePersonProcess(dialogType, d.id)
-                              : addPersonProcess(dialogType, d.id);
-                          }}
-                        >
-                          {!isAddingPerson ? <Delete /> : <Add />}
-                        </IconButton>
-
-                        <div className={styles.dialogListItemName}>
-                          <Typography sx={{ ml: 7 }}>
-                            {d.name} {d.familyName}
-                          </Typography>
-                          <Avatar sx={{ ml: 2 }} />
-                        </div>
-                      </ListItem>
-                    );
                   }
-                )}
+                  return (
+                    <ListItem key={i} className={styles.dialogListItems} dir="">
+                      <IconButton
+                        onClick={() => {
+                          !isAddingPerson
+                            ? removePersonProcess(dialogType, d.id)
+                            : addPersonProcess(dialogType, d.id);
+                        }}
+                      >
+                        {!isAddingPerson ? <Delete /> : <Add />}
+                      </IconButton>
+
+                      <div className={styles.dialogListItemName}>
+                        <Typography sx={{ ml: 7 }}>
+                          {d.name} {d.familyName}
+                        </Typography>
+                        <Avatar sx={{ ml: 2 }} />
+                      </div>
+                    </ListItem>
+                  );
+                })}
               </List>
             </DialogContent>
           </Dialog>

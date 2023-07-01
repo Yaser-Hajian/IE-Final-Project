@@ -30,7 +30,6 @@ const ManagerCourseRegistrations = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { isLoading } = useCourseRegistrationsData(courseId);
-
   const { count, page, setPage, sliceFinish, sliceInit } = usePagination(
     courseRegistrations.courseRegistrations.length,
     6
@@ -131,6 +130,7 @@ const ManagerCourseRegistrations = () => {
                 .map((registration, i) => {
                   return (
                     <UserCard
+                      isPass={registration.isPass}
                       isItControlled
                       key={i}
                       {...registration}

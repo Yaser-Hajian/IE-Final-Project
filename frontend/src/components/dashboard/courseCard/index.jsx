@@ -105,9 +105,7 @@ const CourseCard = ({
     <Paper className={styles.con} variant="outlined">
       <div dir="rtl" className={styles.top}>
         <Link href={url}>
-          <Typography variant="body1">
-            {name} ({courseId})
-          </Typography>
+          <Typography variant="body1">{name}</Typography>
         </Link>
         {(ispre.is || isreg.is) && (
           <Typography variant="caption">{professor}</Typography>

@@ -74,13 +74,13 @@ const ManagerStudents = () => {
               studentsData.students
                 .filter(filter)
                 .slice(sliceInit, sliceFinish)
-                .map((professor, i) => {
+                .map((student, i) => {
                   return (
                     <UserCard
                       isItControlled
                       isPreregistrationCard
                       key={i}
-                      {...professor}
+                      {...student}
                     />
                   );
                 })

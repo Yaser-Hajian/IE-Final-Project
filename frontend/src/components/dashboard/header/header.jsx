@@ -18,9 +18,10 @@ import signout from "../../../utils/dashboard/signout";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import userNavigation from "../../../utils/userNavigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useThemeSwitch from "../../../hooks/useThemeSwitch";
 import ThemeSwitch from "../themeSwitch";
+import { resetMeDate } from "../../../redux/me";
 
 const DashboardHeader = ({ userType }) => {
   const loggedStudent = useSelector((s) => s.me);
@@ -29,6 +30,7 @@ const DashboardHeader = ({ userType }) => {
   const open = Boolean(anchorEl);
   const switchTheme = useThemeSwitch();
   const theme = useTheme().palette.mode;
+  const dispatch = useDispatch();
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
@@ -39,8 +41,10 @@ const DashboardHeader = ({ userType }) => {
   const signoutProcess = async () => {
     toast.promise(
       signout().then(() => {
-        navigation("/login", { replace: true });
+        dispatch(resetMeDate());
+        navigation(0);
         localStorage.removeItem("token");
+        // localStorage.removeItem("lastSeen");
       }),
       {
         pending: "لطفا صبر کنید",

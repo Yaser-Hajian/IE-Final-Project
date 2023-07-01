@@ -133,6 +133,7 @@ const AddCourse = ({ type }) => {
             </RtlInput>
             <RtlInput label="استاد">
               <Autocomplete
+                disablePortal
                 fullWidth
                 onChange={(e, newData) => {
                   dispatch(updateCourseData({ professor: newData }));
@@ -167,6 +168,7 @@ const AddCourse = ({ type }) => {
               <div className={styles.chooseClassTimesCon}>
                 <div className={styles.chooseClassTimesSelect}>
                   <Select
+                    dir="ltr"
                     onChange={(e) => {
                       setClassTime((s) => ({ ...s, day: e.target.value }));
                     }}

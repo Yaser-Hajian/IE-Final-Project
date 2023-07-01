@@ -12,18 +12,18 @@ import { useDispatch, useSelector } from "react-redux";
 import useCoursesData from "../../../../hooks/useCourses";
 import { toast } from "react-toastify";
 import useStudentData from "../../../../hooks/useStudent";
-import { resetStudentData, updateStudentData } from "../../../../redux/student";
+import { updateStudentData } from "../../../../redux/student";
 import useCollegesData from "../../../../hooks/useColleges";
 import { updateMajorsData } from "../../../../redux/majors";
-import updateStudent from "../../../../utils/dashboard/updateStudent";
-import addStudent from "../../../../utils/dashboard/addStudent";
-import { updateStudentsData } from "../../../../redux/students";
+
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loader from "../../../../components/dashboard/loader/loader";
 import RtlInput from "../../../../components/dashboard/rtlInput";
+import useAddStudent from "../../../../hooks/useAddStudent";
+import useUpdateStudent from "../../../../hooks/useUpdateStudent";
 
 const AddOrEditStudent = ({ type }) => {
   const { studentId } = useParams();
@@ -36,8 +36,8 @@ const AddOrEditStudent = ({ type }) => {
   const majorsData = useSelector((s) => s.majors);
   const professorsData = useSelector((s) => s.professors);
   const professorsDataState = useProfessorsData();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const checkInputs = () => {
     if (studentData.name == "") {
       toast.error("اسم دانشجو را وارد کنید");
@@ -74,39 +74,8 @@ const AddOrEditStudent = ({ type }) => {
     }
     return true;
   };
-
-  const addStudentProcess = () => {
-    if (!checkInputs()) return;
-    toast.promise(
-      addStudent(studentData).then(() => {
-        dispatch(updateStudentsData({ isDataLoadedBefore: false }));
-        dispatch(resetStudentData());
-        navigate("/dashboard/admin/students");
-      }),
-      {
-        pending: "لطفا منتظر بمانید",
-        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
-        success: "با موفقیت دانشجو اضافه شد",
-      }
-    );
-  };
-
-  const updateStudentProcess = () => {
-    if (!checkInputs()) return;
-    toast.promise(
-      updateStudent(studentId, studentData).then(() => {
-        dispatch(updateStudentsData({ isDataLoadedBefore: false }));
-        dispatch(resetStudentData());
-        navigate("/dashboard/admin/students");
-      }),
-      {
-        pending: "لطفا منتظر بمانید",
-        error: "مشکلی پیش آمده لطفا مجددا تلاش کنید",
-        success: "با موفقیت اطلاعات دانشجو آپدیت شد",
-      }
-    );
-  };
-
+  const addStudentProcess = useAddStudent(checkInputs);
+  const updateStudentProcess = useUpdateStudent(checkInputs, studentId);
   return (
     <div className={styles.con}>
       <Box borderBottom={1} dir="rtl" className={styles.head}>
@@ -205,6 +174,7 @@ const AddOrEditStudent = ({ type }) => {
             <RtlInput label="دانشکده">
               <Autocomplete
                 fullWidth
+                disablePortal
                 value={studentData.college == "" ? null : studentData.college}
                 onChange={(e, newData) => {
                   dispatch(
@@ -237,6 +207,7 @@ const AddOrEditStudent = ({ type }) => {
             <RtlInput label="رشته">
               <Autocomplete
                 fullWidth
+                disablePortal
                 value={studentData.major == "" ? null : studentData.major}
                 onChange={(e, newData) => {
                   dispatch(updateStudentData({ major: newData }));
@@ -283,6 +254,7 @@ const AddOrEditStudent = ({ type }) => {
             <RtlInput label="استاد">
               <Autocomplete
                 fullWidth
+                disablePortal
                 value={
                   studentData.professor == "" ? null : studentData.professor
                 }

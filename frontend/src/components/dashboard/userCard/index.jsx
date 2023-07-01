@@ -23,6 +23,7 @@ const UserCard = ({
   isPreregistrationCard = false,
   isItControlled = false,
   userType,
+  isPass,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -116,7 +117,7 @@ const UserCard = ({
           </Typography>
         </div>
       </div>
-      {!isPreregistrationCard && (
+      {!isPreregistrationCard && (isPass == null || isPass == "") ? (
         <div className={styles.bottom}>
           <Button onClick={() => acceptingCourseSelection()} variant="outlined">
             تایید دانشجو
@@ -125,6 +126,14 @@ const UserCard = ({
             رد دانشجو
           </Button>
         </div>
+      ) : (
+        !isPreregistrationCard && (
+          <div className={styles.bottom}>
+            <Typography color={isPass == "YES" ? "green" : "red"}>
+              {isPass == "YES" ? "تایید شده است" : "رد شده است"}
+            </Typography>
+          </div>
+        )
       )}
       {!isItControlled && (
         <Container sx={{ justifyContent: "space-between", display: "flex" }}>

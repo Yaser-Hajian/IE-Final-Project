@@ -31,7 +31,6 @@ const CourseCard = ({
   id,
   classTimes,
   examTime,
-  courseId,
   url = null,
   isPreregistration,
 }) => {
@@ -78,9 +77,7 @@ const CourseCard = ({
       <div className={styles.top}>
         <div className={styles.topText}>
           <Link href={url}>
-            <Typography variant="body1">
-              {name} ({courseId})
-            </Typography>
+            <Typography variant="body1">{name}</Typography>
           </Link>
           <Typography variant="caption">{professor}</Typography>
         </div>

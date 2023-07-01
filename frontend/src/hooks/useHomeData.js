@@ -16,11 +16,17 @@ const useHomeData = () => {
       try {
         const coursesList = getLastObservedCourses();
         const termsList = getLastObservedTerms();
-        const termsData = await getTerms(termsList);
+        let termsData = { data: { terms: [] } };
+        if (termsList.length != 0) {
+          termsData = await getTerms(termsList);
+        }
         if (termsData.error) {
           setIsError(true);
         }
-        const courseData = await getCourses(coursesList);
+        let courseData = { data: { courses: [] } };
+        if (coursesList.length != 0) {
+          courseData = await getCourses(coursesList);
+        }
         if (courseData.error) {
           setIsError(true);
         }

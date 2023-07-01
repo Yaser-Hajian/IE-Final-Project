@@ -26,7 +26,6 @@ const Registrations = () => {
     registrationsData.registrations.length,
     6
   );
-  console.log(registrationsData);
   const filter = (p) => {
     const regex = new RegExp(`${searchQuery}`);
     if (regex.test(p.name) || regex.test(p.courseId)) {

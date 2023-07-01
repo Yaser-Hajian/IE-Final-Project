@@ -33,6 +33,7 @@ const ManagerCoursePreregistrations = () => {
     coursePreregistrations.coursePreregistrations.length,
     6
   );
+
   useAddCourseToLastSeen(courseId);
   const settingSortType = (type) => {
     if (type == null) return;
@@ -96,7 +97,7 @@ const ManagerCoursePreregistrations = () => {
                   لیست پیش ثبت نامی های این درس
                 </Typography>
                 <Typography variant="caption">
-                  ({coursePreregistrations.coursePreregistrations.length})
+                  ({coursePreregistrations.preregistrations.length})
                 </Typography>
               </div>
               <Button
@@ -120,10 +121,11 @@ const ManagerCoursePreregistrations = () => {
             </div>
           </div>
           <div dir="rtl" className={styles.items}>
-            {coursePreregistrations.coursePreregistrations.length == 0 ? (
+            {coursePreregistrations.preregistrations.length == 0 ? (
               <Empty />
             ) : (
-              coursePreregistrations.coursePreregistrations
+              coursePreregistrations.preregistrations
+
                 .filter(filter)
                 .sort(sort)
                 .slice(sliceInit, sliceFinish)
