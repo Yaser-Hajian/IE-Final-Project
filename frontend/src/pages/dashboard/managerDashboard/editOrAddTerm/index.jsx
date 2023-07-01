@@ -52,11 +52,10 @@ const EditOrAddTerm = ({ type }) => {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    console.log(type);
     if (type == "add") {
       dispatch(resetEditOrAddTermData());
     }
-  }, []);
+  }, [dispatch, type]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -282,6 +281,7 @@ const EditOrAddTerm = ({ type }) => {
             {type == "edit" ? "ثبت تغییرات" : "ثبت ترم جدید"}
           </Button>
           <Dialog
+            dir="ltr"
             fullWidth
             anchorEl={anchorEl}
             open={open}
