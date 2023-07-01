@@ -5,12 +5,13 @@ class ProfessorMapper {
       familyName: professor.last_name,
       nationId: professor.national_ID,
       id: professor._id,
-      professorId: professor._id,
+      professorId: professor.professor_ID,
       entryYear: professor.entrance_year,
       college: professor.faculty,
       major: professor.major,
       userType: "professor",
       level: professor.level,
+      password: professor.password,
     };
   }
   static toDtoBulk(professor) {

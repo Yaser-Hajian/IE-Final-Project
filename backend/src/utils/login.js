@@ -15,7 +15,7 @@ const loginController = async (req, res) => {
     } else {
       return res
         .status(401)
-        .json({ error: true, message: "Unauthorized." })
+        .json({ error: true, message: "نام کاربری یا پسورد اشتباه میباشد" })
         .end();
     }
   } catch (err) {

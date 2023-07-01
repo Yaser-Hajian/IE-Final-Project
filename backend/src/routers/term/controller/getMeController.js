@@ -6,7 +6,6 @@ const Registration = require("../../../models/registration");
 const getMeController = async (req, res) => {
   try {
     const userData = req.user;
-    console.log(userData);
     let data = UserMapper.toDto(userData);
     data["id"] = userData._id.toString();
     if (userData.userType == "Student") {

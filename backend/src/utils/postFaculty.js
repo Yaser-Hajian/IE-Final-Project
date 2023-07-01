@@ -1,7 +1,10 @@
 const Faculty = require("../models/faculty");
 
 const postFaculty = async (facultyData) => {
-  await new Faculty(facultyData).save();
+  await new Faculty({
+    name: facultyData.name,
+    majors: facultyData.majors,
+  }).save();
 };
 
 module.exports = postFaculty;

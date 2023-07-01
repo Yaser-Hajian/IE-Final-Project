@@ -11,8 +11,7 @@ class FacultyMapper {
   }
   static toPersistence(faculty) {
     return {
-      name: faculty.first_name,
-      id: faculty._id,
+      name: faculty.name,
       majors: faculty.majors,
     };
   }

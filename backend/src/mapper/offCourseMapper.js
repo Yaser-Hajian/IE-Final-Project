@@ -15,8 +15,8 @@ class OffCourseMapper {
       course_id: course.courseId ?? course.id,
     };
   }
-  static toPersistenceBulk(terms) {
-    return {};
+  static toPersistenceBulk(courses) {
+    return courses.map(OffCourseMapper.toPersistence);
   }
 }
 

@@ -10,6 +10,7 @@ class SemCourseMapper {
       classTimes: course.class_times,
       examTime: course.exam_time,
       courseId: course.course_id,
+      term: course.term,
     };
   }
   static toDtoBulk(courses) {

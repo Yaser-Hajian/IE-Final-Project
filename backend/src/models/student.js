@@ -1,7 +1,6 @@
 const User = require("./user");
 const mongoose = require("mongoose");
 const timestamps = require("mongoose-timestamp");
-const { Professor } = require("./professor");
 const studentSchema = mongoose.Schema({
   student_ID: {
     type: Number,
@@ -18,10 +17,11 @@ const studentSchema = mongoose.Schema({
   major: {
     type: Object,
   },
-  passed_courses: {
-    type: Object,
-    ref: "OfficialCourse",
-  },
+  passed_courses: [
+    {
+      type: Object,
+    },
+  ],
   supervisor: {
     type: Object,
     ref: "Professor",

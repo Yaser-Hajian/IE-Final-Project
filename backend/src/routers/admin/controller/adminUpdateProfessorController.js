@@ -5,6 +5,7 @@ const adminUpdateProfessorController = async (req, res) => {
   try {
     const { professorId } = req.params;
     const professorData = req.body;
+
     await updateProfessor(
       professorId,
       ProfessorMapper.toPersistence(professorData)

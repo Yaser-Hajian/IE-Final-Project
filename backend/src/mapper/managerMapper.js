@@ -5,12 +5,13 @@ class ManagerMapper {
       familyName: manager.last_name,
       nationId: manager.national_ID,
       id: manager._id,
-      managerId: manager._id,
+      managerId: manager.employee_ID,
       entryYear: manager.entrance_year,
       college: manager.faculty,
       major: manager.major,
       userType: "manager",
-      level: manager.skill,
+      level: manager.level,
+      password: manager.password,
     };
   }
   static toDtoBulk(managers) {

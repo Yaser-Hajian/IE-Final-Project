@@ -1,3 +1,5 @@
+const OffCourseMapper = require("./offCourseMapper");
+
 class StudentMapper {
   static toDto(student) {
     return {
@@ -5,12 +7,13 @@ class StudentMapper {
       familyName: student.last_name,
       nationId: student.national_ID,
       id: student._id,
-      studentId: student._id,
+      studentId: student.student_ID,
       entryYear: student.entrance_year,
       college: student.faculty,
       major: student.major,
       professor: student.supervisor,
-      passedCourses: student.passed_courses,
+      passedCourses: OffCourseMapper.toDtoBulk(student.passed_courses),
+      password: student.password,
       userType: "student",
     };
   }
@@ -26,8 +29,8 @@ class StudentMapper {
       entrance_year: student.entryYear,
       faculty: student.college,
       major: student.major,
-      supervisor: student.professor,
-      passed_courses: student.passedCourses,
+      supervisor: student.professor.id,
+      passed_courses: OffCourseMapper.toPersistenceBulk(student.passedCourses),
       username: student.studentId,
       password: student.password,
       student_ID: student.studentId ?? student.id,

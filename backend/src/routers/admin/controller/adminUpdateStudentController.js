@@ -5,7 +5,6 @@ const adminUpdateStudentController = async (req, res) => {
   try {
     const { studentId } = req.params;
     const student = req.body;
-
     await updateStudent(studentId, StudentMapper.toPersistence(student));
 
     res.status(200).json({ error: false }).end();

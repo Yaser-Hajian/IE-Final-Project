@@ -5,7 +5,7 @@ class TermMapper {
   static toDto(term) {
     return {
       name: term.name,
-      termId: term.term_id,
+      termId: term.term_id ?? term._id,
       students: StudentMapper.toDtoBulk(term.students),
       professors: ProfessorMapper.toDtoBulk(term.professors),
       preregistrationCourses: term.preregistration_courses,

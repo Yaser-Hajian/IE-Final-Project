@@ -3,7 +3,7 @@ const timestamps = require("mongoose-timestamp");
 
 const termSchema = mongoose.Schema({
   term_id: {
-    type: Number,
+    type: String,
     required: true,
   },
   name: {

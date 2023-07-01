@@ -2,7 +2,6 @@ const adminGetStudentsController = require("../admin/controller/adminGetStudents
 const adminGetStudentController = require("../admin/controller/adminGetStudentController");
 const adminPostStudentsController = require("../admin/controller/adminPostStudentsController");
 const adminPostStudentController = require("../admin/controller/adminPostStudentController");
-const adminUpdateStudentController = require("../admin/controller/adminDeleteStudentController");
 const adminDeleteStudentController = require("../admin/controller/adminDeleteStudentController");
 const adminPostManagerController = require("../admin/controller/adminPostManagerController");
 const adminPostManagersController = require("../admin/controller/adminPostManagersController");
@@ -19,6 +18,7 @@ const adminUpdateProfessorController = require("../admin/controller/adminUpdateP
 const adminGetMajorsController = require("../admin/controller/adminGetMajorsController");
 const adminGetFacultiesController = require("../admin/controller/adminGetFacultiesController");
 const adminPostFacultyController = require("../admin/controller/adminPostFacultyController");
+const adminUpdateStudentController = require("./controller/adminUpdateStudentController");
 const express = require("express");
 
 const adminRouter = express.Router();

@@ -1,4 +1,5 @@
 const TermMapper = require("../../../mapper/termMapper");
+const getProfessors = require("../../../utils/getProfessors");
 const getStudents = require("../../../utils/getStudents");
 const getTerm = require("../../../utils/getTerm");
 
@@ -7,7 +8,7 @@ const getTermByIdController = async (req, res) => {
     const { termId } = req.params;
     const term = await getTerm(termId);
     const students = await getStudents(term.students);
-    const professors = await getStudents(term.professors);
+    const professors = await getProfessors(term.professors);
     term.students = students;
     term.professors = professors;
     res

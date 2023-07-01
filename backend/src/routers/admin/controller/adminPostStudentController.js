@@ -7,7 +7,7 @@ const adminPostStudentController = async (req, res) => {
     const student = req.body;
     const professor = await getProfessor(student.professor.id);
     student.professor = professor;
-    // const faculty = await getFac
+
     await postStudent(StudentMapper.toPersistence(student));
 
     res.status(201).json({ error: false }).end();

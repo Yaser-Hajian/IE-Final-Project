@@ -2,7 +2,6 @@ const PreRegistration = require("../models/pre_registration");
 const { SemesterCourse } = require("../models/semester_course");
 
 const postPreregisterCourse = async (courseId, studentId) => {
-  console.log(courseId, studentId);
   const isExist =
     (await PreRegistration.find({ courseId, studentId })).length != 0;
   if (isExist) throw new Error("user is preregister before");
