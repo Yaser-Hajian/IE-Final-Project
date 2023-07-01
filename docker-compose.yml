@@ -3,6 +3,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     ports:
       - 3000:3000
     depends_on:
@@ -16,10 +17,10 @@ services:
     depends_on:
       - backend
   mongodb:
-    image: mongo
+    image: public.ecr.aws/docker/library/mongo:latest
     ports:
       - 27017:27017
   redis:
-    image: redis
+    image: public.ecr.aws/ubuntu/redis:latest
     ports:
       - 6379:6379
