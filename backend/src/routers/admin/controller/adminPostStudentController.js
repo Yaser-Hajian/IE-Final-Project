@@ -5,6 +5,7 @@ const postStudent = require("../../../utils/postStudent");
 const adminPostStudentController = async (req, res) => {
   try {
     const student = req.body;
+
     const professor = await getProfessor(student.professor.id);
     student.professor = professor;
 

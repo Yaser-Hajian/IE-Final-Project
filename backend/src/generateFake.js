@@ -10,8 +10,10 @@ const Registration = require("./models/registration");
 const { SemesterCourse } = require("./models/semester_course");
 const Student = require("./models/student");
 const Term = require("./models/term");
+
 const dotenv = require("dotenv");
 dotenv.config();
+
 const generateFake = async () => {
   const college = new Faculty({
     name: "دانشگاه صنعتی",

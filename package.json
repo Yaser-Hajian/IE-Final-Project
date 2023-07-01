@@ -6,6 +6,7 @@
   "scripts": {
     "vite:dev": "cd ./frontend && npm run dev",
     "vite:build": "cd ./frontend && npm run build",
+    "vite:preview": "cd ./frontend && npm run preview",
     "server:dev": "cd ./backend && npm run dev",
     "server": "cd ./backend && npm run start",
     "db:seed": "cd ./backend && npm run seed",

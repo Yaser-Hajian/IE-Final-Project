@@ -19,8 +19,11 @@ import styles from "./index.module.css";
 import Loader from "../../../../components/dashboard/loader/loader";
 import { useNavigate, useParams } from "react-router-dom";
 import useEditOrAddData from "../../../../hooks/useAddOrEditData";
-import { updateEditOrAddTermData } from "../../../../redux/editOrAddTerm";
-import { useState } from "react";
+import {
+  resetEditOrAddTermData,
+  updateEditOrAddTermData,
+} from "../../../../redux/editOrAddTerm";
+import { useEffect, useState } from "react";
 import { Add, Close, Delete } from "@mui/icons-material";
 import useStudentsData from "../../../../hooks/useStudents";
 import { toast } from "react-toastify";
@@ -46,8 +49,15 @@ const EditOrAddTerm = ({ type }) => {
   const [dialogType, setDialogType] = useState("students");
   const [isAddingPerson, setIsAddingPerson] = useState(false);
   const theme = useTheme().palette.mode;
-  // console.log(professors);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    console.log(type);
+    if (type == "add") {
+      dispatch(resetEditOrAddTermData());
+    }
+  }, []);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

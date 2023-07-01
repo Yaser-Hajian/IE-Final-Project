@@ -60,7 +60,7 @@ const DashboardHeader = ({ userType }) => {
 
   return (
     <>
-      <Paper className={styles.con} variant="outlined">
+      <Paper dir="rtl" className={styles.con} variant="outlined">
         <div className={styles.logo}>
           <Typography variant="h6">دانشگاه بهشتی</Typography>
           <FormControlLabel
