@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon ./app.js",
     "seed": "node ./src/generateFake.js",
+    "clearDB": "node ./src/clearDB.js",
     "start": "node ./app.js"
   },
   "author": "",
