@@ -62,7 +62,7 @@ const TermCard = ({
           <Link href={url} variant="body1">
             {name}
           </Link>
-          <Typography variant="caption" sx={{ lineHeight: "5px" }}>
+          <Typography variant="caption" sx={{ lineHeight: "5px" , mt:"15px"}}>
             {msToDate(endDate)} - {msToDate(startDate)}
           </Typography>
         </div>

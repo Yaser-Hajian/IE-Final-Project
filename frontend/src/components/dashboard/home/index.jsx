@@ -11,6 +11,7 @@ import Empty from "../empty/empty";
 
 const Home = ({ userType }) => {
   const homeData = useSelector((s) => s.home);
+  console.log(homeData);
   const { isLoading } = useHomeData();
   return (
     <>

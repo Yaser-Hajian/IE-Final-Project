@@ -50,6 +50,7 @@ const EditOrAddTerm = ({ type }) => {
   const [isAddingPerson, setIsAddingPerson] = useState(false);
   const theme = useTheme().palette.mode;
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (type == "add") {
@@ -58,7 +59,6 @@ const EditOrAddTerm = ({ type }) => {
   }, [dispatch, type]);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleClickOpen = (e, type, isAdd) => {
     setAnchorEl(e.currentTarget);
