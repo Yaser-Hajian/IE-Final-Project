@@ -75,10 +75,8 @@ const LoginPage = () => {
       });
 
       localStorage.setItem("token", JSON.stringify(data.data));
-      setTimeout(() => {
-        toast.dismiss(loadingToast);
-        navigation("/", { replace: true });
-      }, 1500);
+      toast.dismiss(loadingToast);
+      navigation("/", { replace: true });
     }
   };
 

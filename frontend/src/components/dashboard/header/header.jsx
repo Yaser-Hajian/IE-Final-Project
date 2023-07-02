@@ -44,7 +44,6 @@ const DashboardHeader = ({ userType }) => {
         dispatch(resetMeDate());
         navigation(0);
         localStorage.removeItem("token");
-        // localStorage.removeItem("lastSeen");
       }),
       {
         pending: "لطفا صبر کنید",

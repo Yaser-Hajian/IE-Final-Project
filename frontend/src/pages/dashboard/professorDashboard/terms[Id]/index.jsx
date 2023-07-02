@@ -30,7 +30,6 @@ const ProfessorDashboardTermId = () => {
     registrationData.registrationCourses.length,
     6
   );
-  console.log(registrationData.registrationCourses);
   const [anchorEl, setAnchorEl] = useState(null);
   const settingSortType = (type) => {
     if (type == null) return;

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import getPreregistrationCourses from "../utils/dashboard/getPreregistrationCourses";
 import { updatePreregistrationCoursesData } from "../redux/preregistrationCourses";
 
-const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
+const usePreregistrationCoursesData = (termId) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -17,11 +17,7 @@ const usePreregistrationCoursesData = (termId, searchQuery, sortType) => {
       }
       setIsLoading(true);
       try {
-        const preregisterCoursesData = await getPreregistrationCourses(
-          termId,
-          searchQuery,
-          sortType
-        );
+        const preregisterCoursesData = await getPreregistrationCourses(termId);
         if (preregisterCoursesData.error) {
           setIsError(true);
         }
