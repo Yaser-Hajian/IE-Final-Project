@@ -4,7 +4,10 @@ const redisAuthService = require("../redis/index");
 const loginController = async (req, res) => {
   try {
     const { username, password } = req.body;
+    // console.log(username);
+    // console.log(password);
     const user = await User.findOne({ username, password });
+    console.log(user);
     if (user) {
       const token = redisAuthService.signJWT({ id: username });
       const refreshToken = redisAuthService.createRefreshToken();

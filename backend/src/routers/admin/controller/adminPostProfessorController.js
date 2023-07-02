@@ -3,6 +3,7 @@ const postProfessor = require("../../../utils/postProfessor");
 
 const adminPostProfessorController = async (req, res) => {
   try {
+    console.log(req.body);
     const professor = req.body;
 
     await postProfessor(ProfessorMapper.toPersistence(professor));

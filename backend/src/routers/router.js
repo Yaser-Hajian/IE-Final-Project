@@ -15,9 +15,13 @@ const courseRouter = require("./course");
 
 const router = express.Router();
 
-router.use("/", authGuard, roleGuard());
-
 router.post("/login", loginController);
+
+
+
+router.use("/",authGuard, roleGuard());
+router.use("/admin", adminRouter);
+
 
 router.get("/signout", signoutController);
 
@@ -33,7 +37,7 @@ router.put(
   acceptOrRejectRegistrationController
 );
 
-router.use("/admin", adminRouter);
+
 
 router.get("/courses", getCoursesController);
 
